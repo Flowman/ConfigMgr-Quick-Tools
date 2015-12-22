@@ -330,7 +330,7 @@ namespace Zetta.ConfigMgr.IntegrationKit
             dataGridViewDriverPackages.BeginEdit(true);
             bool flag = sender == buttonSelectAll;
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
-                dataGridViewRow.Cells[0].Value = (bool)(flag ? true : false);
+                dataGridViewRow.Cells[0].Value = flag ? true : false;
             dataGridViewDriverPackages.EndEdit();
         }
 

@@ -107,6 +107,12 @@
     <Compile Include="SUDeploymentSettingsPage.Designer.cs">
       <DependentUpon>SUDeploymentSettingsPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResultCollectionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultCollectionsControl.Designer.cs">
+      <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utility.cs" />
     <Compile Include="DriverPackageGeneralPage.cs">
       <SubType>UserControl</SubType>
@@ -131,6 +137,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultCollectionsControl.resx">
+      <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SUDeploymentGeneralPage.resx">
       <DependentUpon>SUDeploymentGeneralPage.cs</DependentUpon>
