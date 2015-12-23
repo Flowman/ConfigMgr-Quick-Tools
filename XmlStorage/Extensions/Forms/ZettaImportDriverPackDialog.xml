@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SmsFormData FormatVersion="1.0" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework">
+  <Form Id="{3fa94def-4ff8-41d1-94c8-0a63af4045ba}" FormType="Wizard" DisableSkippable="true">
+    <Assembly Name="Zetta.ConfigMgr.IntegrationKit" Namespace="Zetta.ConfigMgr.IntegrationKit" />
+    <Resources>
+      <Icon Name="icon" />
+    </Resources>
+    <Pages>
+      <Page VendorId="Zetta" Id="{25C807D9-718C-4dc0-A74A-395126DCD15E}" Type="DriverPackageGeneralPage">
+        <Branches>
+          <BranchReference Id="{A2921EED-8647-430F-BCD5-8CF43E68FA17}" Default="true" />
+          <BranchReference Id="{56304148-675D-4984-A318-1C45B0980256}" Default="false" />
+        </Branches>
+      </Page>   
+      <Page VendorId="Zetta" Id="{25C807D9-718C-4dc0-A74A-395126DCD155}" Type="DriverPackageImportPage" />
+      <Page VendorId="Zetta" Id="{25C807D9-718C-4dc0-A74A-395126DCD157}" Type="DriverPackageRemotePage" />
+    </Pages>
+  </Form>
+  <WizardBranches>
+    <Pages>
+      <PageReference Id="{25C807D9-718C-4dc0-A74A-395126DCD15E}" />
+    </Pages>
+    <Branches>
+      <Branch Id="{A2921EED-8647-430F-BCD5-8CF43E68FA17}">
+        <Pages>
+          <PageReference Id="{25C807D9-718C-4dc0-A74A-395126DCD155}" />
+        </Pages>
+      </Branch>
+      <Branch Id="{56304148-675D-4984-A318-1C45B0980256}">
+        <Pages>
+          <PageReference Id="{25C807D9-718C-4dc0-A74A-395126DCD157}" />
+          <PageReference Id="{25C807D9-718C-4dc0-A74A-395126DCD155}" />
+        </Pages>
+      </Branch>
+    </Branches>
+  </WizardBranches>  
+</SmsFormData>

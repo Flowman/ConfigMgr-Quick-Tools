@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Zetta" MnemonicDisplayName="Zetta" Description="Incremental Collections List" NodeInConsole="6d357b6b-96b3-45f4-ba09-b74e8ce5a509">
+    <ShowOn>
+        <string>ContextMenu</string>
+    </ShowOn>
+    <ImagesDescription>
+        <ResourceAssembly>
+            <Assembly>Zetta.ConfigMgr.IntegrationKit.dll</Assembly>
+            <Type>Zetta.ConfigMgr.IntegrationKit.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>icon</ImageResourceName>
+    </ImagesDescription>
+    <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Incremental Collections" MnemonicDisplayName="Incremental Collections" Description="Incremental Collections List" NodeInConsole="6d357b6b-96b3-45f4-ba09-b74e8ce5a509">
+            <ImagesDescription>
+                <ResourceAssembly>
+                    <Assembly>Zetta.ConfigMgr.IntegrationKit.dll</Assembly>
+                    <Type>Zetta.ConfigMgr.IntegrationKit.Properties.Resources.resources</Type>
+                </ResourceAssembly>
+                <ImageResourceName>icon</ImageResourceName>
+            </ImagesDescription>
+            <ShowOn>
+                <string>ContextMenu</string>
+            </ShowOn>
+            <DialogId>ZettaIncrementalCollectionsDialog</DialogId>
+        </ActionDescription>
+    </ActionGroups>
+</ActionDescription>
+

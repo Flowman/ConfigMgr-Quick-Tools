@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Zetta" MnemonicDisplayName="Zetta" Description="Zetta PCs Platform Driver Pack Manager" NodeInConsole="0ae7814c-1256-4358-b5a6-710f64ba2188">
+    <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+    </ShowOn>
+    <ImagesDescription>
+        <ResourceAssembly>
+            <Assembly>Zetta.ConfigMgr.IntegrationKit.dll</Assembly>
+            <Type>Zetta.ConfigMgr.IntegrationKit.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>icon</ImageResourceName>
+    </ImagesDescription>
+    <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Driver Package Manager" MnemonicDisplayName="Driver Package Manager" Description="Zetta PCs Platform Driver Pack Manager" NodeInConsole="0ae7814c-1256-4358-b5a6-710f64ba2188">
+            <ImagesDescription>
+                <ResourceAssembly>
+                    <Assembly>Zetta.ConfigMgr.IntegrationKit.dll</Assembly>
+                    <Type>Zetta.ConfigMgr.IntegrationKit.Properties.Resources.resources</Type>
+                </ResourceAssembly>
+                <ImageResourceName>icon</ImageResourceName>
+            </ImagesDescription>
+            <ShowOn>
+                <string>DefaultHomeTab</string>
+                <string>ContextMenu</string>
+            </ShowOn>
+            <DialogId>ZettaImportDriverPackDialog</DialogId>
+        </ActionDescription>
+    </ActionGroups>
+</ActionDescription>
+
