@@ -89,6 +89,12 @@
     <Compile Include="DriverPackageRemotePage.Designer.cs">
       <DependentUpon>DriverPackageRemotePage.cs</DependentUpon>
     </Compile>
+    <Compile Include="IncrementalCollectionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IncrementalCollectionsPage.Designer.cs">
+      <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DriverPackageRemotePage.resx">
       <DependentUpon>DriverPackageRemotePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IncrementalCollectionsPage.resx">
+      <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

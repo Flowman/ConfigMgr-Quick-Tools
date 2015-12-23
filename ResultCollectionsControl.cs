@@ -48,8 +48,8 @@ namespace Zetta.ConfigMgr.IntegrationKit
                 {
                     Text = resultObject["Name"].StringValue,
                     SubItems = {
-                        ResourceDisplayClass.GetAliasDisplayText(resultObject, "CollectionID"),
-                      }
+                        ResourceDisplayClass.GetAliasDisplayText(resultObject, "CollectionID")
+                    }
                 });
                 resultObject.Dispose();
             }
