@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     public partial class ResultCollectionsControl : SmsPageControl
     {
@@ -27,7 +27,7 @@ namespace Zetta.ConfigMgr.IntegrationKit
             listViewListCollections.Items.Clear();
 
             listViewListCollections.IsLoading = true;
-            string query = string.Format("SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where ResourceID = '{0}' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID" , PropertyManager["ResourceID"].IntegerValue);
+            string query = string.Format("SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where ResourceID = '{0}' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID", PropertyManager["ResourceID"].IntegerValue);
 
             backgroundWorker = new SmsBackgroundWorker();
             backgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(backgroundWorker_RunWorkerCompleted);

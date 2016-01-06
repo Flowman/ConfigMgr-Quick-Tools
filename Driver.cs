@@ -8,7 +8,7 @@ using System.Linq;
 using System.Management;
 using System.Text.RegularExpressions;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     internal class Driver
     {

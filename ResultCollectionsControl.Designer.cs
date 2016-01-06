@@ -1,6 +1,6 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole.Common;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     partial class ResultCollectionsControl
     {
@@ -46,6 +46,9 @@ namespace Zetta.ConfigMgr.IntegrationKit
             // 
             this.listViewListCollections.Activation = System.Windows.Forms.ItemActivation.Standard;
             this.listViewListCollections.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewListCollections.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewListCollections.AutoSort = true;
             this.listViewListCollections.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.listViewListCollections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -60,7 +63,7 @@ namespace Zetta.ConfigMgr.IntegrationKit
             this.listViewListCollections.Location = new System.Drawing.Point(12, 32);
             this.listViewListCollections.Name = "listViewListCollections";
             this.listViewListCollections.ShowSearchBar = true;
-            this.listViewListCollections.Size = new System.Drawing.Size(453, 324);
+            this.listViewListCollections.Size = new System.Drawing.Size(354, 319);
             this.listViewListCollections.SmallImageList = null;
             this.listViewListCollections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewListCollections.StateImageList = null;

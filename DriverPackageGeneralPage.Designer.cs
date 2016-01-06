@@ -1,4 +1,4 @@
-﻿namespace Zetta.ConfigMgr.IntegrationKit
+﻿namespace Zetta.ConfigMgr.QuickTools
 {
     partial class DriverPackageGeneralPage
     {

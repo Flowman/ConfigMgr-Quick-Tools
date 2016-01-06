@@ -5,8 +5,8 @@
   </ShowOn>
   <ImagesDescription>
     <ResourceAssembly>
-      <Assembly>Zetta.ConfigMgr.IntegrationKit.dll</Assembly>
-      <Type>Zetta.ConfigMgr.IntegrationKit.Properties.Resources.resources</Type>
+      <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+      <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
     </ResourceAssembly>
     <ImageResourceName>icon</ImageResourceName>
   </ImagesDescription>  
@@ -14,8 +14,8 @@
     <ActionDescription Class="ShowDialog" DisplayName="Deploy to Phase Collections" MnemonicDisplayName="Deploy to Phase Collections" Description="Deploy a Software Update Group to Phase Collections">
       <ImagesDescription>
         <ResourceAssembly>
-          <Assembly>Zetta.ConfigMgr.IntegrationKit.dll</Assembly>
-          <Type>Zetta.ConfigMgr.IntegrationKit.Properties.Resources.resources</Type>
+          <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+          <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
         </ResourceAssembly>
         <ImageResourceName>icon</ImageResourceName>
       </ImagesDescription>

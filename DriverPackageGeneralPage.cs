@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     public partial class DriverPackageGeneralPage : SmsPageControl
     {

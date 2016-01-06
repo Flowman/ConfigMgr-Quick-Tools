@@ -2,7 +2,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     internal class SUDeployment
     {

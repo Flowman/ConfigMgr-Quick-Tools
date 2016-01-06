@@ -9,8 +9,9 @@ using System.Collections;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Management;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     class Utility
     {
@@ -132,6 +133,50 @@ namespace Zetta.ConfigMgr.IntegrationKit
             }
 
             return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(hash))).Replace("-", "");
+        }
+
+        public static IEnumerable<ManagementObject> SearchWMI(ObjectQuery query, ManagementScope scope)
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            using (ManagementObjectCollection queryCollection = searcher.Get())
+            {
+                foreach (ManagementObject managmentObject in queryCollection)
+                {
+                    yield return managmentObject;
+                }
+            }
+        }
+
+        public static ManagementScope GetWMIScope(string host, string space)
+        {
+            ConnectionOptions options = new ConnectionOptions();
+            options.Authentication = AuthenticationLevel.PacketPrivacy;
+            options.Impersonation = ImpersonationLevel.Impersonate;
+            options.EnablePrivileges = true;
+            options.Timeout = TimeSpan.FromSeconds(10);
+
+            ManagementScope scope = new ManagementScope(string.Format(@"\\{0}\root\{1}", host, space), options);
+            scope.Connect();
+
+            if (scope.IsConnected == true)
+            {
+                return scope;
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot connect to WMI");
+            }
+        }
+
+        public static ManagementObject GetFirstWMIInstance(string host, string space, string query)
+        {
+            ManagementScope scope = GetWMIScope(host, space);
+
+            ObjectQuery wmiquery = new ObjectQuery(string.Format(@"SELECT * FROM {0}", query));
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, wmiquery);
+            var enu = searcher.Get().GetEnumerator();
+            if (!enu.MoveNext()) throw new Exception("Unexpected WMI query failure");
+            return (ManagementObject)enu.Current;    
         }
 
         internal static void RequestLock(ConnectionManagerBase connectionManager, string objectPath)

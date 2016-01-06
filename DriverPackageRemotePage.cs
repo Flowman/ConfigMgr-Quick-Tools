@@ -12,7 +12,7 @@ using IniParser;
 using IniParser.Model;
 
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     public partial class DriverPackageRemotePage : SmsPageControl
     {

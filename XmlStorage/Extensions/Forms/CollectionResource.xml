@@ -5,8 +5,10 @@
     <Pages>
       <Page VendorId="Microsoft Corporation" Id="{C49C90AD-D3BD-4325-A76A-F1D7A70C6C5C}" Type="ResultGeneralControl" ReadOnly="false" MultiSelection="false" Visible="false" />
       <Page VendorId="Microsoft Corporation" Id="{48359DD0-9EE2-4e5e-B22C-9F8F82A9F994}" Type="ResultAdvertisementControl" ReadOnly="false" MultiSelection="false" Visible="false" />
-      <Page VendorId="Zetta" Id="{B159E270-7280-4206-8CA1-409D804957EA}" Assembly="Zetta.ConfigMgr.IntegrationKit" Namespace="Zetta.ConfigMgr.IntegrationKit" Type="ResultCollectionsControl" ReadOnly="false" MultiSelection="false" Visible="false"  />
+      <Page VendorId="Zetta" Id="{B159E270-7280-4206-8CA1-409D804957EA}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultCollectionsControl" ReadOnly="false" MultiSelection="false" Visible="false"  />
       <Page VendorId="Microsoft Corporation" Id="{69AFA715-621F-443a-AFBB-17FBAD383C9D}" Type="ResultVariableControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Zetta" Id="{F67C0B21-CC41-4921-800D-30D86AA062DE}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultSoftwareUpdatesControl" ReadOnly="false" MultiSelection="false" Visible="false"  />      
+      <Page VendorId="Zetta" Id="{3863E905-E0D9-4B9F-8006-BDBEB07D5ECC}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultSUComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false"  />         
     </Pages>
   </Form>
 </SmsFormData>

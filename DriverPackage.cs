@@ -8,7 +8,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     internal class DriverPackage : IDisposable
     {

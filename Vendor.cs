@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.ComponentModel;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     internal class Vendor
     {

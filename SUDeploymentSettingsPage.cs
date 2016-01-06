@@ -8,7 +8,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Collections;
 
-namespace Zetta.ConfigMgr.IntegrationKit
+namespace Zetta.ConfigMgr.QuickTools
 {
     public partial class SUDeploymentSettingsPage : SmsPageControl
     {
