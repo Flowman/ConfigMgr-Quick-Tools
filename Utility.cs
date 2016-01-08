@@ -236,7 +236,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private static int ReadObjectLockTimeout()
         {
-            Microsoft.Win32.RegistryKey registryKey = null;
+            RegistryKey registryKey = null;
             try
             {
                 registryKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\ConfigMgr10\\AdminUI", false);

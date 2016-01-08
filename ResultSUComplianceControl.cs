@@ -83,6 +83,14 @@ namespace Zetta.ConfigMgr.QuickTools
                 labelCABSource.Text = scansource["ContentLocation"].ToString();
                 labelCABVersion.Text = scansource["ContentVersion"].ToString();
             }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show("An error occured while querying for WMI data: " + ex.Message);
+            }
+            catch (UnauthorizedAccessException unauthorizedErr)
+            {
+                MessageBox.Show("Connection error " + "(user name or password might be incorrect): " + unauthorizedErr.Message);
+            }
             catch (Exception ex)
             {
                 throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
