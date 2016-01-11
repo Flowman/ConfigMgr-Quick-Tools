@@ -153,7 +153,7 @@ namespace Zetta.ConfigMgr.QuickTools
             options.Authentication = AuthenticationLevel.PacketPrivacy;
             options.Impersonation = ImpersonationLevel.Impersonate;
             options.EnablePrivileges = true;
-            options.Timeout = TimeSpan.FromSeconds(10);
+            options.Timeout = TimeSpan.FromSeconds(5);
 
             ManagementScope scope = new ManagementScope(string.Format(@"\\{0}\root\{1}", host, space), options);
             scope.Connect();

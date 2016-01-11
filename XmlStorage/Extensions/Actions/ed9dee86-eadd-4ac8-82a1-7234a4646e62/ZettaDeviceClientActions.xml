@@ -114,7 +114,7 @@
         <Method>RunClientActionSoftwareUpdateScan</Method>
       </ActionAssembly>
     </ActionDescription>   
-    <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="User Policy Retrieval and Evaluation Cycle" MnemonicDisplayName="User Policy Retrieval and Evaluation Cycle" Description="User Policy Retrieval and Evaluation Cycle" >
+    <ActionDescription Class="AssemblyType" DisplayName="User Policy Retrieval and Evaluation Cycle" MnemonicDisplayName="User Policy Retrieval and Evaluation Cycle" Description="User Policy Retrieval and Evaluation Cycle" >
       <ShowOn>
         <string>DefaultHomeTab</string>
         <string>ContextMenu</string>
@@ -124,7 +124,7 @@
         <Type>Zetta.ConfigMgr.QuickTools.ClientActions</Type>
         <Method>RunClientActionUserPolicy</Method>
       </ActionAssembly>
-    </ActionDescription>   
+    </ActionDescription>     
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Windows Installer Source List Update Cycle" MnemonicDisplayName="Windows Installer Source List Update Cycle" Description="Windows Installer Source List Update Cycle" >
       <ShowOn>
         <string>DefaultHomeTab</string>

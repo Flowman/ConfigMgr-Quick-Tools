@@ -61,17 +61,17 @@ namespace Zetta.ConfigMgr.QuickTools
         private void ClientAction(IResultObject resultObject)
         {
             ListViewItem item = listViewHosts.FindItemWithText(resultObject["Name"].StringValue);
-
+            
             try
             {
                 item.SubItems[1].Text = "Connecting";
                 ObjectGetOptions o = new ObjectGetOptions();
                 o.Timeout = new TimeSpan(0, 0, 5);
-                ManagementClass clientaction = new ManagementClass(string.Format(@"\\{0}\root\{1}:{2}", resultObject["Name"].StringValue, "ccm", "SMS_Client"), o);
-
-                object[] methodArgs = { scheduleId };
-                clientaction.InvokeMethod("TriggerSchedule", methodArgs);
-                clientaction.Dispose();
+                using (ManagementClass clientaction = new ManagementClass(string.Format(@"\\{0}\root\{1}:{2}", resultObject["Name"].StringValue, "ccm", "SMS_Client"), o))
+                {
+                    object[] methodArgs = { scheduleId };
+                    clientaction.InvokeMethod("TriggerSchedule", methodArgs);
+                }
                 item.SubItems[1].Text = "Completed";
                 ++completed;
             }
@@ -95,7 +95,11 @@ namespace Zetta.ConfigMgr.QuickTools
             }
             finally
             {
-                Invoke(new BarDelegate(UpdateBar));
+                try
+                {
+                    Invoke(new BarDelegate(UpdateBar));
+                }
+                catch { }
             }
         }
 
@@ -112,4 +116,3 @@ namespace Zetta.ConfigMgr.QuickTools
         }
     }
 }
-;

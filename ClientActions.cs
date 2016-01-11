@@ -58,7 +58,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         public static void RunClientActionUserPolicy(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
         {
-            processClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000027}");
+            processClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000026}");
         }
 
         public static void RunClientActionWindowsInstaller(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)

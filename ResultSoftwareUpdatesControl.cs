@@ -26,6 +26,11 @@ namespace Zetta.ConfigMgr.QuickTools
         {
             base.InitializePageControl();
 
+            if (!PropertyManager["IsClient"].BooleanValue)
+            {
+                buttonSURefresh.Enabled = false;
+            }
+
             Initialized = true;
         }
 
