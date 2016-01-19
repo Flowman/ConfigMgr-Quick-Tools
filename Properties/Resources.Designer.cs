@@ -73,9 +73,29 @@ namespace Zetta.ConfigMgr.QuickTools.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon expiredupdate {
+            get {
+                object obj = ResourceManager.GetObject("expiredupdate", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon icon {
             get {
                 object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon supersededupdate {
+            get {
+                object obj = ResourceManager.GetObject("supersededupdate", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

@@ -6,6 +6,10 @@ using System.Management;
 using System.Runtime.InteropServices;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System.Threading;
+using Microsoft.ConfigurationManagement.AdminConsole.Common;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Linq;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -111,7 +115,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 }
                 catch (SmsQueryException ex)
                 {
-                    ExceptionUtilities.TraceException((Exception)ex);
+                    ExceptionUtilities.TraceException(ex);
                     SccmExceptionDialog.ShowDialog(SnapIn.Console, ex);
                     return;
                 }
@@ -129,6 +133,66 @@ namespace Zetta.ConfigMgr.QuickTools
                 using (ClientActionsDialog clientActions = new ClientActionsDialog(selectedResultObjects, schedulerId, action))
                 {
                     int num2 = (int)clientActions.ShowDialog(SnapIn.Console);
+                }
+            }
+        }
+
+        public static void AddMulitDeviceCollection(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedObject, PropertyDataUpdated dataUpdatedDelegate, Status Status)
+        {
+            try
+            {
+                ConnectionManagerBase connectionManager = Microsoft.ConfigurationManagement.AdminConsole.UtilityClass.ConnectionManagerFromScope(scopeNode, "WQL");
+                using (BrowseCollectionDialog collectionDialog = new BrowseCollectionDialog(connectionManager))
+                {
+                    collectionDialog.MultiSelect = true;
+                    collectionDialog.CollectionType = CollectionType.Device;
+                    collectionDialog.CollectionFilter = (collectionResultObject =>
+                    {
+                        if (collectionResultObject["IsReferenceCollection"].BooleanValue || collectionResultObject["IsBuiltIn"].BooleanValue)
+                            return false;
+                        if (selectedObject.Count > 1)
+                        {
+                            foreach (IResultObject resultObject in selectedObject)
+                            {
+                                if (string.Equals(resultObject.ObjectClass, "SMS_Collection", StringComparison.OrdinalIgnoreCase) && string.Equals(resultObject["CollectionID"].StringValue, collectionResultObject["CollectionID"].StringValue, StringComparison.OrdinalIgnoreCase))
+                                    return false;
+                            }
+                            return true;
+                        }
+                        return !string.Equals(selectedObject.ObjectClass, "SMS_Collection", StringComparison.OrdinalIgnoreCase) || !string.Equals(selectedObject["CollectionID"].StringValue, collectionResultObject["CollectionID"].StringValue, StringComparison.OrdinalIgnoreCase);
+                    });
+                    if (collectionDialog.ShowDialog() != DialogResult.OK)
+                        return;
+                    foreach (IResultObject resultObject1 in collectionDialog.SelectedCollections)
+                    {
+                        List<IResultObject> list = new List<IResultObject>();
+                        foreach (IResultObject resultObject in selectedObject)
+                        {
+                            IResultObject embeddedObjectInstance = connectionManager.CreateEmbeddedObjectInstance("SMS_CollectionRuleDirect");
+                            embeddedObjectInstance["ResourceClassName"].StringValue = "SMS_R_System";
+                            embeddedObjectInstance["RuleName"].StringValue = resultObject["Name"].StringValue;
+                            embeddedObjectInstance["ResourceID"].IntegerValue = resultObject["ResourceID"].IntegerValue;
+                            list.Add(embeddedObjectInstance);
+                        }
+                        resultObject1.ExecuteMethod("AddMembershipRules", new Dictionary<string, object>() {{"collectionRules", list} });
+                    }
+                }
+            }
+            catch (SmsQueryException ex)
+            {
+                ExceptionUtilities.TraceException(ex);
+                SccmExceptionDialog.ShowDialog(SnapIn.Console, ex);
+            }
+        }
+
+        public IEnumerable<IResultObject> GetCollectionMembership(ConnectionManagerBase ConnectionManager, int resourceID)
+        {
+            string query = string.Format("SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where ResourceID = '{0}' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID", resourceID);
+            using (IResultObject resultObject = ConnectionManager.QueryProcessor.ExecuteQuery(query))
+            {
+                foreach (IResultObject resultObject1 in resultObject)
+                {
+                    yield return resultObject1;
                 }
             }
         }

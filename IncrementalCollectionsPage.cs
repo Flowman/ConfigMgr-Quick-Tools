@@ -41,7 +41,6 @@ namespace Zetta.ConfigMgr.QuickTools
             ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "InitializePageControl");
             Cursor = Cursors.WaitCursor;
             QueryProcessor.ProcessQuery(backgroundWorker, query);
-
         }
 
         public override bool OnDeactivate()
@@ -150,7 +149,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private void RemoveAllSummary()
         {
-            foreach (string id in Enumerable.ToList<string>(Enumerable.Select<SmsSummaryItem, string>(GetSummaryItems(), i => i.Id)))
+            foreach (string id in Enumerable.ToList(Enumerable.Select(GetSummaryItems(), i => i.Id)))
                 RemoveItem(id);
         }
 
@@ -221,7 +220,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(linkLabel1.Text);
+            Process.Start(linkLabel1.Text);
         }
     }
 }

@@ -10,6 +10,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Management;
+using System.Windows.Forms;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -275,6 +276,27 @@ namespace Zetta.ConfigMgr.QuickTools
                     registryKey.Close();
             }
             return 30;
+        }
+
+        public static void UpdateDataGridViewColumnsSize(DataGridView dataGridView, DataGridViewColumn targetColumn)
+        {
+            if (dataGridView == null || targetColumn == null || !dataGridView.Columns.Contains(targetColumn))
+                return;
+            int num = dataGridView.Width - dataGridView.Margin.Left - dataGridView.Margin.Right;
+            foreach (DataGridViewColumn dataGridViewColumn in dataGridView.Columns)
+            {
+                if (dataGridViewColumn != targetColumn)
+                    num -= dataGridViewColumn.Width;
+            }
+
+            var vScrollbar = dataGridView.Controls.OfType<VScrollBar>().First();
+            if (vScrollbar.Visible)
+            {
+                num -= SystemInformation.VerticalScrollBarWidth;
+            }
+            if (num >= dataGridView.Width - dataGridView.Margin.Left - dataGridView.Margin.Right || num <= targetColumn.MinimumWidth)
+                return;
+            targetColumn.Width = num;
         }
     }
 

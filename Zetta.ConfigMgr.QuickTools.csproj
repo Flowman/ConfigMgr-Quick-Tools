@@ -41,6 +41,10 @@
     <Reference Include="AdminUI.OsdCommon">
       <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.OsdCommon.dll</HintPath>
     </Reference>
+    <Reference Include="AdminUI.WqlQueryEngine, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll</HintPath>
+    </Reference>
     <Reference Include="INIFileParser, Version=2.2.2.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ini-parser-development\IniFileParser\bin\Debug\INIFileParser.dll</HintPath>
@@ -75,6 +79,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CleanSoftwareUpdatesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CleanSoftwareUpdatesPage.Designer.cs">
+      <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="ClientActions.cs" />
     <Compile Include="ClientActionsDialog.cs">
       <SubType>Form</SubType>
@@ -156,6 +166,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CleanSoftwareUpdatesPage.resx">
+      <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ClientActionsDialog.resx">
       <DependentUpon>ClientActionsDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -199,6 +212,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\update.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\supersededupdate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\activate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\expiredupdate.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -235,11 +235,7 @@ namespace Zetta.ConfigMgr.QuickTools
             }
             catch (SmsQueryException ex)
             {
-                string str = string.Format(CultureInfo.CurrentCulture, "{0} ({1})", new object[2]
-                {
-                     driver.Object["LocalizedDisplayName"].StringValue,
-                     driver.Object["DriverINFFile"].StringValue
-                });
+                string str = string.Format("{0} ({1})", driver.Object["LocalizedDisplayName"].StringValue, driver.Object["DriverINFFile"].StringValue);
                 ManagementException managementException = ex.InnerException as ManagementException;
                 ImportError[str] = "Could not be added to package: " + managementException.ErrorInformation["Description"].ToString();
                 return false;

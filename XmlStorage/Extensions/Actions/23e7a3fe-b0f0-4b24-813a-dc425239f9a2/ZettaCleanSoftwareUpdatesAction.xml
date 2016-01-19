@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Zetta" MnemonicDisplayName="Zetta" Description="Clean Software Update Groups" NodeInConsole="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">
+    <ShowOn>
+        <string>ContextMenu</string>
+    </ShowOn>
+    <ImagesDescription>
+        <ResourceAssembly>
+            <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+            <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>icon</ImageResourceName>
+    </ImagesDescription>
+    <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Clean Software Update Groups" MnemonicDisplayName="Clean Software Update Groups" Description="Clean Software Update Groups" NodeInConsole="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">
+            <ImagesDescription>
+                <ResourceAssembly>
+                    <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+                    <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+                </ResourceAssembly>
+                <ImageResourceName>icon</ImageResourceName>
+            </ImagesDescription>
+            <ShowOn>
+                <string>ContextMenu</string>
+            </ShowOn>
+            <DialogId>ZettaCleanSoftwareUpdatesDialog</DialogId>
+        </ActionDescription>
+    </ActionGroups>
+</ActionDescription>
+

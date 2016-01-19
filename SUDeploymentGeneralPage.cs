@@ -42,7 +42,7 @@ namespace Zetta.ConfigMgr.QuickTools
             {
                 collectionDialog.MultiSelect = true;
                 collectionDialog.CollectionType = CollectionType.Device;
-                if (collectionDialog.ShowDialog(this) != System.Windows.Forms.DialogResult.OK)
+                if (collectionDialog.ShowDialog(this) != DialogResult.OK)
                     return;
                 foreach (IResultObject resultObject1 in collectionDialog.SelectedCollections)
                 {

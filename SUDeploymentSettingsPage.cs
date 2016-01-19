@@ -215,7 +215,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private void RemoveAllSummary()
         {
-            foreach (string id in Enumerable.ToList<string>(Enumerable.Select<SmsSummaryItem, string>(GetSummaryItems(), i => i.Id)))
+            foreach (string id in Enumerable.ToList(Enumerable.Select(GetSummaryItems(), i => i.Id)))
                 RemoveItem(id);
         }
 
