@@ -336,9 +336,8 @@ namespace Zetta.ConfigMgr.QuickTools
             categoryObject = getDriverCategory();
             if (categoryObject == null)
             {
-
                 IResultObject instance = connectionManager.CreateInstance("SMS_CategoryInstance");
-                instance["CategoryInstance_UniqueID"].StringValue = string.Format("DriverCategories: {1}", Guid.NewGuid().ToString());
+                instance["CategoryInstance_UniqueID"].StringValue = string.Format("DriverCategories: {0}", Guid.NewGuid().ToString());
                 instance["CategoryTypeName"].StringValue = "DriverCategories";
                 List<IResultObject> list = new List<IResultObject>();
                 IResultObject embeddedObjectInstance = connectionManager.CreateEmbeddedObjectInstance("SMS_Category_LocalizedProperties");

@@ -5,6 +5,13 @@
     <string>DefaultHomeTab</string>
     <string>ContextMenu</string>
   </ShowOn>
+  <ImagesDescription>
+      <ResourceAssembly>
+          <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+          <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+      </ResourceAssembly>
+      <ImageResourceName>icon</ImageResourceName>
+  </ImagesDescription>  
   <ActionAssembly>
     <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
     <Type>Zetta.ConfigMgr.QuickTools.ClientActions</Type>

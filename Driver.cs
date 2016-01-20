@@ -73,18 +73,25 @@ namespace Zetta.ConfigMgr.QuickTools
             parser.Parser.Configuration.SkipInvalidLines = true;
             parser.Parser.Configuration.CaseInsensitive = true;
 
-            Data = parser.ReadFile(inf);
-            if (Data.Sections.ContainsSection("Version") && Data["Version"].ContainsKey("DriverVer"))
-            {            
-                getVersion();
-                getModel();
-            }
-            else
+            try
             {
-                warningExceptions = new SystemException("Invalid inf file.");
+                Data = parser.ReadFile(inf);
+                if (Data.Sections.ContainsSection("Version") && Data["Version"].ContainsKey("DriverVer"))
+                {            
+                    getVersion();
+                    getModel();
+                }
+                else
+                {
+                    warningExceptions = new SystemException("Invalid inf file.");
+                    Import = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorExceptions = ex;
                 Import = false;
             }
-
         }
         #endregion
 

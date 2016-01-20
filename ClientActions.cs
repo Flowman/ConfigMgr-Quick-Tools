@@ -1,6 +1,7 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
 using Microsoft.ConfigurationManagement.ManagementProvider;
 using Microsoft.ConfigurationManagement.AdminConsole.Schema;
+using Microsoft.ConfigurationManagement.AdminConsole.CollectionProperty.DeployWizard;
 using System;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -8,8 +9,8 @@ using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System.Threading;
 using Microsoft.ConfigurationManagement.AdminConsole.Common;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -183,6 +184,27 @@ namespace Zetta.ConfigMgr.QuickTools
                 ExceptionUtilities.TraceException(ex);
                 SccmExceptionDialog.ShowDialog(SnapIn.Console, ex);
             }
+        }
+
+        public static void DeleteDeploymentForMonitoring(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObject, PropertyDataUpdated dataUpdatedDelegate, Status status)
+        {
+            DeleteDeployment(sender, scopeNode, action, selectedResultObject, dataUpdatedDelegate, status, "SoftwareName", true);
+        }
+
+        private static void DeleteDeployment(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObject, PropertyDataUpdated dataUpdatedDelegate, Status status, string displayPropertyName, bool confirmDialog = true)
+        {
+            IResultObject deploymentFromSummarizer = Utilities.GetCorrespondingDeploymentFromSummarizer(selectedResultObject);
+            if (confirmDialog)
+            {
+                if (System.Windows.MessageBox.Show(string.Format("Delete the selected '{0}' deployment?", ResourceDisplayClass.GetAliasDisplayText(selectedResultObject, displayPropertyName)), "Configuration Manager", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) != MessageBoxResult.Yes)
+                    return;
+            }
+            deploymentFromSummarizer.Delete();
+            List<PropertyDataUpdateItem> refreshDataList = new List<PropertyDataUpdateItem>();
+            refreshDataList.Add(new PropertyDataUpdateItem(selectedResultObject, PropertyDataUpdateAction.Delete));
+            if (dataUpdatedDelegate == null)
+                return;
+            int num = dataUpdatedDelegate(sender, refreshDataList) ? 1 : 0;
         }
 
         public IEnumerable<IResultObject> GetCollectionMembership(ConnectionManagerBase ConnectionManager, int resourceID)

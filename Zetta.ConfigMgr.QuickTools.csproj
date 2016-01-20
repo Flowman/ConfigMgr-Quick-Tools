@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdminUI.CollectionProperty">
+      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.CollectionProperty.dll</HintPath>
+    </Reference>
     <Reference Include="AdminUI.Common">
       <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Common.dll</HintPath>
     </Reference>
