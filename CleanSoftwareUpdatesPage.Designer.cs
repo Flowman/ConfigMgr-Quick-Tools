@@ -59,7 +59,7 @@
             this.dataGridViewUpdates.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
             this.dataGridViewUpdates.Name = "dataGridViewUpdates";
             this.dataGridViewUpdates.RowHeadersVisible = false;
-            this.dataGridViewUpdates.Size = new System.Drawing.Size(467, 286);
+            this.dataGridViewUpdates.Size = new System.Drawing.Size(458, 286);
             this.dataGridViewUpdates.StandardTab = true;
             this.dataGridViewUpdates.TabIndex = 17;
             this.dataGridViewUpdates.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUpdates_CellValueChanged);
@@ -115,7 +115,7 @@
             // 
             this.buttonSelectSuperseded.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSelectSuperseded.Cursor = System.Windows.Forms.Cursors.Default;
-            this.buttonSelectSuperseded.Location = new System.Drawing.Point(271, 305);
+            this.buttonSelectSuperseded.Location = new System.Drawing.Point(262, 305);
             this.buttonSelectSuperseded.Name = "buttonSelectSuperseded";
             this.buttonSelectSuperseded.Size = new System.Drawing.Size(105, 23);
             this.buttonSelectSuperseded.TabIndex = 19;
@@ -127,7 +127,7 @@
             // 
             this.buttonSelectExpired.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSelectExpired.Cursor = System.Windows.Forms.Cursors.Default;
-            this.buttonSelectExpired.Location = new System.Drawing.Point(382, 305);
+            this.buttonSelectExpired.Location = new System.Drawing.Point(373, 305);
             this.buttonSelectExpired.Name = "buttonSelectExpired";
             this.buttonSelectExpired.Size = new System.Drawing.Size(91, 23);
             this.buttonSelectExpired.TabIndex = 20;

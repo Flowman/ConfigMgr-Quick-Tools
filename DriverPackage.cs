@@ -1,7 +1,6 @@
 ﻿using Microsoft.ConfigurationManagement.ManagementProvider;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Management;
 using System.IO;
@@ -112,11 +111,11 @@ namespace Zetta.ConfigMgr.QuickTools
         public IEnumerable<IResultObject> GetDriversFromPackge()
         {
             string query = string.Format("SELECT * FROM SMS_Driver WHERE CI_ID IN (SELECT DC.CI_ID FROM SMS_DriverContainer AS DC WHERE DC.PackageID='{0}') ORDER BY LocalizedDisplayName", Package["PackageID"].StringValue);
-            using (IResultObject resultObject1 = connectionManager.QueryProcessor.ExecuteQuery(query))
+            using (IResultObject resultObjects = connectionManager.QueryProcessor.ExecuteQuery(query))
             {
-                foreach (IResultObject resultObject2 in resultObject1)
+                foreach (IResultObject resultObject in resultObjects)
                 {
-                    yield return resultObject2;
+                    yield return resultObject;
                 }
             }
         }
@@ -129,11 +128,7 @@ namespace Zetta.ConfigMgr.QuickTools
         public bool DriverContentExists(IResultObject driverObject)
         {
             string query = string.Format("SELECT * FROM SMS_CIToContent WHERE CI_ID='{0}'", driverObject["CI_ID"].IntegerValue);
-            IResultObject resultObject1 = connectionManager.QueryProcessor.ExecuteQuery(query);
-            IResultObject contentObject = null;
-            foreach (IResultObject resultObject2 in resultObject1)
-                contentObject = resultObject2;
-            resultObject1.Dispose();
+            IResultObject contentObject = Utility.GetFirstWMIInstance(connectionManager, query);
 
             if (contentObject != null)
             {
@@ -313,12 +308,7 @@ namespace Zetta.ConfigMgr.QuickTools
         private IResultObject getDriverCategory()
         {
             string query = string.Format("SELECT * FROM SMS_CategoryInstance WHERE CategoryTypeName='DriverCategories' AND LocalizedCategoryInstanceName='{0}'", Name);
-            IResultObject resultObject1 = connectionManager.QueryProcessor.ExecuteQuery(query);
-
-            IResultObject categoryObject = null;
-            foreach (IResultObject resultObject2 in resultObject1)
-                categoryObject = resultObject2;
-            resultObject1.Dispose();
+            IResultObject categoryObject = Utility.GetFirstWMIInstance(connectionManager, query);
 
             if (categoryObject != null)
             {
@@ -362,22 +352,10 @@ namespace Zetta.ConfigMgr.QuickTools
         #endregion
 
         #region Driver Package
-        private IResultObject getDriverPackage()
-        {
-            string query = string.Format("SELECT * FROM SMS_DriverPackage WHERE NAME = '{0}'", Name);
-            IResultObject resultObject1 = connectionManager.QueryProcessor.ExecuteQuery(query);
-
-            IResultObject driverPackageObject = null;
-            foreach (IResultObject resultObject2 in resultObject1)
-                driverPackageObject = resultObject2;
-            resultObject1.Dispose();
-
-            return driverPackageObject;
-        }
-
         private void createDriverPackge()
         {
-            packageObject = getDriverPackage();
+            string query = string.Format("SELECT * FROM SMS_DriverPackage WHERE NAME = '{0}'", Name);
+            packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
             if (packageObject == null)
             {
                 IResultObject instance = connectionManager.CreateInstance("SMS_DriverPackage");

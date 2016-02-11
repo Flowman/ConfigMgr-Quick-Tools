@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Collections;
 using System.Management;
 using System.Drawing;
 using System.Globalization;
@@ -106,8 +105,9 @@ namespace Zetta.ConfigMgr.QuickTools
                 List<string> successDP = new List<string>();
                 List<IResultObject> updates = (List<IResultObject>)UserData["UpdateItems"];
                 List<int> updateList = updates.Select(x => x["CI_ID"].IntegerValue).Distinct().ToList();
+                string query;
 
-                foreach (IResultObject groupObject in GetSoftwareUpdateGroups())
+                foreach (IResultObject groupObject in Utility.SearchWMI(ConnectionManager, "SELECT * FROM SMS_AuthorizationList"))
                 {
                     // get wmi object instace
                     groupObject.Get();
@@ -144,10 +144,10 @@ namespace Zetta.ConfigMgr.QuickTools
                 if (checkBoxRemoveContent.Checked == true)
                 {
                     worker.ReportProgress(50, "Querying package content for removal");
-                    string query = string.Format("SELECT SMS_PackageToContent.ContentID,SMS_PackageToContent.PackageID from SMS_PackageToContent JOIN SMS_CIToContent ON SMS_CIToContent.ContentID = SMS_PackageToContent.ContentID WHERE SMS_CIToContent.CI_ID IN ({0}) ORDER by PackageID", string.Join(",", updateList));
-
+                    
                     Dictionary<string, List<int>> packages = new Dictionary<string, List<int>>();
 
+                    query = string.Format("SELECT SMS_PackageToContent.ContentID,SMS_PackageToContent.PackageID from SMS_PackageToContent JOIN SMS_CIToContent ON SMS_CIToContent.ContentID = SMS_PackageToContent.ContentID WHERE SMS_CIToContent.CI_ID IN ({0}) ORDER by PackageID", string.Join(",", updateList));
                     using (IResultObject resultObject = ConnectionManager.QueryProcessor.ExecuteQuery(query))
                     {
                         foreach (IResultObject resultObject1 in resultObject)
@@ -162,7 +162,8 @@ namespace Zetta.ConfigMgr.QuickTools
 
                     foreach(KeyValuePair<string, List<int>> item in packages)
                     {
-                        IResultObject package = getDeploymentPackage(item.Key);
+                        query = string.Format("SELECT * FROM SMS_SoftwareUpdatesPackage WHERE PackageID = '{0}'", item.Key);
+                        IResultObject package = Utility.GetFirstWMIInstance(ConnectionManager, query);
 
                         worker.ReportProgress(66, string.Format("Removing content from deployment package: {0}", package["Name"].StringValue));
 
@@ -240,7 +241,7 @@ namespace Zetta.ConfigMgr.QuickTools
             AddAction("GeneralDescription", string.Format("The following update will be cleaned out ({0}):", list.Count));
             AddAction("UpdateInformation", string.Empty);
 
-            foreach (IResultObject update in (IEnumerable)list)
+            foreach (IResultObject update in list)
                 AddActionDetailMessage("UpdateInformation", update["LocalizedDisplayName"].StringValue);
         }
 
@@ -285,31 +286,6 @@ namespace Zetta.ConfigMgr.QuickTools
             RemoveAllSummary();
             AddAction("ErrorInfo", errorMessage);
             UpdateActionStatus("ErrorInfo", SmsSummaryAction.ActionStatus.CompleteWithErrors);
-        }
-
-        public IEnumerable<IResultObject> GetSoftwareUpdateGroups()
-        {
-            string query = string.Format("SELECT * FROM SMS_AuthorizationList");
-            using (IResultObject resultObject = ConnectionManager.QueryProcessor.ExecuteQuery(query))
-            {
-                foreach (IResultObject resultObject1 in resultObject)
-                {
-                    yield return resultObject1;
-                }
-            }
-        }
-
-        private IResultObject getDeploymentPackage(string packageID)
-        {
-            string query = string.Format("SELECT * FROM SMS_SoftwareUpdatesPackage WHERE PackageID = '{0}'", packageID);
-            IResultObject resultObject1 = ConnectionManager.QueryProcessor.ExecuteQuery(query);
-
-            IResultObject deploymentPackageObject = null;
-            foreach (IResultObject resultObject2 in resultObject1)
-                deploymentPackageObject = resultObject2;
-            resultObject1.Dispose();
-
-            return deploymentPackageObject;
         }
 
         private ControlDataState ValidateSelectedUpdatesPackages()

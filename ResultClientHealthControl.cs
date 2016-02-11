@@ -109,6 +109,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     backgroundWorker = null;
                     Cursor = Cursors.Default;
                     listViewListClientHealth.IsLoading = false;
+                    listViewListClientHealth.UpdateColumnWidth(columnHeaderDescription);
                     buttonRefresh.Enabled = true;
                 }
             }

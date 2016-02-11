@@ -309,6 +309,11 @@ namespace Zetta.ConfigMgr.QuickTools
             Dirty = !ReadOnly;
         }
 
+        private void dataGridViewDrivers_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            //Utility.UpdateDataGridViewColumnsSize(dataGridViewDrivers, columnDesc);
+        }
+
         private void buttonCapture_Click(object sender, EventArgs e)
         {
             panelComplete.Visible = false;

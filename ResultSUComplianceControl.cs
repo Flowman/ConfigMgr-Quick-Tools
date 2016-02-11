@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Management;
+using Microsoft.ConfigurationManagement.ManagementProvider;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -57,24 +58,27 @@ namespace Zetta.ConfigMgr.QuickTools
 
                 ManagementScope scope = Utility.GetWMIScope(host, @"ccm\SoftwareUpdates\DeploymentAgent");
                 ObjectQuery query = new ObjectQuery("SELECT * FROM CCM_AssignmentCompliance");
-                List<ManagementObject> compliance = Utility.SearchWMI(query, scope).ToList();
-
-                scope = Utility.GetWMIScope(host, @"ccm\policy\machine\Actualconfig");
-                query = new ObjectQuery("SELECT * FROM CCM_UpdateCIAssignment");
-                List<ManagementObject> assignments = Utility.SearchWMI(query, scope).ToList();
+                List<ManagementObject> compliance = Utility.SearchWMI(scope, query).ToList();
+                // it is faster to run two separate queries than one. SELECT SMS_AuthorizationList.LocalizedDisplayName FROM SMS_UpdateGroupAssignment JOIN SMS_AuthorizationList ON SMS_AuthorizationList.CI_ID = SMS_UpdateGroupAssignment.AssignedUpdateGroup WHERE SMS_UpdateGroupAssignment.AssignmentUniqueID =          
+                List<IResultObject> assignments = Utility.SearchWMIToList(ConnectionManager, "SELECT * FROM SMS_UpdateGroupAssignment");
+                List<IResultObject> updateGroups = Utility.SearchWMIToList(ConnectionManager, "SELECT * FROM SMS_AuthorizationList");
 
                 foreach (ManagementObject item in compliance)
                 {
-                    var assignment = assignments.Where(x => x.Properties["AssignmentId"].Value.Equals(item.Properties["AssignmentId"].Value)).FirstOrDefault();
+                    var assignment = assignments.Where(x => x.Properties["AssignmentUniqueID"].StringValue.Equals(item.Properties["AssignmentId"].Value)).FirstOrDefault();
                     if (assignment != null)
                     {
-                        listViewListSoftwareUpdates.Items.Add(new ListViewItem()
+                        var updateGroup = updateGroups.Where(x => x.Properties["CI_ID"].IntegerValue.Equals(assignment.Properties["AssignedUpdateGroup"].IntegerValue)).FirstOrDefault();
+                        if (updateGroup != null)
                         {
-                            Text = (string)assignment.Properties["AssignmentName"].Value,
-                            SubItems = {
-                                ((bool)item.Properties["IsCompliant"].Value ? "Compliant" : "Non-Compliant")
-                            }
-                        });
+                            listViewListSoftwareUpdates.Items.Add(new ListViewItem()
+                            {
+                                Text = updateGroup["LocalizedDisplayName"].StringValue,
+                                SubItems = {
+                                    ((bool)item.Properties["IsCompliant"].Value ? "Compliant" : "Non-Compliant")
+                                }
+                            });
+                        }
                     }
                 }
 
@@ -122,6 +126,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     backgroundWorker = null;
                     Cursor = Cursors.Default;
                     listViewListSoftwareUpdates.IsLoading = false;
+                    listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
                     buttonSURefresh.Enabled = true;
                 }
             }

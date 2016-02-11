@@ -95,12 +95,12 @@ namespace Zetta.ConfigMgr.QuickTools
         }
         #endregion
 
-        internal void AddObject(IResultObject obj)
+        internal void AddObject(IResultObject resultObject)
         {
-            driverObject = obj;
+            driverObject = resultObject;
         }
 
-        public bool CreateObjectFromInfFile(ConnectionManagerBase connection)
+        public bool CreateObjectFromInfFile(ConnectionManagerBase connectionManager)
         {
             Dictionary<string, object> methodParameters = new Dictionary<string, object>();
             methodParameters.Add("DriverPath", Path.GetDirectoryName(InfLocation));
@@ -108,9 +108,9 @@ namespace Zetta.ConfigMgr.QuickTools
             IResultObject instance = null;
             try
             {
-                IResultObject resultObject1 = connection.ExecuteMethod("SMS_Driver", "CreateFromINF", methodParameters);
-                instance = connection.CreateInstance(resultObject1["Driver"].ObjectValue);
-                resultObject1.Dispose();
+                IResultObject resultObject = connectionManager.ExecuteMethod("SMS_Driver", "CreateFromINF", methodParameters);
+                instance = connectionManager.CreateInstance(resultObject["Driver"].ObjectValue);
+                resultObject.Dispose();
             }
             catch (SmsQueryException ex)
             {
@@ -119,13 +119,10 @@ namespace Zetta.ConfigMgr.QuickTools
                     ManagementException managementException = ex.InnerException as ManagementException;
                     if (managementException != null)
                     {
-                        string query = string.Format("SELECT * FROM SMS_Driver WHERE CI_UniqueID='{0}'", managementException.ErrorInformation["ObjectInfo"].ToString());
                         try
                         {
-                            IResultObject resultObject2 = connection.QueryProcessor.ExecuteQuery(query);
-                            foreach (IResultObject resultObject3 in resultObject2)
-                                instance = resultObject3;
-                            resultObject2.Dispose();
+                            string query = string.Format("SELECT * FROM SMS_Driver WHERE CI_UniqueID='{0}'", managementException.ErrorInformation["ObjectInfo"].ToString());
+                            instance = Utility.GetFirstWMIInstance(connectionManager, query);
 
                             if (!Directory.Exists(instance["ContentSourcePath"].StringValue))
                             {

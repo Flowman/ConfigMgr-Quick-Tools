@@ -57,9 +57,10 @@ namespace Zetta.ConfigMgr.QuickTools
             try
             {
                 int num = 0;
-                foreach (SUDeployment deployment in (List<SUDeployment>)UserData["DeploymentItems"])
+                List<SUDeployment> deployments = (List<SUDeployment>)UserData["DeploymentItems"];
+                foreach (SUDeployment deployment in deployments)
                 {
-                    worker.ReportProgress(num * 100 / ((List<SUDeployment>)UserData["DeploymentItems"]).Count, string.Format("Creating deployment for collection: {0}", deployment.Collection["Name"].StringValue));
+                    worker.ReportProgress(num * 100 / deployments.Count, string.Format("Creating deployment for collection: {0}", deployment.Collection["Name"].StringValue));
 
                     deployment.CreateDeployment(SelectedObject);
 
@@ -104,7 +105,6 @@ namespace Zetta.ConfigMgr.QuickTools
             if ((string)editedRow.Cells[2].Value == "Required")
             {
                 deployment.IsRequired = true;
-                
             } 
             else
             {
@@ -320,6 +320,11 @@ namespace Zetta.ConfigMgr.QuickTools
             RemoveAllSummary();
             AddAction("ErrorInfo", errorMessage);
             UpdateActionStatus("ErrorInfo", SmsSummaryAction.ActionStatus.CompleteWithErrors);
+        }
+
+        private void dataGridViewSettings_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            Utility.UpdateDataGridViewColumnsSize(dataGridViewSettings, columnCollectionName);
         }
     }
 }

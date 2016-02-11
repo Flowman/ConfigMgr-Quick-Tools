@@ -56,7 +56,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 ManagementScope scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, @"ccm\SoftwareUpdates\UpdatesStore");
 
                 ObjectQuery query = new ObjectQuery("SELECT * FROM CCM_UpdateStatus");
-                IEnumerable<IGrouping<string, ManagementObject>> updates = Utility.SearchWMI(query, scope).GroupBy(update => (string)update.Properties["Article"].Value, update => update);
+                IEnumerable<IGrouping<string, ManagementObject>> updates = Utility.SearchWMI(scope, query).GroupBy(update => (string)update.Properties["Article"].Value, update => update);
 
                 foreach (IGrouping<string, ManagementObject> update in updates)
                 {
@@ -96,6 +96,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     backgroundWorker = null;
                     Cursor = Cursors.Default;
                     listViewListSoftwareUpdates.IsLoading = false;
+                    listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderTitle);
                     buttonSURefresh.Enabled = true;
                 }
             }

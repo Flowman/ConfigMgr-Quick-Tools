@@ -97,9 +97,10 @@ namespace Zetta.ConfigMgr.QuickTools
                 int num = 0;
                 Dictionary<string, IResultObject> error = new Dictionary<string, IResultObject>();
                 List<string> success = new List<string>();
-                foreach (IResultObject collection in (List<IResultObject>)UserData["CollectionItems"])
+                List<IResultObject> collections = (List<IResultObject>)UserData["CollectionItems"];
+                foreach (IResultObject collection in collections)
                 {
-                    worker.ReportProgress(num * 100 / ((List<IResultObject>)UserData["CollectionItems"]).Count, string.Format("Disabling incremental updates for collection: {0}", ResourceDisplayClass.GetAliasDisplayText(collection, "Name")));
+                    worker.ReportProgress(num * 100 / collections.Count, string.Format("Disabling incremental updates for collection: {0}", ResourceDisplayClass.GetAliasDisplayText(collection, "Name")));
 
                     collection["RefreshType"].IntegerValue = collection["RefreshType"].IntegerValue == 4 ? 1 : 2;
                     bool er = false;
@@ -216,6 +217,11 @@ namespace Zetta.ConfigMgr.QuickTools
             if (!dataGridViewCollections.IsCurrentCellDirty)
                 return;
             dataGridViewCollections.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        private void dataGridViewCollections_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            Utility.UpdateDataGridViewColumnsSize(dataGridViewCollections, columnCollection);
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ActionDescription Class="ShowDialog" DisplayName="Add Resources List" MnemonicDisplayName="Add Resources List" Description="Add Resources List" NodeInConsole="a92615d6-9df3-49ba-a8c9-6ecb0e8b956b" RibbonDisplayType="TextAndSmallImage" InsertBefore="494266a5-01d3-42de-837a-2ae181dffaff">
+  <ShowOn>
+    <string>DefaultHomeTab</string>    
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+      <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>icon</ImageResourceName>
+  </ImagesDescription>
+  <MatchPattern>False</MatchPattern>
+  <MatchValueToTest>##SUB:IsBuiltIn##</MatchValueToTest>
+  <DialogId>ZettaAddResourcesListDialog</DialogId>  
+  <SecurityConfiguration>
+    <InstancePermissions>
+      <SecurityFlagsDetailDescription BitName="Modify" BitValue="2" DependsOn="1" />
+    </InstancePermissions>
+  </SecurityConfiguration>
+</ActionDescription>

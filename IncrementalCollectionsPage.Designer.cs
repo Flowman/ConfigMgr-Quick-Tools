@@ -73,6 +73,8 @@
             this.dataGridViewCollections.AllowUserToDeleteRows = false;
             this.dataGridViewCollections.AllowUserToOrderColumns = true;
             this.dataGridViewCollections.AllowUserToResizeRows = false;
+            this.dataGridViewCollections.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewCollections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCollections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDisable,
@@ -86,6 +88,7 @@
             this.dataGridViewCollections.StandardTab = true;
             this.dataGridViewCollections.TabIndex = 15;
             this.dataGridViewCollections.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewCollections_CurrentCellDirtyStateChanged);
+            this.dataGridViewCollections.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewCollections_RowsAdded);
             // 
             // columnDisable
             // 

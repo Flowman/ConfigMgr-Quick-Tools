@@ -123,6 +123,7 @@
             this.dataGridViewDrivers.TabIndex = 7;
             this.dataGridViewDrivers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDrivers_CellValueChanged);
             this.dataGridViewDrivers.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewDrivers_CurrentCellDirtyStateChanged);
+            this.dataGridViewDrivers.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewDrivers_RowsAdded);
             // 
             // columnCapture
             // 

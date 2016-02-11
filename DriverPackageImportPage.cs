@@ -1,5 +1,4 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
-using Microsoft.ConfigurationManagement.AdminConsole.Common;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using Microsoft.ConfigurationManagement.ManagementProvider;
 using System;
@@ -75,9 +74,10 @@ namespace Zetta.ConfigMgr.QuickTools
             try
             {
                 int num = 0;
-                foreach (DriverPackage driverPackage in (List<DriverPackage>)UserData["DriverPackageItems"])
+                List<DriverPackage> driverPackages = (List<DriverPackage>)UserData["DriverPackageItems"];
+                foreach (DriverPackage driverPackage in driverPackages)
                 {
-                    worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}", driverPackage.Name));
+                    worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}", driverPackage.Name));
                     // create the dirver package category and package instanc 
                     driverPackage.Create();
 
@@ -92,7 +92,7 @@ namespace Zetta.ConfigMgr.QuickTools
                             // parse ini files and create a dictinonary with the results
                             foreach (string inf in driverPackage.Infs)
                             {
-                                worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}\n - processing inf '{1}'", new object[2]
+                                worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}\n - processing inf '{1}'", new object[2]
                                     {
                                         driverPackage.Name, 
                                         Path.GetFileName(inf)
@@ -117,7 +117,7 @@ namespace Zetta.ConfigMgr.QuickTools
                             // check if driver is in driver package and same version
                             foreach (IResultObject driverObject in driverPackage.GetDriversFromPackge())
                             {
-                                worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}\n - retriving driver '{1} ({2})' from package", new object[3]
+                                worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}\n - retriving driver '{1} ({2})' from package", new object[3]
                                     {
                                         driverPackage.Name,
                                         driverObject["LocalizedDisplayName"].StringValue,
@@ -140,16 +140,16 @@ namespace Zetta.ConfigMgr.QuickTools
                                 }
                                 else
                                 {
-                                    worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}\n - removing driver: {1} ({2})", new object[3]
+                                    worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}\n - removing driver: {1} ({2})", new object[3]
                                         {
                                             driverPackage.Name,
                                             driverObject["LocalizedDisplayName"].StringValue,
                                             driverObject["DriverVersion"].StringValue
                                         }));
-                                    // remove from driver package and category is source folder have been removed
-                                    driverPackage.RemoveDriverCategory(driverObject);
-                                    if (driverPackage.DriverContentExists(driverObject))
+                                    // remove from driver package and category if source folder have been removed
+                                    if (!driverPackage.DriverContentExists(driverObject))
                                     {
+                                        driverPackage.RemoveDriverCategory(driverObject);
                                         driverPackage.RemoveDriverFromDriverPack(driverObject);
                                     }
 
@@ -164,7 +164,7 @@ namespace Zetta.ConfigMgr.QuickTools
                             {
                                 if (driver.Value.Import)
                                 {
-                                    worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}\n - importing and adding driver to category ({1}/{2}): {3} ({4})", new object[5]
+                                    worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}\n - importing and adding driver to category ({1}/{2}): {3} ({4})", new object[5]
                                         {
                                             driverPackage.Name,
                                             num2,
@@ -185,14 +185,14 @@ namespace Zetta.ConfigMgr.QuickTools
 
                             if (refreshPackage)
                             {
-                                worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}\n - adding drivers to package", driverPackage.Name));
+                                worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}\n - adding drivers to package", driverPackage.Name));
                                 // add all drivers in the drivers list to the driver package
                                 driverPackage.AddDriversToDriverPack();
                             }
 
                             if (refreshDP)
                             {
-                                worker.ReportProgress(num * 100 / ((List<DriverPackage>)UserData["DriverPackageItems"]).Count, string.Format("Importing Driver Package: {0}\n - updating distribution point", driverPackage.Name));
+                                worker.ReportProgress(num * 100 / driverPackages.Count, string.Format("Importing Driver Package: {0}\n - updating distribution point", driverPackage.Name));
                                 driverPackage.Package.ExecuteMethod("RefreshPkgSource", null);
                             }
 
@@ -434,15 +434,15 @@ namespace Zetta.ConfigMgr.QuickTools
                     packageSuccess.Add(package.Name);
             }
 
-            string title = "All driver packages(s) are imported successfully.";
+            string title = "All driver package(s) are imported successfully.";
             if (hasWarning)
             {
-                title = "Some driver packages(s) imported with warning. See following details.";
+                title = "Some driver package(s) imported with warning. See following details.";
                 UpdateActionStatus("GeneralDescription", SmsSummaryAction.ActionStatus.CompleteWithWarnings);
             }
             if (hasError)
             {
-                title = "Some driver packages(s) cannot be imported successfully. See following details.";
+                title = "Some driver package(s) cannot be imported successfully. See following details.";
                 UpdateActionStatus("GeneralDescription", SmsSummaryAction.ActionStatus.CompleteWithErrors);
             }
             UpdateAction("GeneralDescription", title);

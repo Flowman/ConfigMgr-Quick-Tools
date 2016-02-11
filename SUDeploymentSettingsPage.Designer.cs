@@ -66,6 +66,7 @@
             this.dataGridViewSettings.Size = new System.Drawing.Size(563, 300);
             this.dataGridViewSettings.TabIndex = 0;
             this.dataGridViewSettings.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSettings_CellValueChanged);
+            this.dataGridViewSettings.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewSettings_RowsAdded);
             // 
             // columnEnabled
             // 

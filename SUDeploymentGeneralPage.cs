@@ -54,6 +54,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     listViewListCollections.Items.Add(listViewItem);
                 }
                 listViewListCollections.Focus();
+                UtilitiesClass.UpdateListViewColumnsSize(listViewListCollections, columnHeaderName);
             }
         }
 

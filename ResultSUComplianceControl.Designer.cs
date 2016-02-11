@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.listViewListSoftwareUpdates = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.columnHeaderAssignment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderCompliance = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonSURefresh = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -37,8 +39,6 @@
             this.labelCABSource = new System.Windows.Forms.Label();
             this.labelLastScan = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.columnHeaderAssignment = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderCompliance = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listViewListSoftwareUpdates
@@ -70,6 +70,16 @@
             this.listViewListSoftwareUpdates.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListSoftwareUpdates.UseCompatibleStateImageBehavior = false;
             this.listViewListSoftwareUpdates.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeaderAssignment
+            // 
+            this.columnHeaderAssignment.Text = "Software Update Group";
+            this.columnHeaderAssignment.Width = 250;
+            // 
+            // columnHeaderCompliance
+            // 
+            this.columnHeaderCompliance.Text = "Compliance";
+            this.columnHeaderCompliance.Width = 100;
             // 
             // buttonSURefresh
             // 
@@ -146,16 +156,6 @@
             this.label5.Size = new System.Drawing.Size(84, 13);
             this.label5.TabIndex = 14;
             this.label5.Text = "Last Scan Time:";
-            // 
-            // columnHeaderAssignment
-            // 
-            this.columnHeaderAssignment.Text = "Assignment";
-            this.columnHeaderAssignment.Width = 250;
-            // 
-            // columnHeaderCompliance
-            // 
-            this.columnHeaderCompliance.Text = "Compliance";
-            this.columnHeaderCompliance.Width = 100;
             // 
             // ResultSUComplianceControl
             // 

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
-    public partial class ClientActionsDialog : SmsDialogBase
+    public partial class ClientActionsDialog : SmsCustomDialog
     {
         private IResultObject resultObjects;
         private string scheduleId;
@@ -29,6 +29,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
+            DialogResult = DialogResult.OK;
             Close();
         }
 

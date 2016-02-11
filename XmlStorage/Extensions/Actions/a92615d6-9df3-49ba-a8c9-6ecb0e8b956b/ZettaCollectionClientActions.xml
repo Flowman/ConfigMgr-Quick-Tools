@@ -6,11 +6,11 @@
     <string>ContextMenu</string>
   </ShowOn>
   <ImagesDescription>
-      <ResourceAssembly>
-          <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
-          <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
-      </ResourceAssembly>
-      <ImageResourceName>icon</ImageResourceName>
+    <ResourceAssembly>
+      <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+      <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>icon</ImageResourceName>
   </ImagesDescription>
   <MatchPattern>False</MatchPattern>
   <MatchValueToTest>##SUB:IsBuiltIn##</MatchValueToTest>

@@ -103,15 +103,16 @@ namespace Zetta.ConfigMgr.QuickTools
             {
                 ConnectionManagerBase connectionManagerInstance = (scopeNode as ConsoleParentNode).RootConnectionNode.GetConnectionManagerInstance("WQL");
 
-                string query = string.Format("SELECT * FROM SMS_FullCollectionMembership WHERE CollectionID='{0}'", selectedResultObjects["CollectionID"].StringValue);
                 try
                 {
-                    IResultObject resultObject = connectionManagerInstance.QueryProcessor.ExecuteQuery(query);
-
-                    using (ClientActionsDialog clientActions = new ClientActionsDialog(resultObject, schedulerId, action))
+                    string query = string.Format("SELECT * FROM SMS_FullCollectionMembership WHERE CollectionID='{0}'", selectedResultObjects["CollectionID"].StringValue);
+                    using (IResultObject resultObject = connectionManagerInstance.QueryProcessor.ExecuteQuery(query))
                     {
-                        int num2 = (int)clientActions.ShowDialog(SnapIn.Console);
-                        return;
+                        using (ClientActionsDialog clientActions = new ClientActionsDialog(resultObject, schedulerId, action))
+                        {
+                            int num2 = (int)clientActions.ShowDialog(SnapIn.Console);
+                            return;
+                        }
                     }
                 }
                 catch (SmsQueryException ex)

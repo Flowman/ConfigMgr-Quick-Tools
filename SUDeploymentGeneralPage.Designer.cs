@@ -1,4 +1,5 @@
-﻿namespace Zetta.ConfigMgr.QuickTools
+﻿
+namespace Zetta.ConfigMgr.QuickTools
 {
     partial class SUDeploymentGeneralPage
     {
@@ -28,7 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listViewListCollections = new System.Windows.Forms.ListView();
+            this.listViewListCollections = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderCollectionId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelDescription = new System.Windows.Forms.Label();
@@ -106,7 +107,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listViewListCollections;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsListView listViewListCollections;
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Button buttonSelectCollections;
         private System.Windows.Forms.ColumnHeader columnHeaderName;

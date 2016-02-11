@@ -16,7 +16,7 @@ namespace Zetta.ConfigMgr.QuickTools
 {
     class Utility
     {
-        public static bool AddObjectToFolder(ConnectionManagerBase connection, string folderName, string objectId, int objectType, out IResultObject folder)
+        public static bool AddObjectToFolder(ConnectionManagerBase connectionManager, string folderName, string objectId, int objectType, out IResultObject folder)
         {
             folder = null;
             try
@@ -25,7 +25,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 try
                 {
                     string query = string.Format("SELECT * FROM SMS_ObjectContainerNode WHERE Name LIKE '{0}' AND ObjectType={1}", WqlEscapeString(folderName), objectType);
-                    resultObject1 = connection.QueryProcessor.ExecuteQuery(query);
+                    resultObject1 = connectionManager.QueryProcessor.ExecuteQuery(query);
                 }
                 catch (SmsQueryException ex)
                 {
@@ -46,7 +46,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 {
                     try
                     {
-                        nullable = CreateFolder(connection, folderName, objectType);
+                        nullable = CreateFolder(connectionManager, folderName, objectType);
                     }
                     catch (Exception ex)
                     {
@@ -58,7 +58,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     nullable = new int?(resultObject2["ContainerNodeID"].IntegerValue);
                 IResultObject resultObject4 = null;
                 string query2 = string.Format("Select * From SMS_ObjectContainerItem Where InstanceKey='{0}'", objectId);
-                IResultObject resultObject5 = connection.QueryProcessor.ExecuteQuery(query2);
+                IResultObject resultObject5 = connectionManager.QueryProcessor.ExecuteQuery(query2);
                 if (resultObject5 != null)
                 {
                     IEnumerator enumerator = resultObject5.GetEnumerator();
@@ -72,7 +72,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 }
                 if (resultObject4 == null)
                 {
-                    resultObject4 = connection.CreateInstance("SMS_ObjectContainerItem");
+                    resultObject4 = connectionManager.CreateInstance("SMS_ObjectContainerItem");
                 }
                 if (resultObject4 == null)
                 {
@@ -93,9 +93,9 @@ namespace Zetta.ConfigMgr.QuickTools
             }
         }
 
-        public static int? CreateFolder(ConnectionManagerBase connection, string folderName, int objectType)
+        public static int? CreateFolder(ConnectionManagerBase connectionManager, string folderName, int objectType)
         {
-            IResultObject instance = connection.CreateInstance("SMS_ObjectContainerNode");
+            IResultObject instance = connectionManager.CreateInstance("SMS_ObjectContainerNode");
             instance["Name"].StringValue = folderName;
             instance["ObjectType"].IntegerValue = objectType;
             instance["ParentContainerNodeID"].IntegerValue = 0;
@@ -106,13 +106,13 @@ namespace Zetta.ConfigMgr.QuickTools
             return new int?(instance["ContainerNodeID"].IntegerValue);
         }
 
-        public static string WqlEscapeString(string Text)
+        public static string WqlEscapeString(string text)
         {
-            if (string.IsNullOrEmpty(Text))
-                return Text;
-            Text = Text.Replace("_", "[_]");
-            Text = Text.Replace("'", "''");
-            return Text;
+            if (string.IsNullOrEmpty(text))
+                return text;
+            text = text.Replace("_", "[_]");
+            text = text.Replace("'", "''");
+            return text;
         }
 
         public static string CreateMd5ForFolder(string path)
@@ -124,28 +124,19 @@ namespace Zetta.ConfigMgr.QuickTools
 
             MD5 md5 = MD5.Create();
 
-            for (int i = 0; i < files.Count; i++)
+            if (files.Count > 0)
             {
-                string file = files[i];
-
-                // hash contents
-                string content = file + file.Length;
-                hash += BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(content))).Replace("-", "");
-            }
-
-            return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(hash))).Replace("-", "");
-        }
-
-        public static IEnumerable<ManagementObject> SearchWMI(ObjectQuery query, ManagementScope scope)
-        {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-            using (ManagementObjectCollection queryCollection = searcher.Get())
-            {
-                foreach (ManagementObject managmentObject in queryCollection)
+                for (int i = 0; i < files.Count; i++)
                 {
-                    yield return managmentObject;
+                    string file = files[i];
+
+                    // hash contents
+                    string content = file + file.Length;
+                    hash += BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(content))).Replace("-", "");
                 }
+                return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(hash))).Replace("-", "");
             }
+            return "no_files";
         }
 
         public static ManagementScope GetWMIScope(string host, string space)
@@ -169,11 +160,58 @@ namespace Zetta.ConfigMgr.QuickTools
             }
         }
 
+        public static IEnumerable<ManagementObject> SearchWMI(ManagementScope scope, ObjectQuery query)
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            using (ManagementObjectCollection queryCollection = searcher.Get())
+            {
+                foreach (ManagementObject managmentObject in queryCollection)
+                {
+                    yield return managmentObject;
+                }
+            }
+        }
+
+        public static IEnumerable<IResultObject> SearchWMI(ConnectionManagerBase connectionManager, string query)
+        {
+            using (IResultObject resultObjects = connectionManager.QueryProcessor.ExecuteQuery(query))
+            {
+                foreach (IResultObject resultObject in resultObjects)
+                {
+                    yield return resultObject;
+                }
+            }
+        }
+
+        public static List<IResultObject> SearchWMIToList(ConnectionManagerBase connectionManager, string query)
+        {
+            List<IResultObject> list = new List<IResultObject>();
+            using (IResultObject resultObjects = connectionManager.QueryProcessor.ExecuteQuery(query))
+            {
+                foreach (IResultObject resultObject in resultObjects)
+                {
+                    list.Add(resultObject);
+                }
+            }
+            return list;
+        }
+
+        public static IResultObject GetFirstWMIInstance(ConnectionManagerBase connectionManager, string query)
+        {
+            IResultObject resultObject = null;
+            using (IResultObject resultObjects = connectionManager.QueryProcessor.ExecuteQuery(query))
+            {
+                foreach (IResultObject resultObject1 in resultObjects)
+                    resultObject = resultObject1;
+            }
+            return resultObject;
+        }
+
         public static ManagementObject GetFirstWMIInstance(string host, string space, string query)
         {
             ManagementScope scope = GetWMIScope(host, space);
 
-            ObjectQuery wmiquery = new ObjectQuery(string.Format(@"SELECT * FROM {0}", query));
+            ObjectQuery wmiquery = new ObjectQuery(string.Format("SELECT * FROM {0}", query));
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, wmiquery);
             var enu = searcher.Get().GetEnumerator();
             if (!enu.MoveNext()) throw new Exception("Unexpected WMI query failure");

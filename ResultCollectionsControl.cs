@@ -73,6 +73,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 backgroundWorker.Dispose();
                 backgroundWorker = null;
                 listViewListCollections.IsLoading = false;
+                listViewListCollections.UpdateColumnWidth(columnHeaderCollection);
             }
         }
     }
