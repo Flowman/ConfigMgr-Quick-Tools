@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Management;
+using System.Text;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -100,6 +101,22 @@ namespace Zetta.ConfigMgr.QuickTools
                     buttonSURefresh.Enabled = true;
                 }
             }
+        }
+
+        private void listViewListSoftwareUpdates_CopyKeyEvent(object sender, EventArgs e)
+        {
+            StringBuilder buffer = new StringBuilder();
+            foreach (ListViewItem item in listViewListSoftwareUpdates.SelectedItems)
+            {
+                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                {
+                    buffer.Append(subitem.Text);
+                    buffer.Append("\t");
+                }
+                buffer.AppendLine();
+            }
+            buffer.Remove(buffer.Length - 1, 1);
+            Clipboard.SetData(DataFormats.Text, buffer.ToString());
         }
     }
 }

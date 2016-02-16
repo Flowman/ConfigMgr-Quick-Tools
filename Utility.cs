@@ -139,13 +139,23 @@ namespace Zetta.ConfigMgr.QuickTools
             return "no_files";
         }
 
-        public static ManagementScope GetWMIScope(string host, string space)
+        public static ManagementScope GetWMIScope(string host, string space, string username = null, string password = null)
         {
             ConnectionOptions options = new ConnectionOptions();
             options.Authentication = AuthenticationLevel.PacketPrivacy;
             options.Impersonation = ImpersonationLevel.Impersonate;
             options.EnablePrivileges = true;
             options.Timeout = TimeSpan.FromSeconds(5);
+            if (username != null)
+            {
+                options.Username = username;
+                options.Password = password;
+            }
+            else
+            {
+                options.Username = null;
+                options.Password = null;
+            }
 
             ManagementScope scope = new ManagementScope(string.Format(@"\\{0}\root\{1}", host, space), options);
             scope.Connect();
@@ -170,6 +180,32 @@ namespace Zetta.ConfigMgr.QuickTools
                     yield return managmentObject;
                 }
             }
+        }
+
+        public static List<ManagementObject> SearchWMIToList(ManagementScope scope, ObjectQuery query)
+        {
+            List<ManagementObject> list = new List<ManagementObject>();
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            using (ManagementObjectCollection queryCollection = searcher.Get())
+            {
+                foreach (ManagementObject managmentObject in queryCollection)
+                {
+                    list.Add(managmentObject);
+                }
+            }
+            return list;
+        }
+
+        public static ManagementObject GetFirstWMIInstance(ManagementScope scope, ObjectQuery query)
+        {
+            ManagementObject managmentObject = null;
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+            using (ManagementObjectCollection queryCollection = searcher.Get())
+            {
+                foreach (ManagementObject managmentObject1 in queryCollection)
+                    managmentObject = managmentObject1;
+            }
+            return managmentObject;
         }
 
         public static IEnumerable<IResultObject> SearchWMI(ConnectionManagerBase connectionManager, string query)

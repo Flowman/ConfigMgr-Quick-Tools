@@ -35,7 +35,6 @@
             this.labelExample = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBoxImportRemote = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.radioButtonDomain = new System.Windows.Forms.RadioButton();
             this.radioButtonWorkgroup = new System.Windows.Forms.RadioButton();
@@ -109,22 +108,13 @@
             // checkBoxImportRemote
             // 
             this.checkBoxImportRemote.AutoSize = true;
-            this.checkBoxImportRemote.Location = new System.Drawing.Point(7, 196);
+            this.checkBoxImportRemote.Location = new System.Drawing.Point(6, 230);
             this.checkBoxImportRemote.Name = "checkBoxImportRemote";
             this.checkBoxImportRemote.Size = new System.Drawing.Size(188, 17);
             this.checkBoxImportRemote.TabIndex = 9;
             this.checkBoxImportRemote.Text = "Grab drivers from remote computer";
             this.checkBoxImportRemote.UseVisualStyleBackColor = true;
             this.checkBoxImportRemote.CheckedChanged += new System.EventHandler(this.checkBoxImportRemote_CheckedChanged);
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(23, 218);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(354, 32);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "In order to grab drivers from remote computer, remote registry service needs to b" +
-    "e enabled on the target host.";
             // 
             // linkLabel1
             // 
@@ -140,6 +130,7 @@
             // radioButtonDomain
             // 
             this.radioButtonDomain.AutoSize = true;
+            this.radioButtonDomain.Checked = true;
             this.radioButtonDomain.Enabled = false;
             this.radioButtonDomain.Location = new System.Drawing.Point(26, 253);
             this.radioButtonDomain.Name = "radioButtonDomain";
@@ -158,7 +149,6 @@
             this.radioButtonWorkgroup.Name = "radioButtonWorkgroup";
             this.radioButtonWorkgroup.Size = new System.Drawing.Size(78, 17);
             this.radioButtonWorkgroup.TabIndex = 13;
-            this.radioButtonWorkgroup.TabStop = true;
             this.radioButtonWorkgroup.Text = "Workgroup";
             this.radioButtonWorkgroup.UseVisualStyleBackColor = true;
             this.radioButtonWorkgroup.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
@@ -180,7 +170,6 @@
             this.Controls.Add(this.radioButtonWorkgroup);
             this.Controls.Add(this.radioButtonDomain);
             this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.checkBoxImportRemote);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelExample);
@@ -204,7 +193,6 @@
         private System.Windows.Forms.Label labelExample;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBoxImportRemote;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.RadioButton radioButtonDomain;
         private System.Windows.Forms.RadioButton radioButtonWorkgroup;

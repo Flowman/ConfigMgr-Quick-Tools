@@ -1,16 +1,16 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
+using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using System.IO;
-using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System.Globalization;
 using System.Net;
 using IniParser;
 using IniParser.Model;
-
+using System.Management;
+using System.Collections.Generic;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -44,6 +44,12 @@ namespace Zetta.ConfigMgr.QuickTools
         {
             base.OnActivated();
 
+            if (!(bool)UserData["UserCredentials"])
+            {
+                textBoxPassword.Text = null;
+                textBoxUsername.Text = null;
+            }
+
             labelPassword.Visible = (bool)UserData["UserCredentials"];
             labelUsername.Visible = (bool)UserData["UserCredentials"];
             textBoxPassword.Visible = (bool)UserData["UserCredentials"];
@@ -70,131 +76,119 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-            dataGridViewDrivers.Rows.Clear();
+            if (backgroundWorker != null && backgroundWorker.IsBusy)
+            {
+                backgroundWorker.CancelAsync();
+                UseWaitCursor = false;
+                buttonConnect.Text = "Cancelling..";
+            }
+            else
+            {
+                dataGridViewDrivers.Rows.Clear();
 
-            panelComplete.Visible = false;
-            panelProcessing.Visible = true;
+                panelComplete.Visible = false;
+                panelProcessing.Visible = true;
 
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += new DoWorkEventHandler(infoWorker_DoWork);
-            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(infoWorker_RunWorkerCompleted);
-            backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(infoWorker_ProgressChanged);
-            backgroundWorker.WorkerSupportsCancellation = true;
-            backgroundWorker.WorkerReportsProgress = true;
-            progressBarObjects.Value = 0;
-            labelProcessingObject.Text = null;
-            textBoxDestination.Text = null;
-            backgroundWorker.RunWorkerAsync();
+                backgroundWorker = new BackgroundWorker();
+                backgroundWorker.DoWork += new DoWorkEventHandler(infoWorker_DoWork);
+                backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(infoWorker_RunWorkerCompleted);
+                backgroundWorker.ProgressChanged += new ProgressChangedEventHandler(infoWorker_ProgressChanged);
+                backgroundWorker.WorkerSupportsCancellation = true;
+                backgroundWorker.WorkerReportsProgress = true;
+                progressBarObjects.Value = 0;
+                labelProcessingObject.Text = null;
+                textBoxDestination.Text = null;
+                UseWaitCursor = true;
+                backgroundWorker.RunWorkerAsync();
+            }
         }
 
         private void infoWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker backgroundWorker = sender as BackgroundWorker;
-            RegistryKey classKey;
+            ManagementScope scope = new ManagementScope();
             UserData["CaptureComputer"] = textBoxMachine.Text;
             string remoteComputer = textBoxMachine.Text;
 
+            buttonConnect.Text = "Cancel";
+
+            backgroundWorker.ReportProgress(33, "Connecting..");
+
             try
             {
-                CredentialCache netCache = new CredentialCache();
-                if (textBoxUsername.Text != null)
+                if (string.IsNullOrEmpty(textBoxUsername.Text))
                 {
-                    NetworkCredential credentials = new NetworkCredential(textBoxUsername.Text, textBoxPassword.Text);
-                    netCache.Add(new Uri(string.Format(@"\\{0}", remoteComputer)), "Basic", credentials);
+                    scope = Utility.GetWMIScope(remoteComputer, @"cimv2");
                 }
                 else
                 {
-                    netCache.Add(new Uri(string.Format(@"\\{0}", remoteComputer)), "Digest", CredentialCache.DefaultNetworkCredentials);
+                    scope = Utility.GetWMIScope(remoteComputer, @"cimv2", textBoxUsername.Text, textBoxPassword.Text);
                 }
-
-
-                classKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, remoteComputer).OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class");
             }
             catch (IOException ex)
             {
                 throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
             }
 
-            int num = 0;
+            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName IS NOT NULL");
+            List<ManagementObject> signedDriver = Utility.SearchWMIToList(scope, query);
 
-            foreach (string guidName in classKey.GetSubKeyNames())
+            backgroundWorker.ReportProgress(66, "Processing data.");
+
+            foreach (ManagementObject item in signedDriver)
             {
-                int percent = num * 100 / classKey.SubKeyCount;
-
-                backgroundWorker.ReportProgress(percent, string.Format("Processing Class: {0}", guidName));
-
-                RegistryKey guidKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, remoteComputer).OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + guidName);
-
-                foreach (string number in guidKey.GetSubKeyNames())
+                if (backgroundWorker.CancellationPending)
                 {
-                    try
-                    {
-                        RegistryKey valueKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, remoteComputer).OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Class\" + guidName + @"\" + number);
-
-                        string provider = valueKey.GetValue("ProviderName").ToString();
-                        string description = valueKey.GetValue("DriverDesc").ToString();
-                        string oeminf = valueKey.GetValue("InfPath").ToString();
-
-                        if (provider.Length > 0 && description.Length > 0)
-                        {
-                            if (provider == "Microsoft" || DriverExists(description, oeminf))
-                                continue;
-
-                            try
-                            {
-                                DataGridViewRow dataGridViewRow = new DataGridViewRow();
-                                dataGridViewRow.CreateCells(dataGridViewDrivers);
-
-                                dataGridViewRow.Cells[0].Value = false;
-                                dataGridViewRow.Cells[1].Value = provider;
-                                dataGridViewRow.Cells[2].Value = description;
-                                dataGridViewRow.Cells[3].Value = valueKey.GetValue("DriverVersion").ToString();
-                                dataGridViewRow.Cells[4].Value = oeminf;
-                                dataGridViewRow.Cells[5].Value = guidKey.GetValue("Class").ToString();
-
-                                dataGridViewRow.Tag = valueKey;
-                                dataGridViewDrivers.Rows.Add(dataGridViewRow);
-                                valueKey.Close();
-                            }
-                            catch
-                            {
-
-                            }
-                        }
-                    }
-                    catch
-                    {
-
-                    }
+                    e.Cancel = true;
+                    return;
                 }
 
-                guidKey.Close();
+                string provider = (string)item["DriverProviderName"];
+                string description = (string)item["DeviceName"];
+                string oeminf = (string)item["InfName"];
 
-                ++num;
+                if (provider.Length > 0 && description.Length > 0)
+                {
+                    if (provider == "Microsoft" || DriverExists(description, oeminf))
+                        continue;
+
+                    DataGridViewRow dataGridViewRow = new DataGridViewRow();
+                    dataGridViewRow.CreateCells(dataGridViewDrivers);
+
+                    dataGridViewRow.Cells[0].Value = false;
+                    dataGridViewRow.Cells[1].Value = provider;
+                    dataGridViewRow.Cells[2].Value = description;
+                    dataGridViewRow.Cells[3].Value = (string)item["DriverVersion"];
+                    dataGridViewRow.Cells[4].Value = oeminf;
+                    dataGridViewRow.Cells[5].Value = (string)item["DeviceClass"];
+
+                    dataGridViewRow.Tag = item;
+                    dataGridViewDrivers.Rows.Add(dataGridViewRow);
+                }
             }
 
-            classKey.Close();
+            query = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
+            ManagementObject computerSystem = Utility.GetFirstWMIInstance(scope, query);
 
-            RegistryKey bios = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, remoteComputer).OpenSubKey(@"HARDWARE\DESCRIPTION\System\BIOS");
-            RegistryKey environment = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, remoteComputer).OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Environment");
-            RegistryKey os = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, remoteComputer).OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+            query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            ManagementObject operatingSystem = Utility.GetFirstWMIInstance(scope, query);
 
             string osName;
 
-            string currentversion = (string) os.GetValue("CurrentVersion");
+            string currentversion = (string) operatingSystem["Version"];
 
             switch (currentversion)
             {
-                case "6.1":
+                case "6.1.7601":
                     osName = "Win7";
                     break;
-                case "6.2":
+                case "6.2.9200":
                     osName = "Win8";
                     break;
-                case "6.3":
+                case "6.3.9600":
                     osName = "Win81";
                     break;
-                case "10.0":
+                case "10.0.10240":
                     osName = "Win10";
                     break;
                 default:
@@ -202,12 +196,14 @@ namespace Zetta.ConfigMgr.QuickTools
                     break;
             }
 
-            if ((string)environment.GetValue("PROCESSOR_ARCHITECTURE") == "x86")
-                architecture = "x86";
-            else
+            if ((string)operatingSystem["OSArchitecture"] == "64-bit")
                 architecture = "x64";
+            else
+                architecture = "x86";
 
-            textBoxDestination.Text = string.Format(@"{0}\{1}\{2}-{3}", bios.GetValue("SystemManufacturer"), bios.GetValue("SystemProductName"), osName, architecture);
+            textBoxDestination.Text = string.Format(@"{0}\{1}\{2}-{3}", ((string)computerSystem["Manufacturer"]).Trim(), ((string)computerSystem["Model"]).Trim(), osName, architecture);
+
+            backgroundWorker.ReportProgress(100, "Done.");
 
             if (backgroundWorker.CancellationPending)
             {
@@ -234,10 +230,18 @@ namespace Zetta.ConfigMgr.QuickTools
                     {
                         int num = (int)sccmExceptionDialog.ShowDialog();
                     }
+                    progressBarObjects.Value = 100;
+                    labelProcessingObject.Text = string.Format("Error: {0}", e.Error.Message);
                 }
                 else if (e.Cancelled)
                 {
-
+                    progressBarObjects.Value = 100;
+                    labelProcessingObject.Text = "Cancelled by user.";
+                }
+                else
+                {
+                    panelComplete.Visible = true;
+                    panelProcessing.Visible = false;
                 }
             }
             finally
@@ -246,9 +250,9 @@ namespace Zetta.ConfigMgr.QuickTools
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
-                    panelComplete.Visible = true;
-                    panelProcessing.Visible = false;
+                    UseWaitCursor = false;
+
+                    buttonConnect.Text = "Connect";
                 }
             }
         }
@@ -331,6 +335,7 @@ namespace Zetta.ConfigMgr.QuickTools
             backgroundWorker.WorkerReportsProgress = true;
             progressBarObjects.Value = 0;
             labelProcessingObject.Text = null;
+            UseWaitCursor = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -348,7 +353,23 @@ namespace Zetta.ConfigMgr.QuickTools
             string destinationFolder = Path.Combine(sourceFolder, textBoxDestination.Text);
 
             CredentialCache netCache = new CredentialCache();
-            netCache.Add(new Uri(sourceFolder), "Digest", CredentialCache.DefaultNetworkCredentials);
+            try
+            {
+                netCache.Add(new Uri(sourceFolder), "Digest", CredentialCache.DefaultNetworkCredentials);
+                if (string.IsNullOrEmpty(textBoxUsername.Text))
+                {
+                    netCache.Add(new Uri(string.Format(@"\\{0}", (string)UserData["CaptureComputer"])), "Digest", CredentialCache.DefaultNetworkCredentials);
+                }
+                else
+                {
+                    NetworkCredential credentials = new NetworkCredential(textBoxUsername.Text, textBoxPassword.Text);
+                    netCache.Add(new Uri(string.Format(@"\\{0}", (string)UserData["CaptureComputer"])), "Basic", credentials);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+            }
 
             if (!Directory.Exists(destinationFolder))
                 Directory.CreateDirectory(destinationFolder);
@@ -357,6 +378,11 @@ namespace Zetta.ConfigMgr.QuickTools
 
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDrivers.Rows)
             {
+                if (backgroundWorker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
 
                 int percent = num * 100 / dataGridViewDrivers.Rows.Count;
 
@@ -364,7 +390,6 @@ namespace Zetta.ConfigMgr.QuickTools
 
                 if (Convert.ToBoolean(dataGridViewRow.Cells[columnCapture.Name].Value) == true)
                 {
-
                     try
                     {
                         string driverFolder = Path.Combine(destinationFolder, (string)dataGridViewRow.Cells[columnClass.Name].Value, (string)dataGridViewRow.Cells[columnDesc.Name].Value, (string)dataGridViewRow.Cells[columnVersion.Name].Value);
@@ -432,6 +457,12 @@ namespace Zetta.ConfigMgr.QuickTools
 
                 ++num;
             }
+
+            if (backgroundWorker.CancellationPending)
+            {
+                backgroundWorker.Dispose();
+                e.Cancel = true;
+            }
         }
 
         private void captureWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -456,7 +487,7 @@ namespace Zetta.ConfigMgr.QuickTools
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     panelComplete.Visible = false;
                     panelProcessing.Visible = false;
                     panelDone.Visible = true;

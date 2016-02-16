@@ -61,6 +61,7 @@ namespace Zetta.ConfigMgr.QuickTools
             this.listViewListCollections.IsLoading = false;
             this.listViewListCollections.LargeImageList = null;
             this.listViewListCollections.Location = new System.Drawing.Point(12, 32);
+            this.listViewListCollections.MultiSelect = true;
             this.listViewListCollections.Name = "listViewListCollections";
             this.listViewListCollections.ShowSearchBar = true;
             this.listViewListCollections.Size = new System.Drawing.Size(354, 319);
@@ -71,6 +72,7 @@ namespace Zetta.ConfigMgr.QuickTools
             this.listViewListCollections.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListCollections.UseCompatibleStateImageBehavior = false;
             this.listViewListCollections.View = System.Windows.Forms.View.Details;
+            this.listViewListCollections.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.listViewListCollections_CopyKeyEvent);
             // 
             // columnHeaderCollection
             // 

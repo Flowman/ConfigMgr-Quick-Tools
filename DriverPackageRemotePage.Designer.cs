@@ -71,9 +71,9 @@
             // buttonConnect
             // 
             this.buttonConnect.Enabled = false;
-            this.buttonConnect.Location = new System.Drawing.Point(411, 26);
+            this.buttonConnect.Location = new System.Drawing.Point(387, 26);
             this.buttonConnect.Name = "buttonConnect";
-            this.buttonConnect.Size = new System.Drawing.Size(75, 23);
+            this.buttonConnect.Size = new System.Drawing.Size(99, 23);
             this.buttonConnect.TabIndex = 1;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = true;
@@ -286,6 +286,7 @@
             // 
             this.textBoxPassword.Location = new System.Drawing.Point(336, 0);
             this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(150, 20);
             this.textBoxPassword.TabIndex = 13;
             this.textBoxPassword.Visible = false;

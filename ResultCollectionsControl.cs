@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Text;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -75,6 +76,22 @@ namespace Zetta.ConfigMgr.QuickTools
                 listViewListCollections.IsLoading = false;
                 listViewListCollections.UpdateColumnWidth(columnHeaderCollection);
             }
+        }
+
+        private void listViewListCollections_CopyKeyEvent(object sender, EventArgs e)
+        {
+            StringBuilder buffer = new StringBuilder();
+            foreach (ListViewItem item in listViewListCollections.SelectedItems)
+            {
+                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                {
+                    buffer.Append(subitem.Text);
+                    buffer.Append("\t");
+                }
+                buffer.AppendLine();
+            }
+            buffer.Remove(buffer.Length - 1, 1);
+            Clipboard.SetData(DataFormats.Text, buffer.ToString());
         }
     }
 }

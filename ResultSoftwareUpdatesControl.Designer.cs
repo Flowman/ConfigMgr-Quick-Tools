@@ -59,8 +59,8 @@
             // 
             this.listViewListSoftwareUpdates.Activation = System.Windows.Forms.ItemActivation.Standard;
             this.listViewListSoftwareUpdates.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListSoftwareUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.listViewListSoftwareUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewListSoftwareUpdates.AutoSort = true;
             this.listViewListSoftwareUpdates.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -75,6 +75,7 @@
             this.listViewListSoftwareUpdates.IsLoading = false;
             this.listViewListSoftwareUpdates.LargeImageList = null;
             this.listViewListSoftwareUpdates.Location = new System.Drawing.Point(12, 32);
+            this.listViewListSoftwareUpdates.MultiSelect = true;
             this.listViewListSoftwareUpdates.Name = "listViewListSoftwareUpdates";
             this.listViewListSoftwareUpdates.ShowSearchBar = true;
             this.listViewListSoftwareUpdates.Size = new System.Drawing.Size(354, 319);
@@ -85,6 +86,7 @@
             this.listViewListSoftwareUpdates.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListSoftwareUpdates.UseCompatibleStateImageBehavior = false;
             this.listViewListSoftwareUpdates.View = System.Windows.Forms.View.Details;
+            this.listViewListSoftwareUpdates.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.listViewListSoftwareUpdates_CopyKeyEvent);
             // 
             // columnHeaderKB
             // 

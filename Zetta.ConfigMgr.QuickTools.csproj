@@ -136,6 +136,12 @@
     <Compile Include="ResultClientHealthControl.Designer.cs">
       <DependentUpon>ResultClientHealthControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResultDriverComplianceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultDriverComplianceControl.Designer.cs">
+      <DependentUpon>ResultDriverComplianceControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResultSoftwareUpdatesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -209,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ResultCollectionsControl.resx">
       <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultDriverComplianceControl.resx">
+      <DependentUpon>ResultDriverComplianceControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResultSoftwareUpdatesControl.resx">
       <DependentUpon>ResultSoftwareUpdatesControl.cs</DependentUpon>

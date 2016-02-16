@@ -18,6 +18,7 @@ namespace Zetta.ConfigMgr.QuickTools
             Title = "Locate Drivers";
             pageData.ProgressBarStyle = ProgressBarStyle.Continuous;
             FormTitle = "Driver Package Manager";
+            UserData["UserCredentials"] = false;
         }
 
         public override void InitializePageControl()

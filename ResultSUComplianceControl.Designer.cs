@@ -60,6 +60,7 @@
             this.listViewListSoftwareUpdates.IsLoading = false;
             this.listViewListSoftwareUpdates.LargeImageList = null;
             this.listViewListSoftwareUpdates.Location = new System.Drawing.Point(14, 34);
+            this.listViewListSoftwareUpdates.MultiSelect = true;
             this.listViewListSoftwareUpdates.Name = "listViewListSoftwareUpdates";
             this.listViewListSoftwareUpdates.ShowSearchBar = true;
             this.listViewListSoftwareUpdates.Size = new System.Drawing.Size(354, 238);
@@ -70,6 +71,7 @@
             this.listViewListSoftwareUpdates.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListSoftwareUpdates.UseCompatibleStateImageBehavior = false;
             this.listViewListSoftwareUpdates.View = System.Windows.Forms.View.Details;
+            this.listViewListSoftwareUpdates.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.listViewListSoftwareUpdates_CopyKeyEvent);
             // 
             // columnHeaderAssignment
             // 
