@@ -76,6 +76,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml" />
@@ -135,6 +136,12 @@
     </Compile>
     <Compile Include="IncrementalCollectionsPage.Designer.cs">
       <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LAPSDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LAPSDialog.Designer.cs">
+      <DependentUpon>LAPSDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -225,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IncrementalCollectionsPage.resx">
       <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LAPSDialog.resx">
+      <DependentUpon>LAPSDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

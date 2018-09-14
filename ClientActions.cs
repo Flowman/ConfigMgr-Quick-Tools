@@ -214,6 +214,15 @@ namespace Zetta.ConfigMgr.QuickTools
             }
         }
 
+        public static void LAPSPassword(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedObject, PropertyDataUpdated dataUpdatedDelegate, Status Status)
+        {
+            using (LAPSDialog dialog = new LAPSDialog(selectedObject, action))
+            {
+                int num2 = (int)dialog.ShowDialog(SnapIn.Console);
+                return;
+            }
+        }
+
         public static void DeleteDeploymentForMonitoring(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObject, PropertyDataUpdated dataUpdatedDelegate, Status status)
         {
             DeleteDeployment(sender, scopeNode, action, selectedResultObject, dataUpdatedDelegate, status, "SoftwareName", true);
