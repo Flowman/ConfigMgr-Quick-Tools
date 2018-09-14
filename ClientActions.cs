@@ -41,6 +41,11 @@ namespace Zetta.ConfigMgr.QuickTools
             processClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000001}");
         }
 
+        public static void RunClientActionFullHardwareInventory(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
+        {
+            processClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000001}", true);
+        }
+
         public static void RunClientActionSoftwareInventory(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
         {
             processClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000002}");
@@ -71,10 +76,27 @@ namespace Zetta.ConfigMgr.QuickTools
             processClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000032}");
         }
 
-        public static void ClientAction(IResultObject resultObject, string scheduleId)
+        public static void ClientAction(IResultObject resultObject, string scheduleId, bool fullScan)
         {       
             try
             {
+                if (fullScan)
+                {
+                    ManagementScope inventoryAgentScope = new ManagementScope(string.Format(@"\\{0}\root\{1}", resultObject["Name"].StringValue, "ccm\\InvAgt"));
+                    ManagementClass inventoryClass = new ManagementClass(inventoryAgentScope.Path.Path, "InventoryActionStatus", null);
+
+                    // Query the class for the InventoryActionID object (create query, create searcher object, execute query).
+                    ObjectQuery query = new ObjectQuery(string.Format("SELECT * FROM InventoryActionStatus WHERE InventoryActionID = '{0}'", scheduleId));
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher(inventoryAgentScope, query);
+                    ManagementObjectCollection queryResults = searcher.Get();
+
+                    // Enumerate the collection to get to the result (there should only be one item returned from the query).
+                    foreach (ManagementObject result in queryResults)
+                    {
+                        // Display message and delete the object.
+                        result.Delete();
+                    }
+                }
                 ManagementClass clientaction = new ManagementClass(string.Format(@"\\{0}\root\{1}:{2}", resultObject["Name"].StringValue, "ccm", "SMS_Client"));
                 object[] methodArgs = { scheduleId };
                 clientaction.InvokeMethod("TriggerSchedule", methodArgs);
@@ -99,6 +121,11 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private static void processClientAction(ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, string schedulerId)
         {
+            processClientAction(scopeNode, action, selectedResultObjects, schedulerId, false);
+        }
+
+        private static void processClientAction(ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, string schedulerId, bool full)
+        {
             if (selectedResultObjects.ObjectClass == "SMS_Collection")
             {
                 ConnectionManagerBase connectionManagerInstance = (scopeNode as ConsoleParentNode).RootConnectionNode.GetConnectionManagerInstance("WQL");
@@ -108,7 +135,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     string query = string.Format("SELECT * FROM SMS_FullCollectionMembership WHERE CollectionID='{0}'", selectedResultObjects["CollectionID"].StringValue);
                     using (IResultObject resultObject = connectionManagerInstance.QueryProcessor.ExecuteQuery(query))
                     {
-                        using (ClientActionsDialog clientActions = new ClientActionsDialog(resultObject, schedulerId, action))
+                        using (ClientActionsDialog clientActions = new ClientActionsDialog(resultObject, schedulerId, action, full))
                         {
                             int num2 = (int)clientActions.ShowDialog(SnapIn.Console);
                             return;
@@ -127,12 +154,12 @@ namespace Zetta.ConfigMgr.QuickTools
             {
                 foreach (IResultObject resultObject in selectedResultObjects)
                 {
-                    ThreadPool.QueueUserWorkItem(arg => { ClientAction(resultObject, schedulerId); });
+                    ThreadPool.QueueUserWorkItem(arg => { ClientAction(resultObject, schedulerId, full); });
                 }
             }
             else
             {
-                using (ClientActionsDialog clientActions = new ClientActionsDialog(selectedResultObjects, schedulerId, action))
+                using (ClientActionsDialog clientActions = new ClientActionsDialog(selectedResultObjects, schedulerId, action, full))
                 {
                     int num2 = (int)clientActions.ShowDialog(SnapIn.Console);
                 }

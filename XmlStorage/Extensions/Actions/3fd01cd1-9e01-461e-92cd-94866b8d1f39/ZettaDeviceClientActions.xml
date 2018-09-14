@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
  
-<ActionDescription Class="Group" SelectionMode="Both" DisplayName="Client Actions" MnemonicDisplayName="Client Actions" Description="Client Actions" NodeInConsole="ed9dee86-eadd-4ac8-82a1-7234a4646e62" RibbonDisplayType="TextAndSmallImage" InsertBefore="a3c13187-2680-4d6a-8d2e-e08fae7452e7">
+<ActionDescription Class="Group" SelectionMode="Both" DisplayName="Client Actions" MnemonicDisplayName="Client Actions" Description="Client Actions" NodeInConsole="3fd01cd1-9e01-461e-92cd-94866b8d1f39" RibbonDisplayType="TextAndSmallImage" InsertBefore="5805b76d-94c7-4b9e-897c-a8bf873db7fc">
   <ShowOn>
     <string>DefaultHomeTab</string>
     <string>ContextMenu</string>

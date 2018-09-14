@@ -10,7 +10,9 @@
       <Page VendorId="Zetta" Id="{F67C0B21-CC41-4921-800D-30D86AA062DE}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultSoftwareUpdatesControl" ReadOnly="false" MultiSelection="false" Visible="false" />     
       <Page VendorId="Zetta" Id="{3863E905-E0D9-4B9F-8006-BDBEB07D5ECC}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultSUComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false" />         
       <Page VendorId="Zetta" Id="{DE8D1043-83A1-4272-BD13-809FC07CF5D1}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultClientHealthControl" ReadOnly="false" MultiSelection="false" Visible="false" />     
-      <Page VendorId="Zetta" Id="{{6168E295-0F68-4239-9CFF-68E06F738351}}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultDriverComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false" />               
+      <Page VendorId="Zetta" Id="{{6168E295-0F68-4239-9CFF-68E06F738351}}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultDriverComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false" />        
+      <Page VendorId="Zetta" Id="{{6168E295-0F68-4239-9CFF-68E06F738352}}" Assembly="Zetta.ConfigMgr.QuickTools" Namespace="Zetta.ConfigMgr.QuickTools" Type="ResultDellWarrantyControl" ReadOnly="false" MultiSelection="false" Visible="false" />
     </Pages>
   </Form>
 </SmsFormData>
+

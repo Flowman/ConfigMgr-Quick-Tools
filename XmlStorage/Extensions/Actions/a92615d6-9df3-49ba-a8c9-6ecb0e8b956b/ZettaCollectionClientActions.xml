@@ -59,6 +59,17 @@
         <Method>RunClientActionHardwareInventory</Method>
       </ActionAssembly>
     </ActionDescription>
+    <ActionDescription Class="AssemblyType" DisplayName="Full Hardware Inventory Cycle" MnemonicDisplayName="Full Hardware Inventory Cycle" Description="Full Hardware Inventory Cycle" >
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ActionAssembly>
+        <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+        <Type>Zetta.ConfigMgr.QuickTools.ClientActions</Type>
+        <Method>RunClientActionFullHardwareInventory</Method>
+      </ActionAssembly>
+    </ActionDescription>    
     <ActionDescription Class="AssemblyType" DisplayName="Machine Policy Retrieval and Evaluation Cycle" MnemonicDisplayName="Machine Policy Retrieval and Evaluation Cycle" Description="Machine Policy Retrieval and Evaluation Cycle" >
       <ShowOn>
         <string>DefaultHomeTab</string>

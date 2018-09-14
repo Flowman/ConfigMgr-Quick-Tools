@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Zetta.ConfigMgr.QuickTools</RootNamespace>
     <AssemblyName>Zetta.ConfigMgr.QuickTools</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,50 +31,53 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AdminUI.CollectionProperty">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.CollectionProperty.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.CollectionProperty.dll</HintPath>
     </Reference>
     <Reference Include="AdminUI.Common">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.Common.dll</HintPath>
     </Reference>
     <Reference Include="AdminUI.Controls, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Controls.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.Controls.dll</HintPath>
     </Reference>
     <Reference Include="AdminUI.DialogFoundation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.DialogFoundation.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.DialogFoundation.dll</HintPath>
     </Reference>
     <Reference Include="AdminUI.OsdCommon">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.OsdCommon.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.OsdCommon.dll</HintPath>
     </Reference>
     <Reference Include="AdminUI.WqlQueryEngine, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.WqlQueryEngine.dll</HintPath>
     </Reference>
     <Reference Include="INIFileParser, Version=2.2.2.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ini-parser-development\IniFileParser\bin\Debug\INIFileParser.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\INIFileParser.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ConfigurationManagement">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.exe</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\Microsoft.ConfigurationManagement.exe</HintPath>
     </Reference>
     <Reference Include="Microsoft.ConfigurationManagement.DialogFramework">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.DialogFramework.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\Microsoft.ConfigurationManagement.DialogFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ConfigurationManagement.ManagementProvider">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.ManagementProvider.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\Microsoft.ConfigurationManagement.ManagementProvider.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EnterpriseManagement.UI.ConsoleFramework">
-      <HintPath>C:\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.EnterpriseManagement.UI.ConsoleFramework.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\Microsoft.EnterpriseManagement.UI.ConsoleFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -105,6 +110,12 @@
     <Compile Include="ClientActionsDialog.Designer.cs">
       <DependentUpon>ClientActionsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DellWarrantyOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DellWarrantyOptions.Designer.cs">
+      <DependentUpon>DellWarrantyOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Driver.cs" />
     <Compile Include="DriverPackage.cs" />
     <Compile Include="DriverPackageImportPage.cs">
@@ -135,6 +146,12 @@
     </Compile>
     <Compile Include="ResultClientHealthControl.Designer.cs">
       <DependentUpon>ResultClientHealthControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultDellWarrantyControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultDellWarrantyControl.Designer.cs">
+      <DependentUpon>ResultDellWarrantyControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ResultDriverComplianceControl.cs">
       <SubType>UserControl</SubType>
@@ -194,6 +211,9 @@
     <EmbeddedResource Include="ClientActionsDialog.resx">
       <DependentUpon>ClientActionsDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DellWarrantyOptions.resx">
+      <DependentUpon>DellWarrantyOptions.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DriverPackageGeneralPage.resx">
       <DependentUpon>DriverPackageGeneralPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -215,6 +235,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ResultCollectionsControl.resx">
       <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultDellWarrantyControl.resx">
+      <DependentUpon>ResultDellWarrantyControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResultDriverComplianceControl.resx">
       <DependentUpon>ResultDriverComplianceControl.cs</DependentUpon>
@@ -246,6 +269,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\expiredupdate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\cog.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

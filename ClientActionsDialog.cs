@@ -13,17 +13,19 @@ namespace Zetta.ConfigMgr.QuickTools
     {
         private IResultObject resultObjects;
         private string scheduleId;
+        private bool fullScan;
         private int completed;
         private int other;
         private int total;
 
         public delegate void BarDelegate();
 
-        public ClientActionsDialog(IResultObject selectedResultObjects, string id, ActionDescription action)
+        public ClientActionsDialog(IResultObject selectedResultObjects, string id, ActionDescription action, bool full)
         {
             InitializeComponent();
             resultObjects = selectedResultObjects;
             scheduleId = id;
+            fullScan = full;
             Title = action.DisplayName;
         }
 
@@ -68,6 +70,24 @@ namespace Zetta.ConfigMgr.QuickTools
                 item.SubItems[1].Text = "Connecting";
                 ObjectGetOptions o = new ObjectGetOptions();
                 o.Timeout = new TimeSpan(0, 0, 5);
+                if (fullScan)
+                {
+                    ManagementScope inventoryAgentScope = new ManagementScope(string.Format(@"\\{0}\root\{1}", resultObject["Name"].StringValue, "ccm\\InvAgt"));
+                    using (ManagementClass inventoryClass = new ManagementClass(inventoryAgentScope.Path.Path, "InventoryActionStatus", o))
+                    {
+                        // Query the class for the InventoryActionID object (create query, create searcher object, execute query).
+                        ObjectQuery query = new ObjectQuery(string.Format("SELECT * FROM InventoryActionStatus WHERE InventoryActionID = '{0}'", scheduleId));
+                        ManagementObjectSearcher searcher = new ManagementObjectSearcher(inventoryAgentScope, query);
+                        ManagementObjectCollection queryResults = searcher.Get();
+
+                        // Enumerate the collection to get to the result (there should only be one item returned from the query).
+                        foreach (ManagementObject result in queryResults)
+                        {
+                            // Display message and delete the object.
+                            result.Delete();
+                        }
+                    }
+                }
                 using (ManagementClass clientaction = new ManagementClass(string.Format(@"\\{0}\root\{1}:{2}", resultObject["Name"].StringValue, "ccm", "SMS_Client"), o))
                 {
                     object[] methodArgs = { scheduleId };
@@ -112,7 +132,7 @@ namespace Zetta.ConfigMgr.QuickTools
             labelTotal.Text = total.ToString();
             if (progressBar1.Value == progressBar1.Maximum)
             {
-
+                buttonOK.Enabled = true;
             }
         }
     }

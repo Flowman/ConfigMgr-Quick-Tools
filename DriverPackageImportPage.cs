@@ -147,15 +147,11 @@ namespace Zetta.ConfigMgr.QuickTools
                                             driverObject["DriverVersion"].StringValue
                                         }));
                                     // remove from driver package and category if source folder have been removed
-                                    if (!driverPackage.DriverContentExists(driverObject))
-                                    {
-                                        driverPackage.RemoveDriverCategory(driverObject);
-                                        driverPackage.RemoveDriverFromDriverPack(driverObject);
-                                    }
+                                    driverPackage.RemoveDriverCategory(driverObject);
+                                    driverPackage.RemoveDriverFromDriverPack(driverObject);
 
                                     refreshDP = true;
                                 }
-
                             }
 
                             int num2 = 1;

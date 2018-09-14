@@ -51,12 +51,14 @@
             // 
             // buttonOK
             // 
+            this.buttonOK.Enabled = false;
             this.buttonOK.Location = new System.Drawing.Point(205, 262);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Enabled = false;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // listViewHosts
