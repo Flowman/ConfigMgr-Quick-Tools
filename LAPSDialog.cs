@@ -34,11 +34,21 @@ namespace Zetta.ConfigMgr.QuickTools
 
             if (result != null)
             {
-                long value = (long)result.Properties["ms-mcs-admpwdexpirationtime"][0];
-                DateTime expire = DateTime.FromFileTimeUtc(value);
+                if (result.Properties.Contains("ms-mcs-admpwdexpirationtime"))
+                {
+                    long value = (long)result.Properties["ms-mcs-admpwdexpirationtime"][0];
+                    DateTime expire = DateTime.FromFileTimeUtc(value);
 
-                labelExpire.Text = expire.ToString();
-                textBoxPassword.Text = result.Properties["ms-mcs-admpwd"][0].ToString();
+                    labelExpire.Text = expire.ToString();
+                }
+                if (result.Properties.Contains("ms-mcs-admpwd"))
+                {
+                    textBoxPassword.Text = result.Properties["ms-mcs-admpwd"][0].ToString();
+                }
+                else
+                {
+                    textBoxPassword.Text = "No LAPS data";
+                }
             }
         }
 
