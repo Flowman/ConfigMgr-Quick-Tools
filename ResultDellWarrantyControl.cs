@@ -35,9 +35,9 @@ namespace Zetta.ConfigMgr.QuickTools
         {
             base.InitializePageControl();
 
-            if (string.IsNullOrEmpty(registry.Read("DellApiKey")))
+            if (string.IsNullOrEmpty(registry.Read("DellApiKey")) || string.IsNullOrEmpty(registry.Read("DellAPIURI")))
             {
-                labelHttpResponse.Text = "No Dell TechDirect API key found in registry";
+                labelHttpResponse.Text = "No Dell TechDirect API key set in options";
                 buttonSURefresh.Enabled = false;
             }
             else
@@ -70,7 +70,7 @@ namespace Zetta.ConfigMgr.QuickTools
 
         private void buttonOptions_Click(object sender, EventArgs e)
         {
-            Form options = new DellWarrantyOptions();
+            Form options = new DellWarrantyOptions(this);
             options.Show();
         }
 

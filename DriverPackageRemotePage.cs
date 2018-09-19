@@ -175,25 +175,34 @@ namespace Zetta.ConfigMgr.QuickTools
 
             string osName;
 
-            string currentversion = (string) operatingSystem["Version"];
+            string currentversion = (string)operatingSystem["Version"];
+            string v2 = "10.0";
 
-            switch (currentversion)
+            var version1 = new Version(currentversion);
+            var version2 = new Version(v2);
+
+            var result = version1.CompareTo(version2);
+            if (result > 0)
             {
-                case "6.1.7601":
-                    osName = "Win7";
-                    break;
-                case "6.2.9200":
-                    osName = "Win8";
-                    break;
-                case "6.3.9600":
-                    osName = "Win81";
-                    break;
-                case "10.0.10240":
-                    osName = "Win10";
-                    break;
-                default:
-                    osName = "Unknown";
-                    break;
+                osName = "Win10";
+            }
+            else
+            {
+                switch (currentversion)
+                {
+                    case "6.1.7601":
+                        osName = "Win7";
+                        break;
+                    case "6.2.9200":
+                        osName = "Win8";
+                        break;
+                    case "6.3.9600":
+                        osName = "Win81";
+                        break;
+                    default:
+                        osName = "Unknown";
+                        break;
+                }
             }
 
             if ((string)operatingSystem["OSArchitecture"] == "64-bit")

@@ -25,5 +25,10 @@
             <DialogId>ZettaIncrementalCollectionsDialog</DialogId>
         </ActionDescription>
     </ActionGroups>
+    <SecurityConfiguration>
+      <ClassPermissions>
+        <ActionSecurityDescription ClassObject="SMS_Collection" RequiredPermissions="1024" />
+      </ClassPermissions>
+    </SecurityConfiguration>    
 </ActionDescription>
 

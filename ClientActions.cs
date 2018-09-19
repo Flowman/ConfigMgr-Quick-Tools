@@ -112,6 +112,9 @@ namespace Zetta.ConfigMgr.QuickTools
                 ExceptionUtilities.TraceException(ex);
                 SccmExceptionDialog.ShowDialog(SnapIn.Console, ex, "An error occured while connecting to host.");
             }
+            //catch (UnauthorizedAccessException ex)
+            //{
+            //}
             catch (Exception ex)
             {
                 ExceptionUtilities.TraceException(ex);
