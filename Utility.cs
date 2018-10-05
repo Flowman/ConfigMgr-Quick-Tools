@@ -141,11 +141,13 @@ namespace Zetta.ConfigMgr.QuickTools
 
         public static ManagementScope GetWMIScope(string host, string space, string username = null, string password = null)
         {
-            ConnectionOptions options = new ConnectionOptions();
-            options.Authentication = AuthenticationLevel.PacketPrivacy;
-            options.Impersonation = ImpersonationLevel.Impersonate;
-            options.EnablePrivileges = true;
-            options.Timeout = TimeSpan.FromSeconds(5);
+            ConnectionOptions options = new ConnectionOptions
+            {
+                Authentication = AuthenticationLevel.PacketPrivacy,
+                Impersonation = ImpersonationLevel.Impersonate,
+                EnablePrivileges = true,
+                Timeout = TimeSpan.FromSeconds(5)
+            };
             if (username != null)
             {
                 options.Username = username;
@@ -376,26 +378,15 @@ namespace Zetta.ConfigMgr.QuickTools
 
     internal class ModifyRegistry
     {
-        private string subKey = "SOFTWARE\\Microsoft\\ConfigMgr10\\Zetta";
-        public string SubKey
-        {
-            get { return subKey; }
-            set { subKey = value; }
-        }
-
-        private RegistryKey baseRegistryKey = Registry.CurrentUser;
-        public RegistryKey BaseRegistryKey
-        {
-            get { return baseRegistryKey; }
-            set { baseRegistryKey = value; }
-        }
+        public string SubKey { get; set; } = "SOFTWARE\\Microsoft\\ConfigMgr10\\Zetta";
+        public RegistryKey BaseRegistryKey { get; set; } = Registry.CurrentUser;
 
         public string Read(string KeyName)
         {
             // Opening the registry key
-            RegistryKey rk = baseRegistryKey;
+            RegistryKey rk = BaseRegistryKey;
             // Open a subKey as read-only
-            RegistryKey sk1 = rk.OpenSubKey(subKey);
+            RegistryKey sk1 = rk.OpenSubKey(SubKey);
             // If the RegistrySubKey doesn't exist -> (null)
             if (sk1 == null)
             {
@@ -421,11 +412,11 @@ namespace Zetta.ConfigMgr.QuickTools
             try
             {
                 // Setting
-                RegistryKey rk = baseRegistryKey;
+                RegistryKey rk = BaseRegistryKey;
                 // I have to use CreateSubKey 
                 // (create or open it if already exits), 
                 // 'cause OpenSubKey open a subKey as read-only
-                RegistryKey sk1 = rk.CreateSubKey(subKey);
+                RegistryKey sk1 = rk.CreateSubKey(SubKey);
                 // Save the value
                 sk1.SetValue(KeyName, Value);
 

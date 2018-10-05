@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="AdminUI.CollectionProperty">
       <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\AdminUI.CollectionProperty.dll</HintPath>
@@ -67,6 +68,12 @@
     </Reference>
     <Reference Include="Microsoft.ConfigurationManagement.ManagementProvider">
       <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\Microsoft.ConfigurationManagement.ManagementProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Deployment.Compression, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
+      <HintPath>packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Deployment.Compression.Cab, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
+      <HintPath>packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.Cab.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EnterpriseManagement.UI.ConsoleFramework">
       <HintPath>..\..\..\..\..\Program Files (x86)\Configuration Manager\Console\bin\Microsoft.EnterpriseManagement.UI.ConsoleFramework.dll</HintPath>
@@ -153,6 +160,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ProvisioningMode.cs" />
+    <Compile Include="ProvisioningModeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProvisioningModeDialog.Designer.cs">
+      <DependentUpon>ProvisioningModeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ResultClientHealthControl.cs">
       <SubType>UserControl</SubType>
@@ -272,6 +286,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>

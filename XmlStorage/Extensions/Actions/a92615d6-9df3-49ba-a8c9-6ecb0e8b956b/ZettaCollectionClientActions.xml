@@ -135,6 +135,28 @@
         <Type>Zetta.ConfigMgr.QuickTools.ClientActions</Type>
         <Method>RunClientActionWindowsInstaller</Method>
       </ActionAssembly>
-    </ActionDescription>      
+    </ActionDescription>
+    <ActionDescription Class="AssemblyType" DisplayName="Disable Provisioning Mode" MnemonicDisplayName="Disable Provisioning Mode" Description="Disable Provisioning Mode" >
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ActionAssembly>
+        <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+        <Type>Zetta.ConfigMgr.QuickTools.ProvisioningMode</Type>
+        <Method>RunSetProvisioningMode</Method>
+      </ActionAssembly>
+    </ActionDescription>
+    <ActionDescription Class="AssemblyType" DisplayName="Show Provisioning Mode" MnemonicDisplayName="Show Provisioning Mode" Description="Show Provisioning Mode" >
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ActionAssembly>
+        <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+        <Type>Zetta.ConfigMgr.QuickTools.ProvisioningMode</Type>
+        <Method>RunGetProvisioningMode</Method>
+      </ActionAssembly>
+    </ActionDescription>
   </ActionGroups>
 </ActionDescription>

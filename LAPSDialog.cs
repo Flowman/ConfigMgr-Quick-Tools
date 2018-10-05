@@ -19,7 +19,7 @@ namespace Zetta.ConfigMgr.QuickTools
             Title = action.DisplayName + ": " + resultObjects["Name"].StringValue;
         }
 
-        private void LAPSDialog_Shown(object sender, System.EventArgs e)
+        private void LAPSDialog_Shown(object sender, EventArgs e)
         {
 
             DirectorySearcher search = new DirectorySearcher
@@ -52,7 +52,7 @@ namespace Zetta.ConfigMgr.QuickTools
             }
         }
 
-        private void buttonOK_Click(object sender, System.EventArgs e)
+        private void buttonOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
             Close();

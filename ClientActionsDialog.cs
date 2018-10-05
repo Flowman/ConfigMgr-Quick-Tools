@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Zetta.ConfigMgr.QuickTools
 {
@@ -68,8 +69,10 @@ namespace Zetta.ConfigMgr.QuickTools
             try
             {
                 item.SubItems[1].Text = "Connecting";
-                ObjectGetOptions o = new ObjectGetOptions();
-                o.Timeout = new TimeSpan(0, 0, 5);
+                ObjectGetOptions o = new ObjectGetOptions
+                {
+                    Timeout = new TimeSpan(0, 0, 5)
+                };
                 if (fullScan)
                 {
                     ManagementScope inventoryAgentScope = new ManagementScope(string.Format(@"\\{0}\root\{1}", resultObject["Name"].StringValue, "ccm\\InvAgt"));
@@ -134,6 +137,22 @@ namespace Zetta.ConfigMgr.QuickTools
             {
                 buttonOK.Enabled = true;
             }
+        }
+
+        private void listViewHosts_CopyKeyEvent(object sender, EventArgs e)
+        {
+            StringBuilder buffer = new StringBuilder();
+            foreach (ListViewItem item in listViewHosts.SelectedItems)
+            {
+                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                {
+                    buffer.Append(subitem.Text);
+                    buffer.Append("\t");
+                }
+                buffer.AppendLine();
+            }
+            buffer.Remove(buffer.Length - 1, 1);
+            Clipboard.SetData(DataFormats.Text, buffer.ToString());
         }
     }
 }
