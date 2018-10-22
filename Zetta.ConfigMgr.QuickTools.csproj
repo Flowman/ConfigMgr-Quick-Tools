@@ -241,6 +241,9 @@
     <EmbeddedResource Include="DellWarrantyOptions.resx">
       <DependentUpon>DellWarrantyOptions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DriverGrabberDialog.resx">
+      <DependentUpon>DriverGrabberDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DriverPackageGeneralPage.resx">
       <DependentUpon>DriverPackageGeneralPage.cs</DependentUpon>
     </EmbeddedResource>
