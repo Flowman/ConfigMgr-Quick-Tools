@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Zetta" MnemonicDisplayName="Zetta" Description="Remove Retired Content">
+    <ShowOn>
+        <string>ContextMenu</string>
+    </ShowOn>
+    <ImagesDescription>
+        <ResourceAssembly>
+            <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+            <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>icon</ImageResourceName>
+    </ImagesDescription>
+    <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Remove Retired Content" MnemonicDisplayName="Remove Retired Content" Description="Remove Retired Content">
+            <ImagesDescription>
+                <ResourceAssembly>
+                    <Assembly>Zetta.ConfigMgr.QuickTools.dll</Assembly>
+                    <Type>Zetta.ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+                </ResourceAssembly>
+                <ImageResourceName>icon</ImageResourceName>
+            </ImagesDescription>
+            <ShowOn>
+                <string>ContextMenu</string>
+            </ShowOn>
+            <DialogId>ZettaRemoveRetiredContentDialog</DialogId>
+        </ActionDescription>
+    </ActionGroups>  
+</ActionDescription>
+
