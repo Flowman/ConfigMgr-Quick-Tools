@@ -147,7 +147,7 @@ namespace Zetta.ConfigMgr.QuickTools
                     
                     Dictionary<string, List<int>> packages = new Dictionary<string, List<int>>();
 
-                    query = string.Format("SELECT SMS_PackageToContent.ContentID,SMS_PackageToContent.PackageID from SMS_PackageToContent JOIN SMS_CIToContent ON SMS_CIToContent.ContentID = SMS_PackageToContent.ContentID WHERE SMS_CIToContent.CI_ID IN ({0}) ORDER by PackageID", string.Join(",", updateList));
+                    query = string.Format("SELECT SMS_PackageToContent.ContentID, SMS_PackageToContent.PackageID from SMS_PackageToContent JOIN SMS_CIToContent ON SMS_CIToContent.ContentID = SMS_PackageToContent.ContentID WHERE SMS_CIToContent.CI_ID IN ({0}) ORDER by PackageID", string.Join(",", updateList));
                     using (IResultObject resultObject = ConnectionManager.QueryProcessor.ExecuteQuery(query))
                     {
                         foreach (IResultObject resultObject1 in resultObject)
@@ -206,7 +206,6 @@ namespace Zetta.ConfigMgr.QuickTools
                 int num = flag ? 1 : 0;
             }
         }
-
 
         public override void OnAddSummary(SummaryRequestHandler handler)
         {

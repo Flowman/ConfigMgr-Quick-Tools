@@ -141,7 +141,6 @@ namespace Zetta.ConfigMgr.QuickTools
             }
         }
 
-
         public override void OnAddSummary(SummaryRequestHandler handler)
         {
             base.OnAddSummary(handler);

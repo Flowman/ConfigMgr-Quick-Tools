@@ -105,6 +105,12 @@
     <Compile Include="AddResourcesListDialog.Designer.cs">
       <DependentUpon>AddResourcesListDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationRemoveRetiredContentPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ApplicationRemoveRetiredContentPage.Designer.cs">
+      <DependentUpon>ApplicationRemoveRetiredContentPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="CleanSoftwareUpdatesPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -231,6 +237,9 @@
   <ItemGroup>
     <EmbeddedResource Include="AddResourcesListDialog.resx">
       <DependentUpon>AddResourcesListDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ApplicationRemoveRetiredContentPage.resx">
+      <DependentUpon>ApplicationRemoveRetiredContentPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CleanSoftwareUpdatesPage.resx">
       <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
