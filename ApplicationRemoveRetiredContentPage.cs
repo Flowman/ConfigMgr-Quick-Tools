@@ -144,6 +144,8 @@ namespace Zetta.ConfigMgr.QuickTools
                         {
                             success.Add(value[0]["LocalizedDisplayName"].StringValue);
                         }
+
+                        num++;
                     }
                 }
 
