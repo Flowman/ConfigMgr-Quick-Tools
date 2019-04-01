@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConfigMgr.QuickTools</RootNamespace>
+    <AssemblyName>ConfigMgr.QuickTools</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AdminUI.Common">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.Controls">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.DialogFoundation">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.DialogFoundation.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.WqlQueryEngine">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="INIFileParser">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\INIFileParser.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ConfigurationManagement">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.exe</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ConfigurationManagement.DialogFramework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.DialogFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ConfigurationManagement.ManagementProvider">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.ManagementProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EnterpriseManagement.UI.ConsoleFramework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.EnterpriseManagement.UI.ConsoleFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddResourcesListDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddResourcesListDialog.designer.cs">
+      <DependentUpon>AddResourcesListDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CleanSoftwareUpdatesPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CleanSoftwareUpdatesPage.designer.cs">
+      <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IncrementalCollectionsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IncrementalCollectionsPage.designer.cs">
+      <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RemoveRetiredContentPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RemoveRetiredContentPage.Designer.cs">
+      <DependentUpon>RemoveRetiredContentPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AddResourcesListDialog.resx">
+      <DependentUpon>AddResourcesListDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CleanSoftwareUpdatesPage.resx">
+      <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IncrementalCollectionsPage.resx">
+      <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\update.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\activate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tools.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\expiredupdate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\supersededupdate.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

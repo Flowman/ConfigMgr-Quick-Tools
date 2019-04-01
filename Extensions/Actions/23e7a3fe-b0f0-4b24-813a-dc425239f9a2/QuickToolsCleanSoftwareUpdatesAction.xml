@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools Root" Description="A collection of tools to enhance ConfigMgr." NodeInConsole="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <ActionGroups>
+    <ActionDescription Class="Group" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools" Description="A collection of tools to enhance ConfigMgr.">
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ImagesDescription>
+        <ResourceAssembly>
+          <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+          <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>tools</ImageResourceName>
+      </ImagesDescription>
+      <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Clean Software Update Groups" MnemonicDisplayName="Clean Software Update Groups" Description="This will help clean out expired and superseded updetes from software update groups" NodeInConsole="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">
+          <ShowOn>
+            <string>DefaultHomeTab</string>
+            <string>ContextMenu</string>
+          </ShowOn>
+          <DialogId>QuickToolsCleanSoftwareUpdatesWizard</DialogId>
+        </ActionDescription>
+      </ActionGroups>
+    </ActionDescription>
+  </ActionGroups>
+</ActionDescription>

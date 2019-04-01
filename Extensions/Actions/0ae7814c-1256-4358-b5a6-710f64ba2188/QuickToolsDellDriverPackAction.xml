@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools Root" Description="A collection of tools to enhance ConfigMgr.">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <ActionGroups>
+    <ActionDescription Class="Group" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools" Description="A collection of tools to enhance ConfigMgr.">
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ImagesDescription>
+        <ResourceAssembly>
+          <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+          <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>tools</ImageResourceName>
+      </ImagesDescription>
+      <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Dell Driver Pack" MnemonicDisplayName="Dell Driver Pack" Description="Download Dell driver pack">
+          <ShowOn>
+            <string>DefaultHomeTab</string>
+            <string>ContextMenu</string>
+          </ShowOn>
+          <DialogId>QuickToolsDellDriverPackWizard</DialogId>
+        </ActionDescription>
+      </ActionGroups>
+    </ActionDescription>
+  </ActionGroups>
+</ActionDescription>
+

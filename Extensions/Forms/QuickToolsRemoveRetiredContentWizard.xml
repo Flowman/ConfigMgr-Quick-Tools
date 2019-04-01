@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SmsFormData FormatVersion="1.0" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework">
+  <Form Id="{1DC5B6B3-7106-4994-9DC4-5EDE1DE0BED1}" FormType="Wizard" DisableSkippable="true">
+    <Assembly Name="ConfigMgr.QuickTools" Namespace="ConfigMgr.QuickTools" />
+    <Pages>
+      <Page VendorId="Otherland" Id="{2C56A64A-C39B-464F-8C6A-5428FB1AF73C}" Assembly="ConfigMgr.QuickTools" Namespace="ConfigMgr.QuickTools" Type="RemoveRetiredContentPage" />
+    </Pages>
+  </Form>
+</SmsFormData>

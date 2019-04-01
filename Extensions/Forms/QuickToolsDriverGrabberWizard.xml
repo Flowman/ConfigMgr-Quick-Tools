@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SmsFormData FormatVersion="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework" xsi:schemaLocation="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework">
+  <Form Id="B46D972D-8BD4-4C38-992A-49FB2D08F26F" FormType="Wizard" DisableSkippable="true">
+    <Assembly Name="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager" />
+    <Pages>
+      <Page VendorId="Otherland" Id="{5AEAE08A-08A7-4B77-8423-EC4D2F61F7F3}" Type="DriverGrabberGeneralPage" />
+      <Page VendorId="Otherland" Id="{846989FD-C6AF-4ED1-84AD-0D85E6D17C98}" Type="DriverGrabberSelectPage" />
+    </Pages>
+  </Form>
+</SmsFormData>

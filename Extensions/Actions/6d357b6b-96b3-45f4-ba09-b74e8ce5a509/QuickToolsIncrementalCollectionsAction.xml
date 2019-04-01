@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools Root" Description="A collection of tools to enhance ConfigMgr.">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <ActionGroups>
+    <ActionDescription Class="Group" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools" Description="A collection of tools to enhance ConfigMgr.">
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ImagesDescription>
+        <ResourceAssembly>
+          <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+          <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>tools</ImageResourceName>
+      </ImagesDescription>
+      <ActionGroups>
+        <ActionDescription Class="ShowDialog" DisplayName="Incremental Collections" MnemonicDisplayName="Incremental Collections" Description="Quick way to list and manage incremental collections">
+          <ShowOn>
+            <string>DefaultHomeTab</string>
+            <string>ContextMenu</string>
+          </ShowOn>
+          <DialogId>QuickToolsIncrementalCollectionsWizard</DialogId>
+        </ActionDescription>
+      </ActionGroups>
+      <SecurityConfiguration>
+        <ClassPermissions>
+          <ActionSecurityDescription ClassObject="SMS_Collection" RequiredPermissions="1024" />
+        </ClassPermissions>
+      </SecurityConfiguration>
+    </ActionDescription>
+  </ActionGroups>
+</ActionDescription>

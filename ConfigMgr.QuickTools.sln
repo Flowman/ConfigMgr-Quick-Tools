@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigMgr.QuickTools.Warranty", "ConfigMgr.QuickTools.Warranty\ConfigMgr.QuickTools.Warranty.csproj", "{4109FB03-1AC5-42D3-B46D-505B207B6091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigMgr.QuickTools", "ConfigMgr.QuickTools\ConfigMgr.QuickTools.csproj", "{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigMgr.QuickTools.Device", "ConfigMgr.QuickTools.Device\ConfigMgr.QuickTools.Device.csproj", "{A3580FA8-468B-490F-B079-3AF591876D28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigMgr.QuickTools.DriverManager", "ConfigMgr.QuickTools.DriverManager\ConfigMgr.QuickTools.DriverManager.csproj", "{51F57A27-809B-43BB-92FF-FE39F9AD87F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4109FB03-1AC5-42D3-B46D-505B207B6091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4109FB03-1AC5-42D3-B46D-505B207B6091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4109FB03-1AC5-42D3-B46D-505B207B6091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4109FB03-1AC5-42D3-B46D-505B207B6091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3580FA8-468B-490F-B079-3AF591876D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3580FA8-468B-490F-B079-3AF591876D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3580FA8-468B-490F-B079-3AF591876D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3580FA8-468B-490F-B079-3AF591876D28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51F57A27-809B-43BB-92FF-FE39F9AD87F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F57A27-809B-43BB-92FF-FE39F9AD87F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F57A27-809B-43BB-92FF-FE39F9AD87F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F57A27-809B-43BB-92FF-FE39F9AD87F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F1211AF-80E3-444D-AA79-483BB9930A67}
+	EndGlobalSection
+EndGlobal

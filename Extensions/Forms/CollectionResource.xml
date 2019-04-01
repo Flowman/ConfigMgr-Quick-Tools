@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SmsFormData FormatVersion="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework" xsi:schemaLocation="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework ..\..\..\..\..\XmlStorage\Forms\_PropertySheetForm.xsd">
+  <Form Id="{5B2E5175-AA0D-4e49-AE81-0A30DFDECBA5}" CustomData="Collection Resource Properties" FormType="PropertySheet" ForceRefresh="true">
+    <Assembly Name="AdminUI.CollectionProperty" Namespace="Microsoft.ConfigurationManagement.AdminConsole.CollectionProperty" />
+    <Pages>
+      <Page VendorId="Microsoft Corporation" Id="{C49C90AD-D3BD-4325-A76A-F1D7A70C6C5C}" Type="ResultGeneralControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Microsoft Corporation" Id="{48359DD0-9EE2-4e5e-B22C-9F8F82A9F994}" Type="ResultAdvertisementControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{B2F63AD4-3F5C-4366-BAA4-FF5246836EA9}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultCollectionsControl" ReadOnly="false" MultiSelection="false" Visible="false"  />
+      <Page VendorId="Microsoft Corporation" Id="{69AFA715-621F-443a-AFBB-17FBAD383C9D}" Type="ResultVariableControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{C8838A1C-211F-4FEB-B25E-2EC197771D14}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultSoftwareUpdatesControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{A93AD205-2EA1-4596-9EA6-921DEBB5C7DD}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultSUComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{7139BB0A-D9BF-4925-9ACA-3E03C8C33375}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultClientHealthControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{D35EF087-0469-423E-969B-D5B4BB42E904}" Assembly="ConfigMgr.QuickTools.Warranty" Namespace="ConfigMgr.QuickTools.Warranty" Type="ResultDellWarrantyControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+    </Pages>
+  </Form>
+</SmsFormData>
+

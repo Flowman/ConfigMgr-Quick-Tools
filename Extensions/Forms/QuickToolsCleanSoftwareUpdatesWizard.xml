@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SmsFormData FormatVersion="1.0" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework">
+  <Form Id="{E7A6DDFF-910C-4089-A46A-D2F15D24B7D1}" FormType="Wizard" DisableSkippable="true">
+    <Assembly Name="ConfigMgr.QuickTools" Namespace="ConfigMgr.QuickTools" />
+    <Pages>
+      <Page VendorId="Otherland" Id="{0AB8A3D9-F5E1-4EC1-9EEB-682B375B3D8E}" Assembly="ConfigMgr.QuickTools" Namespace="ConfigMgr.QuickTools.SoftwareUpdates" Type="CleanSoftwareUpdatesPage" />
+    </Pages>
+  </Form>
+</SmsFormData>
