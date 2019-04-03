@@ -1,5 +1,6 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
 using Microsoft.ConfigurationManagement.AdminConsole.WizardFramework;
+using Microsoft.ConfigurationManagement.ManagementProvider.DialogFramework;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -69,13 +70,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private void ButtonOptions_Click(object sender, EventArgs e)
         {
-            DriverOptions options = new DriverOptions(this);
-            options.ShowDialog();
-            if (options.DialogResult == DialogResult.OK)
-            {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
-                labelOptions.Text = "";
-            }
+            ShowDialog("QuickToolsOptions", PropertyManager);
         }
     }
 }

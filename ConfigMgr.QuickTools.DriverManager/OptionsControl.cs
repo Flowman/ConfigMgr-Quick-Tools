@@ -7,17 +7,21 @@ using System.Windows.Forms;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    public partial class DriverOptions : SmsCustomDialog
+    public partial class OptionsControl : SmsPageControl
     {
-        protected virtual ControlsInspector ControlsInspector { get; set; }
         private ControlsValidator controlsValidator;
         private ModifyRegistry registry = new ModifyRegistry();
 
-        public DriverOptions(SmsPageControl parent)
+        public OptionsControl(SmsPageData pageData)
+          : base(pageData)
         {
             InitializeComponent();
+            Title = "Driver Manager";
+        }
 
-            Title = "Driver Manager Options";
+        public override void InitializePageControl()
+        {
+            base.InitializePageControl();
 
             browseFolderControlSource.Controls.OfType<SmsOsdTextBox>().First().Text = registry.Read("DriverSourceFolder");
             browseFolderControlPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.Read("DriverPackageFolder");
@@ -38,24 +42,21 @@ namespace ConfigMgr.QuickTools.DriverManager
             browseFolderControlPackage.SetValidator(controlsValidator);
 
             ControlsInspector.InspectAll();
+
+            Dirty = false;
+
+            Initialized = true;
         }
 
-        private void ButtonOK_Click(object sender, EventArgs e)
+        protected override bool ApplyChanges(out Control errorControl, out bool showError)
         {
             registry.Write("DriverSourceFolder", browseFolderControlSource.FolderPath);
             registry.Write("DriverPackageFolder", browseFolderControlPackage.FolderPath);
             registry.Write("LegacyFolderStructure", checkBoxLegacyFolder.Checked);
 
-            ControlsInspector.InspectAll();
+            Dirty = false;
 
-            if (ControlsInspector.CurrentInvalidControl == null)
-            {
-                registry.Write("DriverPackageFolder", browseFolderControlPackage.FolderPath);
-                registry.Write("DriverSourceFolder", browseFolderControlSource.FolderPath);
-
-                DialogResult = DialogResult.OK;
-                Close();
-            }
+            return base.ApplyChanges(out errorControl, out showError);
         }
 
         private ControlDataState ValidateSourceDirectory()
@@ -68,10 +69,19 @@ namespace ConfigMgr.QuickTools.DriverManager
             return !OsdUtilities.CheckNetFolderPath(browseFolderControlPackage.FolderPath) ? ControlDataState.Invalid : ControlDataState.Valid;
         }
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
+        private void BrowseFolderControlSource_FolderTextChanged(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
-            Close();
+            Dirty = true;
+        }
+
+        private void BrowseFolderControlPackage_FolderTextChanged(object sender, EventArgs e)
+        {
+            Dirty = true;
+        }
+
+        private void CheckBoxLegacyFolder_CheckedChanged(object sender, EventArgs e)
+        {
+            Dirty = true;
         }
     }
 }

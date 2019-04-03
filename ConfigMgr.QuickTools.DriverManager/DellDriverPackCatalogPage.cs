@@ -82,6 +82,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     XNamespace ns = package.GetDefaultNamespace();
                     XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
 
+                    //TODO: use base location from 
                     Uri uri = new Uri(string.Format("http://downloads.dell.com/{0}", package.Attribute("path").Value));
                     //Uri uri = new Uri("http://github.com/Flowman/pxc-alpine/releases/download/5.7.22-29.26/percona-xtradb-cluster-dev-5.7.22-r0.apk");
 
@@ -303,7 +304,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     {
                         XElement catalog = XElement.Load(stream);
                         XNamespace ns = catalog.GetDefaultNamespace();
-
+                        //TODO: get base location from xml file.
                         IEnumerable<XElement> nodeList = catalog.Elements(ns + "DriverPackage").Where(
                             x => x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osArch").Value == UserData["Architecture"].ToString() &&
                             x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osCode").Value == UserData["OS"].ToString().Replace(" ", string.Empty)
