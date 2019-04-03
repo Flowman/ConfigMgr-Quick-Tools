@@ -1,9 +1,9 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
 using Microsoft.ConfigurationManagement.AdminConsole.WizardFramework;
-using Microsoft.ConfigurationManagement.ManagementProvider.DialogFramework;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ConfigMgr.QuickTools.DriverManager
@@ -53,11 +53,27 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.OnActivated();
 
+            StringBuilder sb = new StringBuilder();
+
             if (string.IsNullOrEmpty(registry.Read("DriverSourceFolder")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
-                labelOptions.Text = "No driver source structure specified!";
+                sb.AppendLine("No driver source structure specified!");
             }
+
+            if (string.IsNullOrEmpty(registry.Read("TempDownloadPath")))
+            {
+                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
+                sb.AppendLine("No temporary download folder specified!");
+            }
+
+            if (string.IsNullOrEmpty(registry.Read("DellCatalogURI")))
+            {
+                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
+                sb.AppendLine("No Dell Catalog URL specified!");
+            }
+
+            labelOptions.Text = sb.ToString();
         }
 
         public override bool OnDeactivate()
