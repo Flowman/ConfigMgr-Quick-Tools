@@ -14,7 +14,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     public partial class DriverGrabberGeneralPage : SmsPageControl
     {
         private BackgroundWorker validateWorker;
-        private ValidateInformationDialog validateInfoDialog;
+        private ProgressInformationDialog validateInfoDialog;
         private ModifyRegistry registry = new ModifyRegistry();
         private bool valiadated = false;
 
@@ -62,7 +62,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 return base.OnNavigating(navigationType);
             }
-            validateInfoDialog = new ValidateInformationDialog
+            validateInfoDialog = new ProgressInformationDialog
             {
                 Title = "Validating requirments"
             };

@@ -29,9 +29,12 @@ namespace ConfigMgr.QuickTools.Warranty
 
             Dirty = false;
 
-            UpdateUserData();
+            if (PropertyManager != null)
+            {
+                UpdateUserData();
 
-            PropertyManager.UserDataObject = UserData;
+                PropertyManager.UserDataObject = UserData;
+            }
 
             Initialized = true;
         }
@@ -43,9 +46,12 @@ namespace ConfigMgr.QuickTools.Warranty
 
             Dirty = false;
 
-            UpdateUserData();
+            if (PropertyManager != null)
+            {
+                UpdateUserData();
 
-            PropertyManager.UserDataObject = UserData;
+                PropertyManager.UserDataObject = UserData;
+            }
 
             return base.ApplyChanges(out errorControl, out showError);
         }

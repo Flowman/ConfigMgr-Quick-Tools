@@ -4,13 +4,13 @@ using System.Windows.Forms;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    public partial class ValidateInformationDialog : SmsDialogBase
+    public partial class ProgressInformationDialog : SmsDialogBase
     {
         internal bool ReceivedRequestToClose { get; set; }
         internal bool CanClose { get; set; }
         internal bool Result { get; set; }
 
-        public ValidateInformationDialog()
+        public ProgressInformationDialog()
         {
             InitializeComponent();
         }

@@ -76,9 +76,6 @@ namespace ConfigMgr.QuickTools.Warranty
             Dictionary<string, object> dialogData = (Dictionary<string, object>)PropertyManager.UserDataObject;
             labelHttpResponse.Text = (string)dialogData["HttpResponse"];
             buttonSURefresh.Enabled = (bool)dialogData["RefreshEnabled"];
-
-            //Form options = new DellWarrantyOptions(this);
-            //options.Show();
         }
 
         private async void InfoWorker_DoWorkAsync(object sender, DoWorkEventArgs e)

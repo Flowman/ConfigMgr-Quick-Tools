@@ -12,19 +12,21 @@ using IniParser.Model;
 using System.Management;
 using System.Collections.Generic;
 using Microsoft.ConfigurationManagement.AdminConsole.Common;
+using Microsoft.ConfigurationManagement.ManagementProvider;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class DriverGrabberSelectPage : SmsPageControl
     {
+        #region Private
         private BackgroundWorker processWorker;
         private ModifyRegistry registry = new ModifyRegistry();
         private string architecture = null;
+        #endregion
 
         public DriverGrabberSelectPage(SmsPageData pageData)
             : base(pageData)
         {
-            FormTitle = "Driver Grabber";
             Title = "Select drivers";
             Headline = "Select drivers to capture";
 
@@ -286,12 +288,6 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             foreach (ManagementObject item in signedDriver)
             {
-                if (backgroundWorker.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-
                 string provider = (string)item["DriverProviderName"];
                 string description = (string)item["DeviceName"];
                 string oeminf = (string)item["InfName"];
@@ -370,12 +366,6 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
 
             backgroundWorker.ReportProgress(100, "Completed");
-
-            if (backgroundWorker.CancellationPending)
-            {
-                backgroundWorker.Dispose();
-                e.Cancel = true;
-            }
         }
 
         private void ProcessWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)

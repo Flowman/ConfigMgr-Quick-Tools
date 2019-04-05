@@ -1,6 +1,6 @@
 ﻿namespace ConfigMgr.QuickTools.DriverManager
 {
-    partial class ValidateInformationDialog
+    partial class ProgressInformationDialog
     {
         /// <summary> 
         /// Required designer variable.

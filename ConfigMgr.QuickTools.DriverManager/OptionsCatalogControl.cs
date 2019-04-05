@@ -64,7 +64,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private ControlDataState ValidateDownloadDirectory()
         {
-            return browseFolderControlDownload.FolderPath.Length > 0 ? ControlDataState.Invalid : ControlDataState.Valid;
+            return browseFolderControlDownload.FolderPath.Length > 0 ? ControlDataState.Valid : ControlDataState.Invalid;
         }
 
         private void BrowseFolderControlDownload_FolderTextChanged(object sender, EventArgs e)

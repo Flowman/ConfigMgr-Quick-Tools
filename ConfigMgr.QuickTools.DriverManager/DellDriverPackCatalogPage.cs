@@ -21,6 +21,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class DellDriverPackCatalogPage : SmsPageControl
     {
+        #region Private
         private ModifyRegistry registry = new ModifyRegistry();
         private WebClient webClient;
         private Queue<KeyValuePair<string, Uri>> _downloadUrls = new Queue<KeyValuePair<string, Uri>>();
@@ -36,6 +37,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         private Dictionary<string, string> cabs = new Dictionary<string, string>();
         private string previousOS;
         private string previousArchitecture;
+        #endregion
 
         public DellDriverPackCatalogPage(SmsPageData pageData)
             : base(pageData)
