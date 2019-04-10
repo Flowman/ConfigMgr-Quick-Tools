@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SmsFormData FormatVersion="1.0" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework">
+  <Form Id="{5CA307A6-859E-4251-8E39-17D83F84E35F}" CustomData="QuickToolsOptions" FormType="PropertySheet">
+  	<Assembly Name="ConfigMgr.QuickTools" Namespace="ConfigMgr.QuickTools" />
+    <Pages>
+      <Page VendorId="Otherland" Id="{7E10C0A1-519B-4335-AB3A-3EE3519B84FD}" Assembly="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager" Type="OptionsControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{A89610A1-5E05-4672-8BB3-A1667E8B6213}" Assembly="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager" Type="OptionsCatalogControl" ReadOnly="false" MultiSelection="false" Visible="false" />      
+      <Page VendorId="Otherland" Id="{96853E7B-204A-4B36-834B-CF4EC1B0EE7B}" Assembly="ConfigMgr.QuickTools.Warranty" Namespace="ConfigMgr.QuickTools.Warranty" Type="OptionsControl" ReadOnly="false" MultiSelection="false" Visible="false" />      
+    </Pages>
+  </Form>
+</SmsFormData>

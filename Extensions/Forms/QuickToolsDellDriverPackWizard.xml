@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SmsFormData FormatVersion="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework" xsi:schemaLocation="http://schemas.microsoft.com/SystemsManagementServer/2005/03/ConsoleFramework">
+  <Form Id="{CACC9BE9-9FA3-4F28-8B06-9E2A0B75FD54}" FormType="Wizard" DisableSkippable="true">
+    <Assembly Name="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager" />
+    <Pages>
+      <Page VendorId="Otherland" Id="{37CB798A-7778-4729-A5D6-D97839020E90}" Type="DellDriverPackGeneralPage" />
+      <Page VendorId="Otherland" Id="{DC379206-CEC1-42B7-8A0E-25E298CAED8E}" Type="DellDriverPackCatalogPage" />
+    </Pages>
+  </Form>
+</SmsFormData>

@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A3580FA8-468B-490F-B079-3AF591876D28}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConfigMgr.QuickTools.Device</RootNamespace>
+    <AssemblyName>ConfigMgr.QuickTools.Device</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AdminUI.CollectionProperty">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.CollectionProperty.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.Common">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.Controls">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.DialogFoundation">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.DialogFoundation.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.OsdCommon">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.OsdCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="AdminUI.WqlQueryEngine">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ConfigurationManagement">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.exe</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ConfigurationManagement.DialogFramework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.DialogFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ConfigurationManagement.ManagementProvider">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.ManagementProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EnterpriseManagement.UI.ConsoleFramework">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.EnterpriseManagement.UI.ConsoleFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientActionProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Device.cs" />
+    <Compile Include="ClientActions.cs" />
+    <Compile Include="ClientActionsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientActionsDialog.designer.cs">
+      <DependentUpon>ClientActionsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LAPSDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LAPSDialog.designer.cs">
+      <DependentUpon>LAPSDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProvisioningMode.cs" />
+    <Compile Include="ProvisioningModeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProvisioningModeDialog.designer.cs">
+      <DependentUpon>ProvisioningModeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultClientHealthControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultClientHealthControl.designer.cs">
+      <DependentUpon>ResultClientHealthControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultCollectionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultCollectionsControl.designer.cs">
+      <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultSoftwareUpdatesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultSoftwareUpdatesControl.designer.cs">
+      <DependentUpon>ResultSoftwareUpdatesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultSUComplianceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultSUComplianceControl.designer.cs">
+      <DependentUpon>ResultSUComplianceControl.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ClientActionsDialog.resx">
+      <DependentUpon>ClientActionsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LAPSDialog.resx">
+      <DependentUpon>LAPSDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultClientHealthControl.resx">
+      <DependentUpon>ResultClientHealthControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultCollectionsControl.resx">
+      <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultSoftwareUpdatesControl.resx">
+      <DependentUpon>ResultSoftwareUpdatesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultSUComplianceControl.resx">
+      <DependentUpon>ResultSUComplianceControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConfigMgr.QuickTools\ConfigMgr.QuickTools.csproj">
+      <Project>{86a66d04-06eb-41b0-a6bf-3a1aff79ca8d}</Project>
+      <Name>ConfigMgr.QuickTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

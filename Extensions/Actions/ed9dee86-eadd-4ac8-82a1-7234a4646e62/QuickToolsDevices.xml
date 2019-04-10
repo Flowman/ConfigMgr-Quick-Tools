@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools" NodeInConsole="ed9dee86-eadd-4ac8-82a1-7234a4646e62" Description="A collection of tools to enhance ConfigMgr." InsertBefore="e40a1a32-9b9e-4ca2-b6a0-80e229aaa1f7">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <MatchPattern>[^2]</MatchPattern>
+  <MatchValueToTest>##SUB:ResourceType##</MatchValueToTest>
+  <ActionGroups>
+    <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="LAPS Password" MnemonicDisplayName="LAPS Password" Description="Retrive LAPS password from active directory" >
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ActionAssembly>
+        <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
+        <Type>ConfigMgr.QuickTools.Device.LAPSDialog</Type>
+        <Method>Show</Method>
+      </ActionAssembly>
+    </ActionDescription>
+    <ActionDescription Class="ShowDialog" DisplayName="Driver Grabber" MnemonicDisplayName="Driver Grabber" Description="Grab drivers from selected device">
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <DialogId>QuickToolsDriverGrabberWizard</DialogId>
+    </ActionDescription>
+  </ActionGroups>
+</ActionDescription>

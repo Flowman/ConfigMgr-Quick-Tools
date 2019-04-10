@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" SelectionMode="Both" DisplayName="Quick Tools " MnemonicDisplayName="Quick Tools" NodeInConsole="3fd01cd1-9e01-461e-92cd-94866b8d1f39" Description="A collection of tools to enhance ConfigMgr." InsertBefore="824d5805-baa4-41bc-8fc3-85cc8d26c98c">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <MatchPattern>[^2]</MatchPattern>
+  <MatchValueToTest>##SUB:ResourceType##</MatchValueToTest>
+  <ActionGroups>
+    <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="LAPS Password" MnemonicDisplayName="LAPS Password" Description="Retrive LAPS password from active directory" >
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ActionAssembly>
+        <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
+        <Type>ConfigMgr.QuickTools.Device.LAPSDialog</Type>
+        <Method>Show</Method>
+      </ActionAssembly>
+    </ActionDescription>
+  </ActionGroups>
+</ActionDescription>
