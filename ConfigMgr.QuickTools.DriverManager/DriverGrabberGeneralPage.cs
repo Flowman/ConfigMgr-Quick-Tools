@@ -105,6 +105,8 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.OnActivated();
 
+            ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
+
             if (string.IsNullOrEmpty(registry.Read("DriverSourceFolder")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
@@ -256,6 +258,8 @@ namespace ConfigMgr.QuickTools.DriverManager
         private void ButtonOptions_Click(object sender, EventArgs e)
         {
             ShowDialog("QuickToolsOptions", PropertyManager);
+
+            OnActivated();
         }
     }
 }
