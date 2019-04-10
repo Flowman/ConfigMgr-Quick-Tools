@@ -1,4 +1,5 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
+using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         internal bool ReceivedRequestToClose { get; set; }
         internal bool CanClose { get; set; }
         internal bool Result { get; set; }
+        internal ProgressBarStyle ProgressBarStyle{ get { return progressBar.Style; } set { progressBar.Style = value; } }
 
         public ProgressInformationDialog()
         {
@@ -23,6 +25,11 @@ namespace ConfigMgr.QuickTools.DriverManager
         internal void UpdateProgressValue(int progressValue)
         {
             progressBar.Value = progressValue;
+
+            if (ProgressBarStyle == ProgressBarStyle.Continuous)
+            {
+                labelPercent.Text = progressValue + "%";
+            }
         }
 
         internal void CloseDialog()
@@ -31,6 +38,18 @@ namespace ConfigMgr.QuickTools.DriverManager
             CanClose = true;
             Close();
         }
+
+        protected override void OnShown(EventArgs e)
+        {
+            if (ProgressBarStyle == ProgressBarStyle.Continuous)
+            {
+                progressBar.Width = 480;
+                labelPercent.Visible = true;
+            }
+
+            base.OnShown(e);
+        }
+
 
         protected override void OnClosing(CancelEventArgs e)
         {

@@ -8,14 +8,16 @@ using System.Management;
 using System.Windows.Forms;
 using Microsoft.ConfigurationManagement.AdminConsole.WizardFramework;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class DriverGrabberGeneralPage : SmsPageControl
     {
-        private BackgroundWorker validateWorker;
-        private ProgressInformationDialog validateInfoDialog;
+        private BackgroundWorker progressWorker;
+        private ProgressInformationDialog progressInformationDialog;
         private ModifyRegistry registry = new ModifyRegistry();
+        private List<ManagementObject> signedDrivers;
         private bool valiadated = false;
 
         public DriverGrabberGeneralPage(SmsPageData pageData)
@@ -60,23 +62,43 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             if (navigationType != NavigationType.Forward || valiadated)
             {
+                if (signedDrivers == null)
+                {
+                    progressInformationDialog = new ProgressInformationDialog
+                    {
+                        Title = "Retrieving driver data"
+                    };
+                    progressWorker = new BackgroundWorker();
+                    progressWorker.DoWork += new DoWorkEventHandler(ProgressWorker_DoWork);
+                    progressWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressWorker_ProgressChanged);
+                    progressWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ProgressWorker_RunWorkerCompleted);
+                    progressWorker.WorkerReportsProgress = true;
+                    UseWaitCursor = true;
+                    progressWorker.RunWorkerAsync();
+                    progressInformationDialog.ShowDialog(this);
+                    if (!progressInformationDialog.Result)
+                        return false;
+                }
+
                 return base.OnNavigating(navigationType);
             }
-            validateInfoDialog = new ProgressInformationDialog
+
+            progressInformationDialog = new ProgressInformationDialog
             {
                 Title = "Validating requirments"
             };
-            validateWorker = new BackgroundWorker();
-            validateWorker.DoWork += new DoWorkEventHandler(ValidateWorker_DoWork);
-            validateWorker.ProgressChanged += new ProgressChangedEventHandler(ValidateWorker_ProgressChanged);
-            validateWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ValidateWorker_RunWorkerCompleted);
-            validateWorker.WorkerReportsProgress = true;
+            progressWorker = new BackgroundWorker();
+            progressWorker.DoWork += new DoWorkEventHandler(ValidateWorker_DoWork);
+            progressWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressWorker_ProgressChanged);
+            progressWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ProgressWorker_RunWorkerCompleted);
+            progressWorker.WorkerReportsProgress = true;
             UseWaitCursor = true;
-            validateWorker.RunWorkerAsync();
-            validateInfoDialog.ShowDialog(this);
-            if (!validateInfoDialog.Result)
+            progressWorker.RunWorkerAsync();
+            progressInformationDialog.ShowDialog(this);
+            if (!progressInformationDialog.Result)
                 return false;
-            return base.OnNavigating(navigationType);
+
+            return false;
         }
 
         public override void OnActivated()
@@ -100,17 +122,22 @@ namespace ConfigMgr.QuickTools.DriverManager
             e.Result = ValidateConnections((BackgroundWorker)sender);
         }
 
-        private void ValidateWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void ProgressWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            validateInfoDialog.UpdateProgressText(e.UserState as string);
+            e.Result = GetDrivers((BackgroundWorker)sender);
         }
 
-        private void ValidateWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void ProgressWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            validateInfoDialog.Result = (bool)e.Result;
+            progressInformationDialog.UpdateProgressText(e.UserState as string);
+        }
+
+        private void ProgressWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressInformationDialog.Result = (bool)e.Result;
             valiadated = (bool)e.Result;
-            validateInfoDialog.UpdateProgressValue(100);
-            validateInfoDialog.CloseDialog();
+            progressInformationDialog.UpdateProgressValue(100);
+            progressInformationDialog.CloseDialog();
 
             try
             {
@@ -124,21 +151,21 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
             finally
             {
-                if (sender as BackgroundWorker == validateWorker)
+                if (sender as BackgroundWorker == progressWorker)
                 {
-                    validateWorker.Dispose();
-                    validateWorker = null;
+                    progressWorker.Dispose();
+                    progressWorker = null;
                     UseWaitCursor = false;
                 }
             }
         }
 
-        private bool ValidateConnections(BackgroundWorker validateWorker)
+        private bool ValidateConnections(BackgroundWorker progressWorker)
         {
             bool flag = false;
             try
             {
-                validateWorker.ReportProgress(0, "Validating connection to WMI");
+                progressWorker.ReportProgress(0, "Validating connection to WMI");
                 ConnectionOptions options = new ConnectionOptions
                 {
                     Authentication = AuthenticationLevel.PacketPrivacy,
@@ -163,12 +190,12 @@ namespace ConfigMgr.QuickTools.DriverManager
                 flag = false;
             }
 
-            if (validateInfoDialog.ReceivedRequestToClose)
+            if (progressInformationDialog.ReceivedRequestToClose)
                 return false;
 
             try
             {
-                validateWorker.ReportProgress(50, "Validating connection to ADMIN$ share");
+                progressWorker.ReportProgress(50, "Validating connection to ADMIN$ share");
                 CredentialCache netCache = new CredentialCache
                 {
                     { new Uri(string.Format(@"\\{0}\admin$", PropertyManager["Name"].StringValue)), "Digest", CredentialCache.DefaultNetworkCredentials }
@@ -185,7 +212,43 @@ namespace ConfigMgr.QuickTools.DriverManager
                 flag = false;
             }
 
-            validateWorker.ReportProgress(100, "Verification completed");
+            progressWorker.ReportProgress(100, "Verification completed");
+
+            return flag;
+        }
+
+        private bool GetDrivers(BackgroundWorker progressWorker)
+        {
+            bool flag = false;
+
+            progressWorker.ReportProgress(0, "Retrieving driver data from WMI");
+
+            ManagementScope scope = new ManagementScope();
+            try
+            {
+                scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, @"cimv2");
+            }
+            catch (IOException ex)
+            {
+                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+            }
+            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName != 'Microsoft' AND DriverProviderName IS NOT NULL");
+            //ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName IS NOT NULL");
+            signedDrivers = Utility.SearchWMIToList(scope, query);
+
+            progressWorker.ReportProgress(0, "Retrieving computer system data from WMI");
+            query = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
+            ManagementObject computerSystem = Utility.GetFirstWMIInstance(scope, query);
+
+            progressWorker.ReportProgress(0, "Retrieving operating system data from WMI");
+            query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            ManagementObject operatingSystem = Utility.GetFirstWMIInstance(scope, query);
+
+            UserData["SignedDrivers"] = signedDrivers;
+            UserData["ComputerSystem"] = computerSystem;
+            UserData["OperatingSystem"] = operatingSystem;
+
+            flag = true;
 
             return flag;
         }

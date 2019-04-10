@@ -3,7 +3,6 @@ using Microsoft.ConfigurationManagement.AdminConsole;
 using Microsoft.ConfigurationManagement.ManagementProvider;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using Microsoft.ConfigurationManagement.AdminConsole.Common;
-using Microsoft.ConfigurationManagement.AdminConsole.Schema;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

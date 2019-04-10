@@ -28,14 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelProcessingObject = new System.Windows.Forms.Label();
-            this.panelProcessing = new System.Windows.Forms.Panel();
-            this.progressBarObjects = new System.Windows.Forms.ProgressBar();
             this.textBoxDestination = new System.Windows.Forms.TextBox();
             this.labelPackage = new System.Windows.Forms.Label();
             this.buttonSelectAll = new System.Windows.Forms.Button();
             this.buttonDeselectAll = new System.Windows.Forms.Button();
-            this.panelComplete = new System.Windows.Forms.Panel();
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelDestination = new System.Windows.Forms.Label();
             this.dataGridViewDrivers = new System.Windows.Forms.DataGridView();
@@ -44,40 +40,8 @@
             this.columnDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnOEMInf = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelProcessing.SuspendLayout();
-            this.panelComplete.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDrivers)).BeginInit();
             this.SuspendLayout();
-            // 
-            // labelProcessingObject
-            // 
-            this.labelProcessingObject.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.labelProcessingObject.Location = new System.Drawing.Point(22, 95);
-            this.labelProcessingObject.Name = "labelProcessingObject";
-            this.labelProcessingObject.Size = new System.Drawing.Size(441, 170);
-            this.labelProcessingObject.TabIndex = 1;
-            this.labelProcessingObject.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // panelProcessing
-            // 
-            this.panelProcessing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.panelProcessing.Controls.Add(this.labelProcessingObject);
-            this.panelProcessing.Controls.Add(this.progressBarObjects);
-            this.panelProcessing.Location = new System.Drawing.Point(485, 0);
-            this.panelProcessing.Name = "panelProcessing";
-            this.panelProcessing.Size = new System.Drawing.Size(485, 360);
-            this.panelProcessing.TabIndex = 11;
-            this.panelProcessing.Visible = false;
-            // 
-            // progressBarObjects
-            // 
-            this.progressBarObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBarObjects.Location = new System.Drawing.Point(25, 33);
-            this.progressBarObjects.Name = "progressBarObjects";
-            this.progressBarObjects.Size = new System.Drawing.Size(438, 23);
-            this.progressBarObjects.TabIndex = 0;
             // 
             // textBoxDestination
             // 
@@ -121,22 +85,6 @@
             this.buttonDeselectAll.UseVisualStyleBackColor = true;
             this.buttonDeselectAll.Click += new System.EventHandler(this.ButtonSelect_Click);
             // 
-            // panelComplete
-            // 
-            this.panelComplete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.panelComplete.Controls.Add(this.labelDescription);
-            this.panelComplete.Controls.Add(this.labelDestination);
-            this.panelComplete.Controls.Add(this.textBoxDestination);
-            this.panelComplete.Controls.Add(this.labelPackage);
-            this.panelComplete.Controls.Add(this.buttonSelectAll);
-            this.panelComplete.Controls.Add(this.buttonDeselectAll);
-            this.panelComplete.Controls.Add(this.dataGridViewDrivers);
-            this.panelComplete.Location = new System.Drawing.Point(0, 0);
-            this.panelComplete.Name = "panelComplete";
-            this.panelComplete.Size = new System.Drawing.Size(485, 360);
-            this.panelComplete.TabIndex = 12;
-            this.panelComplete.Visible = false;
-            // 
             // labelDescription
             // 
             this.labelDescription.AutoSize = true;
@@ -148,6 +96,7 @@
             // 
             // labelDestination
             // 
+            this.labelDestination.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelDestination.AutoSize = true;
             this.labelDestination.Location = new System.Drawing.Point(101, 321);
             this.labelDestination.Name = "labelDestination";
@@ -161,7 +110,8 @@
             this.dataGridViewDrivers.AllowUserToDeleteRows = false;
             this.dataGridViewDrivers.AllowUserToOrderColumns = true;
             this.dataGridViewDrivers.AllowUserToResizeRows = false;
-            this.dataGridViewDrivers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewDrivers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewDrivers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDrivers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -213,33 +163,32 @@
             this.columnOEMInf.HeaderText = "OEMInf";
             this.columnOEMInf.Name = "columnOEMInf";
             this.columnOEMInf.Visible = false;
+            this.columnOEMInf.Width = 5;
             // 
             // DriverGrabberSelectPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panelProcessing);
-            this.Controls.Add(this.panelComplete);
+            this.Controls.Add(this.labelDescription);
+            this.Controls.Add(this.labelDestination);
+            this.Controls.Add(this.dataGridViewDrivers);
+            this.Controls.Add(this.textBoxDestination);
+            this.Controls.Add(this.buttonDeselectAll);
+            this.Controls.Add(this.labelPackage);
+            this.Controls.Add(this.buttonSelectAll);
             this.Name = "DriverGrabberSelectPage";
-            this.Size = new System.Drawing.Size(970, 360);
-            this.panelProcessing.ResumeLayout(false);
-            this.panelComplete.ResumeLayout(false);
-            this.panelComplete.PerformLayout();
+            this.Size = new System.Drawing.Size(485, 360);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDrivers)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label labelProcessingObject;
-        private System.Windows.Forms.Panel panelProcessing;
-        private System.Windows.Forms.ProgressBar progressBarObjects;
         private System.Windows.Forms.TextBox textBoxDestination;
         private System.Windows.Forms.Label labelPackage;
         private System.Windows.Forms.Button buttonSelectAll;
         private System.Windows.Forms.Button buttonDeselectAll;
-        private System.Windows.Forms.Panel panelComplete;
         private System.Windows.Forms.DataGridView dataGridViewDrivers;
         private System.Windows.Forms.Label labelDestination;
         private System.Windows.Forms.Label labelDescription;

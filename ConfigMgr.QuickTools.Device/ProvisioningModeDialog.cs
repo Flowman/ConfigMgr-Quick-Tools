@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Management;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace ConfigMgr.QuickTools.Device
 {

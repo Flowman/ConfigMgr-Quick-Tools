@@ -58,7 +58,6 @@ namespace ConfigMgr.QuickTools
 
         private void BackgroundWorker_QueryProcessorObjectsReady(object sender, QueryProcessorObjectsEventArgs e)
         {
-            ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "BackgroundWorker_QueryProcessorObjectsReady");
             if (e.ResultObjects == null)
                 return;
             foreach (IResultObject resultObject in e.ResultObjects)

@@ -1,7 +1,5 @@
 ﻿using ByteSizeLib;
 using Microsoft.ConfigurationManagement.AdminConsole;
-using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
-using Microsoft.ConfigurationManagement.AdminConsole.Common;
 using Microsoft.ConfigurationManagement.ManagementProvider;
 using Microsoft.Deployment.Compression;
 using Microsoft.Deployment.Compression.Cab;
@@ -16,18 +14,16 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class DellDriverPackCatalogPage : SmsPageControl
     {
         #region Private
+        private BackgroundWorker backgroundWorker;
         private ModifyRegistry registry = new ModifyRegistry();
         private WebClient webClient;
         private Queue<KeyValuePair<string, Uri>> _downloadUrls = new Queue<KeyValuePair<string, Uri>>();
-        private bool downloadedCatalog = false;
         private bool queueFinished = false;
-        private BackgroundWorker backgroundWorker;
         private Dictionary<string, string> error = new Dictionary<string, string>();
         private List<string> successful = new List<string>();
         private int totalPacks;
@@ -35,29 +31,20 @@ namespace ConfigMgr.QuickTools.DriverManager
         private string currentDownloadFileName;
         private string currentDownloadModel;
         private Dictionary<string, string> cabs = new Dictionary<string, string>();
-        private string previousOS;
-        private string previousArchitecture;
         #endregion
 
         public DellDriverPackCatalogPage(SmsPageData pageData)
             : base(pageData)
         {
-            FormTitle = "Dell Driver Pack";
             Title = "Select Driver Pack";
             Headline = "Select driver pack to download";
 
             InitializeComponent();
-
-            panelComplete.Dock = DockStyle.Bottom;
-            panelProcessing.Dock = DockStyle.Bottom;
         }
 
         public override void InitializePageControl()
         {
             base.InitializePageControl();
-
-            dataGridViewDriverPackages.Rows.Clear();
-            UtilitiesClass.UpdateDataGridViewColumnsSize(dataGridViewDriverPackages, columnPack);
 
             ControlsInspector.AddControl(dataGridViewDriverPackages, new ControlDataStateEvaluator(ValidateSelectedPack), "Select driver pack to download");
 
@@ -133,7 +120,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     }
                     catch (Exception ex)
                     {
-                        error.Add(item.Key, "Could extract driver pack: " + ex.Message);
+                        error.Add(item.Key, "Cannot extract driver pack: " + ex.Message);
                     }
                     ++num;
                 }
@@ -222,73 +209,17 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         public override void OnActivated()
         {
-            if (downloadedCatalog && (previousArchitecture != UserData["Architecture"].ToString() || previousOS != UserData["OS"].ToString()))
-            {
-                ProcessCatalog();
-            }
-            else if (downloadedCatalog == false)
-            {
-                panelComplete.Visible = false;
-                panelProcessing.Visible = true;
-
-                Uri DellXMLCabinetSource = new Uri(registry.Read("DellCatalogURI"));
-                string tempFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
-
-                webClient = new WebClient();
-                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Download_AsyncCompleted);
-                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(Download_ProgressChanged);
-                webClient.DownloadFileAsync(DellXMLCabinetSource, tempFile);
-
-                progressBarObjects.Value = 0;
-                UseWaitCursor = true;
-            }
-
-            previousArchitecture = UserData["Architecture"].ToString();
-            previousOS = UserData["OS"].ToString();
-
             base.OnActivated();
+
+            ProcessCatalog();
+
+            Utility.UpdateDataGridViewColumnsSize(dataGridViewDriverPackages, columnPack);
         }
 
         public override bool OnDeactivate()
         {
             dataGridViewDriverPackages.EndEdit();
             return base.OnDeactivate();
-        }
-
-        private void Download_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            progressBarObjects.Value = e.ProgressPercentage;
-            labelProcessingObject.Text = (e.UserState as string);
-        }
-
-        private void Download_AsyncCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            try
-            {
-                if (e.Error != null)
-                {
-                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
-                    {
-                        sccmExceptionDialog.ShowDialog();
-                    }
-                }
-                else
-                {
-                    downloadedCatalog = true;
-                    ProcessCatalog();
-                }
-            }
-            finally
-            {
-                if (sender as WebClient == webClient)
-                {
-                    webClient.Dispose();
-                    webClient = null;
-                    UseWaitCursor = false;
-                    panelComplete.Visible = true;
-                    panelProcessing.Visible = false;
-                }
-            }
         }
 
         private void ProcessCatalog()

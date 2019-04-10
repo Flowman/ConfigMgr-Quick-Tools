@@ -28,9 +28,8 @@ namespace ConfigMgr.QuickTools
             }
         }
 
-        public static bool AddObjectToFolder(ConnectionManagerBase connectionManager, string folderName, string objectId, int objectType, out IResultObject folder)
+        public static bool AddObjectToFolder(ConnectionManagerBase connectionManager, string folderName, string objectId, int objectType)
         {
-            folder = null;
             try
             {
                 IResultObject resultObject1;
@@ -95,7 +94,6 @@ namespace ConfigMgr.QuickTools
                 resultObject4["ContainerNodeID"].IntegerValue = nullable.Value;
                 resultObject4.Put();
                 resultObject4.Get();
-                folder = resultObject2;
                 return true;
             }
             catch (Exception ex)
@@ -127,7 +125,7 @@ namespace ConfigMgr.QuickTools
             return text;
         }
 
-        public static string CreateMd5ForFolder(string path)
+        public static string CreateMd5ForFolderLegacy(string path)
         {
             // assuming you want to include nested folders
             var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(name => !name.EndsWith(".hash")).OrderBy(p => p).ToList();
@@ -149,6 +147,39 @@ namespace ConfigMgr.QuickTools
                 return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(hash))).Replace("-", "");
             }
             return "no_files";
+        }
+
+        public static string CreateMd5ForFolder(string path)
+        {
+            // assuming you want to include nested folders
+            List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(name => !name.EndsWith(".hash")).OrderBy(p => p).ToList();
+            // create a temp file with all the files as content
+            string tempHashFile = Path.Combine(Path.GetTempPath(), RandomString(16, false) + ".hash");
+
+            string hash = null;
+
+            MD5 md5 = MD5.Create();
+
+            if (files.Count > 0)
+            {
+                // create a new file     
+                using (FileStream fs = File.Create(tempHashFile))
+                {
+                    StreamWriter writer = new StreamWriter(fs);
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        string file = files[i];
+                        string content = file + " " + file.Length + Environment.NewLine;
+                        writer.Write(content);
+                    }
+                    writer.Close();
+                }
+
+                hash = BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(File.ReadAllText(tempHashFile)))).Replace("-", "");
+                File.Delete(tempHashFile);
+            }
+
+            return hash;
         }
 
         public static ManagementScope GetWMIScope(string host, string space, string username = null, string password = null)
@@ -263,7 +294,7 @@ namespace ConfigMgr.QuickTools
             return (ManagementObject)enu.Current;    
         }
 
-        internal static void RequestLock(ConnectionManagerBase connectionManager, string objectPath)
+        public static void RequestLock(ConnectionManagerBase connectionManager, string objectPath)
         {
             if (connectionManager == null)
                 throw new ArgumentNullException("connectionManager");
@@ -307,7 +338,7 @@ namespace ConfigMgr.QuickTools
             }
         }
 
-        internal static void ReleaseLock(ConnectionManagerBase connectionManager, string objectPath)
+        public static void ReleaseLock(ConnectionManagerBase connectionManager, string objectPath)
         {
             if (connectionManager == null)
                 throw new ArgumentNullException("connectionManager");
@@ -368,7 +399,7 @@ namespace ConfigMgr.QuickTools
             int num = dataGridView.Width - dataGridView.Margin.Left - dataGridView.Margin.Right;
             foreach (DataGridViewColumn dataGridViewColumn in dataGridView.Columns)
             {
-                if (dataGridViewColumn != targetColumn)
+                if (dataGridViewColumn != targetColumn && dataGridViewColumn.Visible == true)
                     num -= dataGridViewColumn.Width;
             }
 
@@ -380,6 +411,21 @@ namespace ConfigMgr.QuickTools
             if (num >= dataGridView.Width - dataGridView.Margin.Left - dataGridView.Margin.Right || num <= targetColumn.MinimumWidth)
                 return;
             targetColumn.Width = num;
+        }
+
+        public static string RandomString(int size, bool lowerCase)
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+            if (lowerCase)
+                return builder.ToString().ToLower();
+            return builder.ToString();
         }
     }
 

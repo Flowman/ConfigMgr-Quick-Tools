@@ -1,5 +1,4 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
-using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -11,15 +10,12 @@ using IniParser;
 using IniParser.Model;
 using System.Management;
 using System.Collections.Generic;
-using Microsoft.ConfigurationManagement.AdminConsole.Common;
-using Microsoft.ConfigurationManagement.ManagementProvider;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class DriverGrabberSelectPage : SmsPageControl
     {
         #region Private
-        private BackgroundWorker processWorker;
         private ModifyRegistry registry = new ModifyRegistry();
         private string architecture = null;
         #endregion
@@ -31,36 +27,19 @@ namespace ConfigMgr.QuickTools.DriverManager
             Headline = "Select drivers to capture";
 
             InitializeComponent();
-
-            panelComplete.Dock = DockStyle.Bottom;
-            panelProcessing.Dock = DockStyle.Bottom;
         }
 
         public override void InitializePageControl()
         {
             base.InitializePageControl();
 
-            dataGridViewDrivers.Rows.Clear();
-            UtilitiesClass.UpdateDataGridViewColumnsSize(dataGridViewDrivers, columnProvider);
-
             labelDestination.Text = registry.Read("DriverSourceFolder");
 
             ControlsInspector.AddControl(dataGridViewDrivers, new ControlDataStateEvaluator(ValidateSelectedDrivers), "Select drivers to capture");
 
-            panelComplete.Visible = false;
-            panelProcessing.Visible = true;
+            Initialized = false;
 
-            processWorker = new BackgroundWorker();
-            processWorker.DoWork += new DoWorkEventHandler(ProcessWorker_DoWork);
-            processWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ProcessWorker_RunWorkerCompleted);
-            processWorker.ProgressChanged += new ProgressChangedEventHandler(ProcessWorker_ProgressChanged);
-            processWorker.WorkerSupportsCancellation = true;
-            processWorker.WorkerReportsProgress = true;
-            progressBarObjects.Value = 0;
-            textBoxDestination.Text = null;
-            UseWaitCursor = true;
-            processWorker.RunWorkerAsync();
-            Initialized = true;
+            InitializeDataGridView();
         }
 
         protected override void ApplyChanges()
@@ -124,7 +103,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                         IniData iniData = parser.ReadFile(inf);
 
-                        string catalogFile = getCatalog(iniData);
+                        string catalogFile = GetCatalog(iniData);
 
                         foreach (string file in Directory.GetFiles(Path.Combine(remoteFolder, @"System32\DriverStore\FileRepository"), catalogFile, SearchOption.AllDirectories))
                         {
@@ -254,6 +233,8 @@ namespace ConfigMgr.QuickTools.DriverManager
         public override void OnActivated()
         {
             base.OnActivated();
+
+            Utility.UpdateDataGridViewColumnsSize(dataGridViewDrivers, columnProvider);
         }
 
         public override bool OnDeactivate()
@@ -262,31 +243,12 @@ namespace ConfigMgr.QuickTools.DriverManager
             return base.OnDeactivate();
         }
 
-        private void ProcessWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void InitializeDataGridView()
         {
-            BackgroundWorker backgroundWorker = sender as BackgroundWorker;
-            ManagementScope scope = new ManagementScope();
+            List<ManagementObject> signedDrivers = (List<ManagementObject>)UserData["SignedDrivers"];
 
-            backgroundWorker.ReportProgress(0, "Connecting ...");
-
-            try
-            {
-                scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, @"cimv2");
-            }
-            catch (IOException ex)
-            {
-                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
-            }
-
-            backgroundWorker.ReportProgress(33, "Getting driver data from WMI");
-
-            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName != 'Microsoft' AND DriverProviderName IS NOT NULL");
-            //ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName IS NOT NULL");
-            List<ManagementObject> signedDriver = Utility.SearchWMIToList(scope, query);
-
-            backgroundWorker.ReportProgress(66, "Processing driver data");
-
-            foreach (ManagementObject item in signedDriver)
+            dataGridViewDrivers.Rows.Clear();
+            foreach (ManagementObject item in signedDrivers)
             {
                 string provider = (string)item["DriverProviderName"];
                 string description = (string)item["DeviceName"];
@@ -310,14 +272,9 @@ namespace ConfigMgr.QuickTools.DriverManager
                     dataGridViewDrivers.Rows.Add(dataGridViewRow);
                 }
             }
-
-            query = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
-            ManagementObject computerSystem = Utility.GetFirstWMIInstance(scope, query);
-
-            query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            ManagementObject operatingSystem = Utility.GetFirstWMIInstance(scope, query);
-
+  
             string osName;
+            ManagementObject operatingSystem = (ManagementObject)UserData["OperatingSystem"];
 
             string currentversion = (string)operatingSystem["Version"];
             string v2 = "10.0";
@@ -355,6 +312,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 architecture = "x86";
 
             string structure = registry.Read("LegacyFolderStructure");
+            ManagementObject computerSystem = (ManagementObject)UserData["ComputerSystem"];
 
             if (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
             {
@@ -365,42 +323,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 textBoxDestination.Text = string.Format(@"{0}-{1}-{2}-{3}", ((string)computerSystem["Manufacturer"]).Trim(), ((string)computerSystem["Model"]).Trim(), osName, architecture);
             }
 
-            backgroundWorker.ReportProgress(100, "Completed");
-        }
-
-        private void ProcessWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if ((sender as BackgroundWorker).CancellationPending)
-                return;
-            progressBarObjects.Value = e.ProgressPercentage;
-            labelProcessingObject.Text = (e.UserState as string);
-        }
-
-        private void ProcessWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            try
-            {
-                if (e.Error != null)
-                {
-                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
-                    {
-                        sccmExceptionDialog.ShowDialog();
-                    }
-                }
-                else
-                    Initialized = true;
-            }
-            finally
-            {
-                if (sender as BackgroundWorker == processWorker)
-                {
-                    processWorker.Dispose();
-                    processWorker = null;
-                    UseWaitCursor = false;
-                    panelComplete.Visible = true;
-                    panelProcessing.Visible = false;
-                }
-            }
+            Initialized = true;
         }
 
         private ControlDataState ValidateSelectedDrivers()
@@ -425,7 +348,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             return false;
         }
 
-        private string getCatalog(IniData Data)
+        private string GetCatalog(IniData Data)
         {
             string catalogFile = null;
             try
@@ -455,10 +378,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 if (catalogFile == null)
                     catalogFile = Data["Version"]["CatalogFile"];
             }
-            catch
-            {
-
-            }
+            catch { }
 
             return catalogFile;
         }

@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    class Driver
+    internal class Driver
     {
         #region Private
         private IniData data;
@@ -24,7 +24,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         public string InfLocation { get; private set; }
 
         public Exception Exception { get; private set; }
-        public bool HasError { get { return Exception == null ? false : true; } }
+        public bool HasException { get { return Exception == null ? false : true; } }
         public Exception Warning { get; private set; }
         public bool HasWarning { get { return Warning == null ? false : true; } }
         #endregion
@@ -90,12 +90,14 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
             catch (SmsQueryException ex)
             {
+                // error 183 = driver exist, check if source content is ok.
                 if (ex.ExtendStatusErrorCode == 183)
                 {
                     if (ex.InnerException is ManagementException managementException)
                     {
                         try
                         {
+                            // update content source path if it dose not exist
                             string query = string.Format("SELECT * FROM SMS_Driver WHERE CI_UniqueID='{0}'", managementException.ErrorInformation["ObjectInfo"].ToString());
                             instance = Utility.GetFirstWMIInstance(connectionManager, query);
 
