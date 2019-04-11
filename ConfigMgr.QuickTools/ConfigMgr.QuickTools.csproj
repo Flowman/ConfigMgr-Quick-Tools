@@ -41,6 +41,10 @@
     <Reference Include="AdminUI.DialogFoundation">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.DialogFoundation.dll</HintPath>
     </Reference>
+    <Reference Include="AdminUI.OsdCommon, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.OsdCommon.dll</HintPath>
+    </Reference>
     <Reference Include="AdminUI.WqlQueryEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll</HintPath>
     </Reference>
