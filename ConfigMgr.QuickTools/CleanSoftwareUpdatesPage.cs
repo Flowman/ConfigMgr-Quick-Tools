@@ -26,6 +26,8 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             Headline = "Clean up selected software updates from groups";
 
             InitializeComponent();
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()

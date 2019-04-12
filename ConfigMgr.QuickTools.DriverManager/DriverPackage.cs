@@ -60,7 +60,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             Source = source;
             Target = target;
 
-            Hash = Utility.CreateMd5ForFolder(Source);
+            Hash = Utility.CreateHashForFolder(Source);
             Import = !File.Exists(Path.Combine(Source, Hash + ".hash"));
             string[] infFiles = Directory.GetFiles(Source, "*.inf", SearchOption.AllDirectories);
             Infs = infFiles.Where(x => Path.GetFileName(x) != "autorun.inf").ToArray();

@@ -12,6 +12,8 @@ namespace ConfigMgr.QuickTools.Device
 {
     public static class ClientActions
     {
+        private static bool fullScan = false;
+
         public static void RunClientActionMachinePolicy(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
         {
             ProcessClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000021}");
@@ -39,7 +41,8 @@ namespace ConfigMgr.QuickTools.Device
 
         public static void RunClientActionFullHardwareInventory(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
         {
-            ProcessClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000001}", true);
+            fullScan = true;
+            ProcessClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000001}");
         }
 
         public static void RunClientActionSoftwareInventory(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
@@ -72,7 +75,7 @@ namespace ConfigMgr.QuickTools.Device
             ProcessClientAction(scopeNode, action, selectedResultObjects, "{00000000-0000-0000-0000-000000000032}");
         }
 
-        public static void ClientAction(IResultObject resultObject, string scheduleId, bool fullScan)
+        public static void ClientAction(IResultObject resultObject, string scheduleId)
         {       
             try
             {
@@ -122,11 +125,6 @@ namespace ConfigMgr.QuickTools.Device
 
         private static void ProcessClientAction(ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, string schedulerId)
         {
-            ProcessClientAction(scopeNode, action, selectedResultObjects, schedulerId, false);
-        }
-
-        private static void ProcessClientAction(ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, string schedulerId, bool full)
-        {
             if (selectedResultObjects.ObjectClass == "SMS_Collection")
             {
                 ConnectionManagerBase connectionManagerInstance = (scopeNode as ConsoleParentNode).RootConnectionNode.GetConnectionManagerInstance("WQL");
@@ -136,8 +134,9 @@ namespace ConfigMgr.QuickTools.Device
                     string query = string.Format("SELECT * FROM SMS_FullCollectionMembership WHERE CollectionID='{0}'", selectedResultObjects["CollectionID"].StringValue);
                     using (IResultObject resultObject = connectionManagerInstance.QueryProcessor.ExecuteQuery(query))
                     {
-                        using (ClientActionsDialog clientActions = new ClientActionsDialog(resultObject, schedulerId, action, full))
+                        using (ClientActionsDialog clientActions = new ClientActionsDialog(resultObject, schedulerId, action))
                         {
+                            clientActions.FullScan = fullScan;
                             clientActions.ShowDialog(SnapIn.Console);
                             return;
                         }
@@ -155,17 +154,20 @@ namespace ConfigMgr.QuickTools.Device
             {
                 foreach (IResultObject resultObject in selectedResultObjects)
                 {
-                    ThreadPool.QueueUserWorkItem(arg => { ClientAction(resultObject, schedulerId, full); });
+                    ThreadPool.QueueUserWorkItem(arg => { ClientAction(resultObject, schedulerId); });
                 }
             }
             else
             {
-                using (ClientActionsDialog clientActions = new ClientActionsDialog(selectedResultObjects, schedulerId, action, full))
+                using (ClientActionsDialog clientActions = new ClientActionsDialog(selectedResultObjects, schedulerId, action))
                 {
+                    clientActions.FullScan = fullScan;
                     clientActions.ShowDialog(SnapIn.Console);
                     return;
                 }
             }
+
+            fullScan = false;
         }
 
         public static void RunClientActionRestartService(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)

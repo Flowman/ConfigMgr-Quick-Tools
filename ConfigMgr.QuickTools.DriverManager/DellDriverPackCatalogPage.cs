@@ -88,7 +88,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 worker.ReportProgress(50, "Extracting Driver Packs ...");
 
-                string destination = registry.Read("DriverSourceFolder");
+                string destination = registry.ReadString("DriverSourceFolder");
                 int num = 0;
                 foreach (KeyValuePair<string, string> item in cabs)
                 {
@@ -101,7 +101,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                         string os = string.Format("Win{0}", UserData["OS"].ToString().Split(' ')[1].Replace(".", ""));
                         string folderName = null;
 
-                        string structure = registry.Read("LegacyFolderStructure");
+                        string structure = registry.ReadString("LegacyFolderStructure");
 
                         if (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
                         {
@@ -293,7 +293,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 Uri url = data.Value;
                 string filename = Path.GetFileName(url.LocalPath);
 
-                currentDownloadFileName = Path.Combine(registry.Read("TempDownloadPath"), filename);
+                currentDownloadFileName = Path.Combine(registry.ReadString("TempDownloadPath"), filename);
                 currentDownloadModel = data.Key;
                 // enable https downloads
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

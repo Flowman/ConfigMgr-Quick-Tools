@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class OptionsControl : SmsPageControl
@@ -23,12 +22,10 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.InitializePageControl();
 
-            browseFolderControlSource.Controls.OfType<SmsOsdTextBox>().First().Text = registry.Read("DriverSourceFolder");
-            browseFolderControlPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.Read("DriverPackageFolder");
+            browseFolderControlSource.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("DriverSourceFolder");
+            browseFolderControlPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("DriverPackageFolder");
 
-            string structure = registry.Read("LegacyFolderStructure");
-
-            checkBoxLegacyFolder.Checked = string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure);
+            checkBoxLegacyFolder.Checked = registry.ReadBool("LegacyFolderStructure");
 
             ControlsInspector = new ControlsInspector();
             controlsValidator = new ControlsValidator(ControlsInspector);

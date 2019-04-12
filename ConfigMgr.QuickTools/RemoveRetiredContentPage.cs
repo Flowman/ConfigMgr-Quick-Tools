@@ -12,7 +12,6 @@ using System.Collections;
 using System.Management;
 using System.Globalization;
 
-
 namespace ConfigMgr.QuickTools
 {
     public partial class RemoveRetiredContentPage : SmsPageControl
@@ -29,6 +28,8 @@ namespace ConfigMgr.QuickTools
             Headline = "Remove content from retired applications";
             Title = "Select Applications";
             FormTitle = "Clean Up Retired Content";
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()

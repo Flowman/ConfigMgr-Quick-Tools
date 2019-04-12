@@ -5,7 +5,8 @@
     <Pages>
       <Page VendorId="Otherland" Id="{7E10C0A1-519B-4335-AB3A-3EE3519B84FD}" Assembly="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager" Type="OptionsControl" ReadOnly="false" MultiSelection="false" Visible="false" />
       <Page VendorId="Otherland" Id="{A89610A1-5E05-4672-8BB3-A1667E8B6213}" Assembly="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager" Type="OptionsCatalogControl" ReadOnly="false" MultiSelection="false" Visible="false" />      
-      <Page VendorId="Otherland" Id="{96853E7B-204A-4B36-834B-CF4EC1B0EE7B}" Assembly="ConfigMgr.QuickTools.Warranty" Namespace="ConfigMgr.QuickTools.Warranty" Type="OptionsControl" ReadOnly="false" MultiSelection="false" Visible="false" />      
+      <Page VendorId="Otherland" Id="{96853E7B-204A-4B36-834B-CF4EC1B0EE7B}" Assembly="ConfigMgr.QuickTools.Warranty" Namespace="ConfigMgr.QuickTools.Warranty" Type="OptionsControl" ReadOnly="false" MultiSelection="false" Visible="false" /> 
+	  <Page VendorId="Otherland" Id="{65315B3A-6B71-4A57-95FD-B2F3536AB493}" Assembly="ConfigMgr.QuickTools" Namespace="ConfigMgr.QuickTools" Type="OptionsControl" ReadOnly="false" MultiSelection="false" Visible="false" /> 
     </Pages>
   </Form>
 </SmsFormData>

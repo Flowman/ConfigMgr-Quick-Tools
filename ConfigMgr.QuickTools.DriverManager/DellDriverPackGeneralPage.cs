@@ -31,6 +31,8 @@ namespace ConfigMgr.QuickTools.DriverManager
             InitializeComponent();
 
             pageData.ProgressBarStyle = ProgressBarStyle.Continuous;
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()
@@ -91,19 +93,19 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             StringBuilder sb = new StringBuilder();
 
-            if (string.IsNullOrEmpty(registry.Read("DriverSourceFolder")))
+            if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
                 sb.AppendLine("No driver source structure specified!");
             }
 
-            if (string.IsNullOrEmpty(registry.Read("TempDownloadPath")))
+            if (string.IsNullOrEmpty(registry.ReadString("TempDownloadPath")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
                 sb.AppendLine("No temporary download folder specified!");
             }
 
-            if (string.IsNullOrEmpty(registry.Read("DellCatalogURI")))
+            if (string.IsNullOrEmpty(registry.ReadString("DellCatalogURI")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
                 sb.AppendLine("No Dell Catalog URL specified!");
@@ -166,7 +168,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             if (downloadedCatalog == false)
             {
-                Uri DellXMLCabinetSource = new Uri(registry.Read("DellCatalogURI"));
+                Uri DellXMLCabinetSource = new Uri(registry.ReadString("DellCatalogURI"));
                 string tempFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
 
                 using (WebClient client = new WebClient())

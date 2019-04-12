@@ -35,7 +35,7 @@ namespace ConfigMgr.QuickTools.Warranty
         {
             base.InitializePageControl();
 
-            if (string.IsNullOrEmpty(registry.Read("DellApiKey")) || string.IsNullOrEmpty(registry.Read("DellAPIURI")))
+            if (string.IsNullOrEmpty(registry.ReadString("DellApiKey")) || string.IsNullOrEmpty(registry.ReadString("DellAPIURI")))
             {
                 labelHttpResponse.Text = "No Dell TechDirect API key set in options";
                 buttonSURefresh.Enabled = false;
@@ -100,11 +100,11 @@ namespace ConfigMgr.QuickTools.Warranty
                         {
                             labelHttpResponse.Text = "Requesting data from API";
 
-                            client.BaseAddress = new Uri(registry.Read("DellAPIURI"));
+                            client.BaseAddress = new Uri(registry.ReadString("DellAPIURI"));
                             client.DefaultRequestHeaders.Accept.Clear();
                             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
-                            HttpResponseMessage response = await client.GetAsync(string.Format("getassetwarranty/{0}?apikey={1}", serviceTag, registry.Read("DellApiKey")));
+                            HttpResponseMessage response = await client.GetAsync(string.Format("getassetwarranty/{0}?apikey={1}", serviceTag, registry.ReadString("DellApiKey")));
                             if (response.IsSuccessStatusCode)
                             {
                                 labelHttpResponse.Text = "Success";

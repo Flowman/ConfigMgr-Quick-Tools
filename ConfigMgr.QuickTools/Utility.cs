@@ -125,31 +125,7 @@ namespace ConfigMgr.QuickTools
             return text;
         }
 
-        public static string CreateMd5ForFolderLegacy(string path)
-        {
-            // assuming you want to include nested folders
-            var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(name => !name.EndsWith(".hash")).OrderBy(p => p).ToList();
-
-            string hash = null;
-
-            MD5 md5 = MD5.Create();
-
-            if (files.Count > 0)
-            {
-                for (int i = 0; i < files.Count; i++)
-                {
-                    string file = files[i];
-
-                    // hash contents
-                    string content = file + file.Length;
-                    hash += BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(content))).Replace("-", "");
-                }
-                return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(hash))).Replace("-", "");
-            }
-            return "no_files";
-        }
-
-        public static string CreateMd5ForFolder(string path)
+        public static string CreateHashForFolder(string path)
         {
             // assuming you want to include nested folders
             List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(name => !name.EndsWith(".hash")).OrderBy(p => p).ToList();
@@ -158,25 +134,27 @@ namespace ConfigMgr.QuickTools
 
             string hash = null;
 
-            MD5 md5 = MD5.Create();
-
-            if (files.Count > 0)
+            using (SHA256 shaHash = SHA256.Create())
             {
-                // create a new file     
-                using (FileStream fs = File.Create(tempHashFile))
+                if (files.Count > 0)
                 {
-                    StreamWriter writer = new StreamWriter(fs);
-                    for (int i = 0; i < files.Count; i++)
+                    // create a new file     
+                    using (FileStream fs = File.Create(tempHashFile))
                     {
-                        string file = files[i];
-                        string content = file + " " + file.Length + Environment.NewLine;
-                        writer.Write(content);
+                        StreamWriter writer = new StreamWriter(fs);
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            string file = files[i];
+                            string content = file + " " + file.Length + Environment.NewLine;
+                            writer.Write(content);
+                        }
+                        writer.Close();
                     }
-                    writer.Close();
-                }
+                    shaHash.ComputeHash(Encoding.UTF8.GetBytes(File.ReadAllText(tempHashFile)));
+                    hash = BitConverter.ToString(shaHash.Hash).Replace("-", "");
 
-                hash = BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(File.ReadAllText(tempHashFile)))).Replace("-", "");
-                File.Delete(tempHashFile);
+                    File.Delete(tempHashFile);
+                }
             }
 
             return hash;
@@ -434,44 +412,74 @@ namespace ConfigMgr.QuickTools
         public string SubKey { get; set; } = "SOFTWARE\\Microsoft\\ConfigMgr10\\QuickTools";
         public RegistryKey BaseRegistryKey { get; set; } = Registry.CurrentUser;
 
-        public string Read(string KeyName)
+        protected object Read(string KeyName)
         {
-            // Opening the registry key
-            RegistryKey rk = BaseRegistryKey;
-            // Open a subKey as read-only
-            RegistryKey sk1 = rk.OpenSubKey(SubKey);
-            // If the RegistrySubKey doesn't exist -> (null)
-            if (sk1 == null)
+            object result = default(object);
+
+            try
             {
-                return null;
+                RegistryKey rk = BaseRegistryKey;
+                RegistryKey sk1 = rk.OpenSubKey(SubKey);
+
+                return sk1 == null ? result : sk1.GetValue(KeyName);
             }
-            else
+            catch (Exception) { }
+
+            return result;
+        }
+
+        public int ReadInt(string KeyName)
+        {
+            object obj = Read(KeyName);
+
+            return obj != null ? int.Parse(obj.ToString()) : 0;
+        }
+
+        public double? ReadDouble(string KeyName)
+        {
+            object obj = Read(KeyName);
+            double? result = null;
+            if (obj != null)
             {
-                try
-                {
-                    // If the RegistryKey exists I get its value
-                    // or null is returned.
-                    return (string)sk1.GetValue(KeyName);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                result = double.Parse(obj.ToString());
             }
+
+            return result;
+        }
+
+        public bool ReadBool(string KeyName)
+        {
+            bool result = default(bool);
+            string resultStr = (string)Read(KeyName);
+            if (!string.IsNullOrEmpty(resultStr))
+            {
+                result = bool.Parse(resultStr);
+            }
+
+            return result;
+        }
+
+        public string ReadString(string KeyName)
+        {
+            string result = string.Empty;
+            string resultStr = (string)Read(KeyName);
+            if (!string.IsNullOrEmpty(resultStr))
+            {
+                result = resultStr;
+            }
+
+            return result;
         }
 
         public bool Write(string KeyName, object Value)
         {
             try
             {
-                // Setting
-                RegistryKey rk = BaseRegistryKey;
-                // I have to use CreateSubKey 
-                // (create or open it if already exits), 
-                // 'cause OpenSubKey open a subKey as read-only
-                RegistryKey sk1 = rk.CreateSubKey(SubKey);
-                // Save the value
-                sk1.SetValue(KeyName, Value);
+                using (RegistryKey rk = BaseRegistryKey)
+                {
+                    RegistryKey sk1 = rk.CreateSubKey(SubKey);
+                    sk1.SetValue(KeyName, Value);
+                }
 
                 return true;
             }

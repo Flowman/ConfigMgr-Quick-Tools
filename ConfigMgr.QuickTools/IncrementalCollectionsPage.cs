@@ -26,6 +26,8 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             Headline = "Disable incremental updates for selected collections";
 
             InitializeComponent();
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()

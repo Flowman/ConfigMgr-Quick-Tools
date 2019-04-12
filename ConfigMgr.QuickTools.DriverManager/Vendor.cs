@@ -16,7 +16,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         #region State
         public string Name { get; private set; }
         public List<DriverPackage> Packages { get; private set; } = new List<DriverPackage>();
-        public string PackageLocation { get; private set; } = registry.Read("DriverPackageFolder");
+        public string PackageLocation { get; private set; } = registry.ReadString("DriverPackageFolder");
         public string SourceLocation { get; private set; }
         public int ProgressStart { get; set; } = 0;
         public int TotalVendors { get; set; } = 1;

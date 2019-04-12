@@ -18,6 +18,8 @@ namespace ConfigMgr.QuickTools.Device
             InitializeComponent();
             resultObjects = selectedResultObjects;
             Title = action.DisplayName + ": " + resultObjects["Name"].StringValue;
+
+            Updater.CheckUpdates();
         }
 
         public static void Show(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedObject, PropertyDataUpdated dataUpdatedDelegate, Status Status)

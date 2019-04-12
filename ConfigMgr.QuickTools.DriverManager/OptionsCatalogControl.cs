@@ -24,19 +24,19 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.InitializePageControl();
 
-            if (string.IsNullOrEmpty(registry.Read("DellCatalogURI")))
+            if (string.IsNullOrEmpty(registry.ReadString("DellCatalogURI")))
             {
                 registry.Write("DellCatalogURI", "http://downloads.dell.com/catalog/DriverPackCatalog.cab");
             }
 
-            if (string.IsNullOrEmpty(registry.Read("TempDownloadPath")))
+            if (string.IsNullOrEmpty(registry.ReadString("TempDownloadPath")))
             {
                 registry.Write("TempDownloadPath", Path.GetTempPath());
             }
 
-            textBoxDellCatalogUri.Text = registry.Read("DellCatalogURI");
+            textBoxDellCatalogUri.Text = registry.ReadString("DellCatalogURI");
 
-            browseFolderControlDownload.Controls.OfType<SmsOsdTextBox>().First().Text = registry.Read("TempDownloadPath");
+            browseFolderControlDownload.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("TempDownloadPath");
 
             ControlsInspector = new ControlsInspector();
             controlsValidator = new ControlsValidator(ControlsInspector);

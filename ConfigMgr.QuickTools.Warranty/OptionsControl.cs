@@ -19,13 +19,13 @@ namespace ConfigMgr.QuickTools.Warranty
         {
             base.InitializePageControl();
 
-            if (string.IsNullOrEmpty(registry.Read("DellAPIURI")))
+            if (string.IsNullOrEmpty(registry.ReadString("DellAPIURI")))
             {
                 registry.Write("DellAPIURI", "https://api.dell.com/support/assetinfo/v4/");
             }
 
-            textBoxAPIUri.Text = registry.Read("DellAPIURI");
-            textBoxAPIKey.Text = registry.Read("DellAPIKey");
+            textBoxAPIUri.Text = registry.ReadString("DellAPIURI");
+            textBoxAPIKey.Text = registry.ReadString("DellAPIKey");
 
             Dirty = false;
 

@@ -27,6 +27,8 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             controlsInspector.InspectAll();
 
             Title = "Add Resources to Collection";
+
+            Updater.CheckUpdates();
         }
 
         private ControlDataState ValidateResourceValue()

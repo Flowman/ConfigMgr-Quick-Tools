@@ -14,7 +14,6 @@ namespace ConfigMgr.QuickTools.Device
     {
         private IResultObject resultObjects;
         private string scheduleId;
-        private bool fullScan;
         private int completed;
         private int offline;
         private int failed;
@@ -23,15 +22,17 @@ namespace ConfigMgr.QuickTools.Device
         private CancellationTokenSource cts;
 
         public delegate void BarDelegate();
+        public bool FullScan { get; set; }
 
-        public ClientActionsDialog(IResultObject selectedResultObjects, string id, ActionDescription action, bool full)
+        public ClientActionsDialog(IResultObject selectedResultObjects, string id, ActionDescription action)
         {
             InitializeComponent();
 
             resultObjects = selectedResultObjects;
             scheduleId = id;
-            fullScan = full;
             Title = action.DisplayName;
+
+            Updater.CheckUpdates();
         }
 
         private void ClientActionsDialog_Shown(object sender, EventArgs e)
@@ -83,7 +84,7 @@ namespace ConfigMgr.QuickTools.Device
                 {
                     Timeout = new TimeSpan(0, 0, 5)
                 };
-                if (fullScan)
+                if (FullScan)
                 {
                     ManagementScope inventoryAgentScope = new ManagementScope(string.Format(@"\\{0}\root\{1}", resultObject["Name"].StringValue, "ccm\\InvAgt"));
                     using (ManagementClass inventoryClass = new ManagementClass(inventoryAgentScope.Path.Path, "InventoryActionStatus", o))

@@ -33,7 +33,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.InitializePageControl();
 
-            labelDestination.Text = registry.Read("DriverSourceFolder");
+            labelDestination.Text = registry.ReadString("DriverSourceFolder");
 
             ControlsInspector.AddControl(dataGridViewDrivers, new ControlDataStateEvaluator(ValidateSelectedDrivers), "Select drivers to capture");
 
@@ -147,6 +147,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                     {
                         error.Add("Could not capture driver: " + ex.Message, driver["DeviceName"].ToString());
                     }
+
+                    num++;
                 }
 
                 PrepareCompletion(successful, error);
@@ -311,10 +313,9 @@ namespace ConfigMgr.QuickTools.DriverManager
             else
                 architecture = "x86";
 
-            string structure = registry.Read("LegacyFolderStructure");
             ManagementObject computerSystem = (ManagementObject)UserData["ComputerSystem"];
 
-            if (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
+            if (registry.ReadBool("LegacyFolderStructure"))
             {
                 textBoxDestination.Text = string.Format(@"{0}\{1}\{2}-{3}", ((string)computerSystem["Manufacturer"]).Trim(), ((string)computerSystem["Model"]).Trim(), osName, architecture);
             }

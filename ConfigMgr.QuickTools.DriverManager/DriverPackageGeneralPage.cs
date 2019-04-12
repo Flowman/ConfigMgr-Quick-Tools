@@ -28,13 +28,15 @@ namespace ConfigMgr.QuickTools.DriverManager
             InitializeComponent();
 
             pageData.ProgressBarStyle = ProgressBarStyle.Continuous;
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()
         {
             base.InitializePageControl();
 
-            labelInformation.Text = string.Format("Welcome to the Driver Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your driver packages as no ConfigMgr skill are required. Just create your driver structure and manage all drivers and packages on a storage level.\r\n\r\nThe tool will import your driver packages from {0}.", registry.Read("DriverPackageFolder"));
+            labelInformation.Text = string.Format("Welcome to the Driver Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your driver packages as no ConfigMgr skill are required. Just create your driver structure and manage all drivers and packages on a storage level.\r\n\r\nThe tool will import your driver packages from {0}.", registry.ReadString("DriverPackageFolder"));
 
             Initialized = true;
 
@@ -89,13 +91,13 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             StringBuilder sb = new StringBuilder();
 
-            if (string.IsNullOrEmpty(registry.Read("DriverSourceFolder")))
+            if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
                 sb.AppendLine("No driver source path specified!");
             }
 
-            if (string.IsNullOrEmpty(registry.Read("DriverPackageFolder")))
+            if (string.IsNullOrEmpty(registry.ReadString("DriverPackageFolder")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
                 sb.AppendLine("No driver package path specified!");
@@ -149,9 +151,9 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             List<DriverPackage> driverPackages = new List<DriverPackage>();
 
-            string sourceDirectory = registry.Read("DriverSourceFolder");
+            string sourceDirectory = registry.ReadString("DriverSourceFolder");
             UserData["sourceDirectory"] = sourceDirectory;
-            string packageDirectory = registry.Read("DriverPackageFolder");
+            string packageDirectory = registry.ReadString("DriverPackageFolder");
 
             progressWorker.ReportProgress(0, "Validating source folder");
 
@@ -160,7 +162,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 throw new InvalidOperationException("Cannot find source or destination folder. Verify that the folder exists in the specified locations.");
             }
 
-            if (Convert.ToBoolean(registry.Read("LegacyFolderStructure")))
+            if (registry.ReadBool("LegacyFolderStructure"))
             {
                 string[] subdirectoryEntries = Directory.GetDirectories(sourceDirectory, "*", SearchOption.TopDirectoryOnly);
                 int totalVendors = subdirectoryEntries.Length;

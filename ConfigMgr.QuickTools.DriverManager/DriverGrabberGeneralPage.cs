@@ -30,6 +30,8 @@ namespace ConfigMgr.QuickTools.DriverManager
             InitializeComponent();
 
             pageData.ProgressBarStyle = ProgressBarStyle.Continuous;
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()
@@ -107,7 +109,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
 
-            if (string.IsNullOrEmpty(registry.Read("DriverSourceFolder")))
+            if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
             {
                 ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
                 labelOptions.Text = "No driver source structure specified!";
