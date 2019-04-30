@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <?define ConfigMgr.QuickTools.Device_TargetDir=$(var.ConfigMgr.QuickTools.Device.TargetDir)?>
+  <?define ConfigMgr.QuickTools_TargetDir=$(var.ConfigMgr.QuickTools.TargetDir)?>
+  <?define ConfigMgr.QuickTools.DriverManager_TargetDir=$(var.ConfigMgr.QuickTools.DriverManager.TargetDir)?>
+  <?define ConfigMgr.QuickTools.Warranty_TargetDir=$(var.ConfigMgr.QuickTools.Warranty.TargetDir)?>
+	<Product Id="*" Name="ConfigMgr Quick Tools" Language="1033" Version="1.0.0.0" Manufacturer="Otherland" UpgradeCode="efcfe1d5-ad7c-4f9d-8a1b-8f5dd8c62bc5">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Property Id="INSTALLDIR">
+      <RegistrySearch Id='ConfigMgrLocation' Type='raw' Root='HKLM' Key='SOFTWARE\WOW6432Node\Microsoft\ConfigMgr10\Setup' Name='UI Installation Directory' />
+    </Property>
+    
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="SetupConfigMgrQuickTools" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLDIR" Name="Test" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
+
+        <!--<util:XmlFile Id="ModifyIsCompanyServer"
+                    SelectionLanguage="XPath"
+                    File="[INSTALLFOLDER]XmlStorage\Extensions\Actions\172d85e7-bb7a-4479-a6a2-768f175b75cb\QuickToolsTSDeploymentMsg.xml"
+                    ElementPath="//ActionDescription/Executable/FilePath"
+                    Action="setValue"
+                    Value="[INSTALLFOLDER]"
+                    Sequence="1" />-->
+			<Component Id="ConfigMgr.QuickTools.Device.dll" Guid="2bf9f637-cc62-4bae-9cb7-d9b5f5be6394">
+			  <File Id="ConfigMgr.QuickTools.Device.dll" Name="ConfigMgr.QuickTools.Device.dll" Source="$(var.ConfigMgr.QuickTools.Device_TargetDir)ConfigMgr.QuickTools.Device.dll" />
+			</Component>
+			<Component Id="ConfigMgr.QuickTools.dll" Guid="30a5eff0-e2a6-41ce-8bb7-ee1c991f94cd">
+			  <File Id="ConfigMgr.QuickTools.dll" Name="ConfigMgr.QuickTools.dll" Source="$(var.ConfigMgr.QuickTools_TargetDir)ConfigMgr.QuickTools.dll" />
+			</Component>
+			<Component Id="ConfigMgr.QuickTools.DriverManager.dll" Guid="c0f311d7-1354-4cd6-b39c-078646d25dda">
+			  <File Id="ConfigMgr.QuickTools.DriverManager.dll" Name="ConfigMgr.QuickTools.DriverManager.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)ConfigMgr.QuickTools.DriverManager.dll" />
+			</Component>
+			<Component Id="ConfigMgr.QuickTools.Warranty.dll" Guid="4d7bc5df-4dff-4404-b289-eb61cbe9f119">
+			  <File Id="ConfigMgr.QuickTools.Warranty.dll" Name="ConfigMgr.QuickTools.Warranty.dll" Source="$(var.ConfigMgr.QuickTools.Warranty_TargetDir)ConfigMgr.QuickTools.Warranty.dll" />
+			</Component>
+			<Component Id="INIFileParser.dll" Guid="c460f6b7-24aa-46bf-b2e5-706a4069f291">
+			  <File Id="INIFileParser.dll" Name="INIFileParser.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)INIFileParser.dll" />
+			</Component>
+			<Component Id="Microsoft.Deployment.Compression.Cab.dll" Guid="ca15b486-4bcd-4ae0-86e9-b9e5907e55b5">
+			  <File Id="Microsoft.Deployment.Compression.Cab.dll" Name="Microsoft.Deployment.Compression.Cab.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)Microsoft.Deployment.Compression.Cab.dll" />
+			</Component>
+			<Component Id="Microsoft.Deployment.Compression.dll" Guid="a4d6259f-c76c-410f-bdad-92a216ed75dc">
+			  <File Id="Microsoft.Deployment.Compression.dll" Name="Microsoft.Deployment.Compression.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)Microsoft.Deployment.Compression.dll" />
+			</Component>
+			<Component Id="ByteSize.dll" Guid="5062dd74-a359-4836-a898-931b22ce8a4e">
+			  <File Id="ByteSize.dll" Name="ByteSize.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)ByteSize.dll" />
+			</Component> 
+		</ComponentGroup>
+	</Fragment>
+</Wix>

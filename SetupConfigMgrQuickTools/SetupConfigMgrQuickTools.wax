@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DeployedProjects>
+    <string>ConfigMgr.QuickTools.Device\ConfigMgr.QuickTools.Device.csproj</string>
+    <string>ConfigMgr.QuickTools.DriverManager\ConfigMgr.QuickTools.DriverManager.csproj</string>
+    <string>ConfigMgr.QuickTools.Warranty\ConfigMgr.QuickTools.Warranty.csproj</string>
+    <string>ConfigMgr.QuickTools\ConfigMgr.QuickTools.csproj</string>
+  </DeployedProjects>
+  <DirectoryMappings>
+    <Item Key="" Value="INSTALLFOLDER" />
+  </DirectoryMappings>
+  <FileMappings />
+  <DeploySymbols>false</DeploySymbols>
+  <DeployLocalizations>false</DeployLocalizations>
+  <DeployExternalLocalizations>false</DeployExternalLocalizations>
+</Configuration>
