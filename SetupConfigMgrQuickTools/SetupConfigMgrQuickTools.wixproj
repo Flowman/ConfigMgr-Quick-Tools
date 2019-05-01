@@ -26,10 +26,6 @@
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
     </WixExtension>
-    <WixExtension Include="VDWExtension">
-      <HintPath>c:\users\szapet1.1\appdata\local\microsoft\visualstudio\16.0_86db6e8f\extensions\2ob3vei1.0yn\WiX Extensions\v3.x\VDWExtension.dll</HintPath>
-      <Name>VDWExtension</Name>
-    </WixExtension>
     <WixExtension Include="WixUtilExtension">
       <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
       <Name>WixUtilExtension</Name>
@@ -48,6 +44,7 @@
     <Content Include="XSLT\_ConfigMgr.QuickTools.DriverManager.xml" />
     <Content Include="XSLT\_ConfigMgr.QuickTools.Warranty.xml" />
     <Content Include="XSLT\_ConfigMgr.QuickTools.xml" />
+    <Content Include="XSLT\_INIFileParser.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConfigMgr.QuickTools.Device\ConfigMgr.QuickTools.Device.csproj">
@@ -80,6 +77,15 @@
     <ProjectReference Include="..\ConfigMgr.QuickTools\ConfigMgr.QuickTools.csproj">
       <Name>ConfigMgr.QuickTools</Name>
       <Project>{86A66D04-06EB-41B0-A6BF-3A1AFF79CA8D}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLDIR</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IniFileParser\INIFileParser.csproj">
+      <Name>INIFileParser</Name>
+      <Project>{5E46DCF4-C473-4171-9F9B-F3910B5EC407}</Project>
       <Private>True</Private>
       <DoNotHarvest>
       </DoNotHarvest>

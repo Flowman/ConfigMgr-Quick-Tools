@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:adx="http://schemas.add-in-express.com/wixdesigner">
   <Product Id="*" Name="ConfigMgr Quick Tools" Language="1033" Version="!(bind.FileVersion._41380E34_01D9_4FAA_BBF1_878B7ABD54DF)" Manufacturer="Otherland" UpgradeCode="efcfe1d5-ad7c-4f9d-8a1b-8f5dd8c62bc5">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-    <Property Id="TARGETDIR" adx:VSName="FindConfigMgrInstallDirectory">
+    <Property Id="TARGETDIR">
       <RegistrySearch Id="ConfigMgrLocation" Type="raw" Root="HKLM" Key="SOFTWARE\WOW6432Node\Microsoft\ConfigMgr10\Setup" Name="UI Installation Directory" />
     </Property>
     <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
@@ -17,11 +17,7 @@
       <ComponentGroupRef Id="ConfigMgr.QuickTools.Warranty.Binaries" />
       <ComponentGroupRef Id="ConfigMgr.QuickTools.Device.Binaries" />
       <ComponentGroupRef Id="ConfigMgr.QuickTools.DriverManager.Binaries" />
-      <ComponentRef Id="comp_F08C0236_F682_474E_B8F2_1D89B1FFA7CA" />
-      <ComponentRef Id="comp_C66518BB_9B24_417A_866D_C7B036079DAE" />
-      <ComponentRef Id="comp_C1FA30D5_7A03_43C3_A153_E1ED0C96F9EE" />
-      <ComponentRef Id="comp_EAD71018_7A28_4BE4_B489_A48CA44EAB2C" />
-      <ComponentRef Id="comp_F74B4CA8_7B0E_4C8F_8726_1D146CF156C6" />
+      <ComponentGroupRef Id="INIFileParser.Binaries" />
       <ComponentRef Id="comp_EDE12ECA_CF61_41CE_8FD6_F02A0A337006" />
       <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
       <ComponentRef Id="comp_1649DFFC_4752_4288_A5C9_B837B82A2C39" />
@@ -42,30 +38,32 @@
       <ComponentRef Id="comp_A38829BE_9E4A_43AA_978E_0FF7FC9A6D0E" />
       <ComponentRef Id="comp_27023F11_E363_4B5B_A683_8242AC5DB1D2" />
       <ComponentRef Id="comp_8B28205A_F246_43F2_AD22_9CB0CB6666A7" />
+      <ComponentRef Id="comp_6E101C08_30AC_4428_903E_930A162322CB" />
+      <ComponentRef Id="comp_A5846E30_94DF_422F_A862_BA25A850C95B" />
+      <ComponentRef Id="comp_2556135F_916E_45AE_AE42_52D915E27351" />
+      <ComponentRef Id="comp_3990668A_8EC7_4FBB_84E6_90DC5E1CCC73" />
     </Feature>
   </Product>
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="dir_67A42E6F_A901_439A_95BA_86121C9423B0" Name="bin">
-        <Component Id="comp_F08C0236_F682_474E_B8F2_1D89B1FFA7CA" Guid="3D2B85C6-2AFC-4C96-BCAB-0F17B60F0D31" Permanent="no" SharedDllRefCount="no" Transitive="no">
-          <File Id="_CB77C4AE_4028_4BD8_B369_58CC28E303F6" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="ByteSize.dll" Source="..\packages\ByteSize.1.3.0\lib\net45\ByteSize.dll" KeyPath="yes" />
+        <Component Id="comp_6E101C08_30AC_4428_903E_930A162322CB" Guid="3FD22DF5-0408-486C-A5C8-582497AD67E1" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_6C38CCAC_9689_461C_9432_CE2517693655" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="ByteSize.dll" Source="..\packages\ByteSize.1.3.0\lib\net45\ByteSize.dll" KeyPath="yes" />
         </Component>
-        <Component Id="comp_C66518BB_9B24_417A_866D_C7B036079DAE" Guid="7F33FEB4-1778-4F1D-B719-5DB920ADA3AE" Permanent="no" SharedDllRefCount="no" Transitive="no">
-          <File Id="_489185AF_0025_4FE1_8AA7_8F8094502DF6" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="INIFileParser.dll" Source="..\packages\INIFileParser.dll" KeyPath="yes" />
+        <Component Id="comp_A5846E30_94DF_422F_A862_BA25A850C95B" Guid="661A5783-29A5-4873-97BE-40CD29A950D6" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_2BE8806C_956D_4726_A531_01737A272247" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.Cab.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.Cab.dll" KeyPath="yes" />
         </Component>
-        <Component Id="comp_C1FA30D5_7A03_43C3_A153_E1ED0C96F9EE" Guid="487ADB14-56CA-4E13-A4B9-1BD5AD6BA760" Permanent="no" SharedDllRefCount="no" Transitive="no">
-          <File Id="_6E0AC672_3925_4812_A91E_FAC559650B65" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.Cab.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.Cab.dll" KeyPath="yes" />
+        <Component Id="comp_2556135F_916E_45AE_AE42_52D915E27351" Guid="37E26E40-EFBF-4FB8-8863-0E6789AE184C" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_EE0C981E_29A7_48E2_9D0E_889CFBC39A09" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.dll" KeyPath="yes" />
         </Component>
-        <Component Id="comp_EAD71018_7A28_4BE4_B489_A48CA44EAB2C" Guid="07FADBD9-85C5-47CD-99B4-B14A6BE4A0FC" Permanent="no" SharedDllRefCount="no" Transitive="no">
-          <File Id="_4624333D_FE16_4ABE_8B78_309A8377DC4A" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="comp_F74B4CA8_7B0E_4C8F_8726_1D146CF156C6" Guid="DE9F75AC-AEF3-474B-AEEC-1E8BD448A80B" Permanent="no" SharedDllRefCount="no" Transitive="no">
-          <File Id="_1FBAA079_FBB3_4380_AEE5_741E9B4269C8" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="AutoUpdater.NET.dll" Source="..\packages\Autoupdater.NET.Official.1.5.1\lib\net40\AutoUpdater.NET.dll" KeyPath="yes" />
+        <Component Id="comp_3990668A_8EC7_4FBB_84E6_90DC5E1CCC73" Guid="28CC9326-6D92-4507-8121-A6A749D87DE7" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_5CF1E5A8_F9B4_4C5B_8D42_BE6509ED0BC2" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="AutoUpdater.NET.dll" Source="..\Build\Release\AutoUpdater.NET.dll" KeyPath="yes" />
         </Component>
         <Directory Id="ConfigMgr.QuickTools.Binaries" />
         <Directory Id="ConfigMgr.QuickTools.Warranty.Binaries" />
         <Directory Id="ConfigMgr.QuickTools.Device.Binaries" />
         <Directory Id="ConfigMgr.QuickTools.DriverManager.Binaries" />
+        <Directory Id="INIFileParser.Binaries" />
       </Directory>
       <Directory Id="dir_5B7F8171_5C1F_42D9_BF39_8E9286581B6F" Name="XmlStorage">
         <Directory Id="dir_B7998808_25BD_4DB0_96F9_D043B26E1FC2" Name="Extensions">

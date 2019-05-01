@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ProjectOutput Name="ConfigMgr.QuickTools.DriverManager" ProjectDirVar="$(var.ConfigMgr.QuickTools.DriverManager.ProjectDir)" TargetDirVar="$(var.ConfigMgr.QuickTools.DriverManager.TargetDir)" SharedFileId="_E44E8823_997B_4194_92DE_F3811A84D268">
+<ProjectOutput Name="INIFileParser" ProjectDirVar="$(var.INIFileParser.ProjectDir)" TargetDirVar="$(var.INIFileParser.TargetDir)" SharedFileId="_774C73B1_AEC9_4425_923C_B67BE31960F3">
   <Binaries>
     <DiskId>1</DiskId>
     <Compressed />
