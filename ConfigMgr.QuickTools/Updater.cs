@@ -23,7 +23,7 @@ namespace ConfigMgr.QuickTools
 
                 if (result > 0 && !check)
                 {
-                    AutoUpdater.Start("https://raw.githubusercontent.com/Flowman/ConfigMgr-Quick-Tools/master/AutoUpdate.xml", Assembly.GetExecutingAssembly());
+                    AutoUpdater.Start("https://raw.githubusercontent.com/Flowman/ConfigMgr-Quick-Tools/master/ConfigMgr.QuickTools/AutoUpdate.xml", Assembly.GetExecutingAssembly());
                     AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
 
                     // update last check so we dont hammer the poor user with update checks.
@@ -38,7 +38,7 @@ namespace ConfigMgr.QuickTools
         {
             CheckOptions();
 
-            AutoUpdater.Start("https://raw.githubusercontent.com/Flowman/ConfigMgr-Quick-Tools/master/AutoUpdate.xml", Assembly.GetExecutingAssembly());
+            AutoUpdater.Start("https://raw.githubusercontent.com/Flowman/ConfigMgr-Quick-Tools/master/ConfigMgr.QuickTools/AutoUpdate.xml", Assembly.GetExecutingAssembly());
             AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
 
             // update last check so we dont hammer the poor user with update checks.

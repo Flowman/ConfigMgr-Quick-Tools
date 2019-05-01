@@ -1,66 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <?define ConfigMgr.QuickTools.Device_TargetDir=$(var.ConfigMgr.QuickTools.Device.TargetDir)?>
-  <?define ConfigMgr.QuickTools_TargetDir=$(var.ConfigMgr.QuickTools.TargetDir)?>
-  <?define ConfigMgr.QuickTools.DriverManager_TargetDir=$(var.ConfigMgr.QuickTools.DriverManager.TargetDir)?>
-  <?define ConfigMgr.QuickTools.Warranty_TargetDir=$(var.ConfigMgr.QuickTools.Warranty.TargetDir)?>
-	<Product Id="*" Name="ConfigMgr Quick Tools" Language="1033" Version="1.0.0.0" Manufacturer="Otherland" UpgradeCode="efcfe1d5-ad7c-4f9d-8a1b-8f5dd8c62bc5">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-
-    <Property Id="INSTALLDIR">
-      <RegistrySearch Id='ConfigMgrLocation' Type='raw' Root='HKLM' Key='SOFTWARE\WOW6432Node\Microsoft\ConfigMgr10\Setup' Name='UI Installation Directory' />
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:adx="http://schemas.add-in-express.com/wixdesigner">
+  <Product Id="*" Name="ConfigMgr Quick Tools" Language="1033" Version="!(bind.FileVersion._41380E34_01D9_4FAA_BBF1_878B7ABD54DF)" Manufacturer="Otherland" UpgradeCode="efcfe1d5-ad7c-4f9d-8a1b-8f5dd8c62bc5">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Property Id="TARGETDIR" adx:VSName="FindConfigMgrInstallDirectory">
+      <RegistrySearch Id="ConfigMgrLocation" Type="raw" Root="HKLM" Key="SOFTWARE\WOW6432Node\Microsoft\ConfigMgr10\Setup" Name="UI Installation Directory" />
     </Property>
-    
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
-
-		<Feature Id="ProductFeature" Title="SetupConfigMgrQuickTools" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
-		</Feature>
-	</Product>
-
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLDIR" Name="Test" />
-			</Directory>
-		</Directory>
-	</Fragment>
-
-	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLDIR">
-
-        <!--<util:XmlFile Id="ModifyIsCompanyServer"
-                    SelectionLanguage="XPath"
-                    File="[INSTALLFOLDER]XmlStorage\Extensions\Actions\172d85e7-bb7a-4479-a6a2-768f175b75cb\QuickToolsTSDeploymentMsg.xml"
-                    ElementPath="//ActionDescription/Executable/FilePath"
-                    Action="setValue"
-                    Value="[INSTALLFOLDER]"
-                    Sequence="1" />-->
-			<Component Id="ConfigMgr.QuickTools.Device.dll" Guid="2bf9f637-cc62-4bae-9cb7-d9b5f5be6394">
-			  <File Id="ConfigMgr.QuickTools.Device.dll" Name="ConfigMgr.QuickTools.Device.dll" Source="$(var.ConfigMgr.QuickTools.Device_TargetDir)ConfigMgr.QuickTools.Device.dll" />
-			</Component>
-			<Component Id="ConfigMgr.QuickTools.dll" Guid="30a5eff0-e2a6-41ce-8bb7-ee1c991f94cd">
-			  <File Id="ConfigMgr.QuickTools.dll" Name="ConfigMgr.QuickTools.dll" Source="$(var.ConfigMgr.QuickTools_TargetDir)ConfigMgr.QuickTools.dll" />
-			</Component>
-			<Component Id="ConfigMgr.QuickTools.DriverManager.dll" Guid="c0f311d7-1354-4cd6-b39c-078646d25dda">
-			  <File Id="ConfigMgr.QuickTools.DriverManager.dll" Name="ConfigMgr.QuickTools.DriverManager.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)ConfigMgr.QuickTools.DriverManager.dll" />
-			</Component>
-			<Component Id="ConfigMgr.QuickTools.Warranty.dll" Guid="4d7bc5df-4dff-4404-b289-eb61cbe9f119">
-			  <File Id="ConfigMgr.QuickTools.Warranty.dll" Name="ConfigMgr.QuickTools.Warranty.dll" Source="$(var.ConfigMgr.QuickTools.Warranty_TargetDir)ConfigMgr.QuickTools.Warranty.dll" />
-			</Component>
-			<Component Id="INIFileParser.dll" Guid="c460f6b7-24aa-46bf-b2e5-706a4069f291">
-			  <File Id="INIFileParser.dll" Name="INIFileParser.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)INIFileParser.dll" />
-			</Component>
-			<Component Id="Microsoft.Deployment.Compression.Cab.dll" Guid="ca15b486-4bcd-4ae0-86e9-b9e5907e55b5">
-			  <File Id="Microsoft.Deployment.Compression.Cab.dll" Name="Microsoft.Deployment.Compression.Cab.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)Microsoft.Deployment.Compression.Cab.dll" />
-			</Component>
-			<Component Id="Microsoft.Deployment.Compression.dll" Guid="a4d6259f-c76c-410f-bdad-92a216ed75dc">
-			  <File Id="Microsoft.Deployment.Compression.dll" Name="Microsoft.Deployment.Compression.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)Microsoft.Deployment.Compression.dll" />
-			</Component>
-			<Component Id="ByteSize.dll" Guid="5062dd74-a359-4836-a898-931b22ce8a4e">
-			  <File Id="ByteSize.dll" Name="ByteSize.dll" Source="$(var.ConfigMgr.QuickTools.DriverManager_TargetDir)ByteSize.dll" />
-			</Component> 
-		</ComponentGroup>
-	</Fragment>
+    <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
+    <UIRef Id="WixUI_InstallDir" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Resources\License.rtf" />
+    <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)\Resources\icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+    <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    <Feature Id="ProductFeature" Title="SetupConfigMgrQuickTools" Level="1">
+      <ComponentGroupRef Id="ConfigMgr.QuickTools.Binaries" />
+      <ComponentGroupRef Id="ConfigMgr.QuickTools.Warranty.Binaries" />
+      <ComponentGroupRef Id="ConfigMgr.QuickTools.Device.Binaries" />
+      <ComponentGroupRef Id="ConfigMgr.QuickTools.DriverManager.Binaries" />
+      <ComponentRef Id="comp_F08C0236_F682_474E_B8F2_1D89B1FFA7CA" />
+      <ComponentRef Id="comp_C66518BB_9B24_417A_866D_C7B036079DAE" />
+      <ComponentRef Id="comp_C1FA30D5_7A03_43C3_A153_E1ED0C96F9EE" />
+      <ComponentRef Id="comp_EAD71018_7A28_4BE4_B489_A48CA44EAB2C" />
+      <ComponentRef Id="comp_F74B4CA8_7B0E_4C8F_8726_1D146CF156C6" />
+      <ComponentRef Id="comp_EDE12ECA_CF61_41CE_8FD6_F02A0A337006" />
+      <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
+      <ComponentRef Id="comp_1649DFFC_4752_4288_A5C9_B837B82A2C39" />
+      <ComponentRef Id="comp_895EE644_07D6_4FE3_80C2_7735D7FB32B7" />
+      <ComponentRef Id="comp_E738D5C9_087E_4AEE_95C0_A33A305570F0" />
+      <ComponentRef Id="comp_16420F47_AB85_4939_9EBB_AD9D2FA2C9CE" />
+      <ComponentRef Id="comp_17EABA84_A7F3_49C1_9D2B_CFAC59682110" />
+      <ComponentRef Id="comp_8AF071A6_8B24_4FD6_8FF5_86D18E1895F8" />
+      <ComponentRef Id="comp_2F86847A_A2BC_4C85_B077_1CF222734E4C" />
+      <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
+      <ComponentRef Id="comp_D35D81DA_EB8C_45A8_A32B_4C2A0AA9F346" />
+      <ComponentRef Id="comp_25C1C551_E0F0_49A7_AC5D_BC0319F06224" />
+      <ComponentRef Id="comp_0A919C16_63D2_48D6_8217_C01B064C723D" />
+      <ComponentRef Id="comp_D61E8ECB_2ED0_4252_838A_929C4B54D1F3" />
+      <ComponentRef Id="comp_7974CF3E_0F6F_4C59_9BBF_03F05F7E75AB" />
+      <ComponentRef Id="comp_331A6D48_68D1_40AB_B7DD_ED71B9BCACF0" />
+      <ComponentRef Id="comp_420EDF78_5A4E_4D81_BB61_8F6326CD1827" />
+      <ComponentRef Id="comp_A38829BE_9E4A_43AA_978E_0FF7FC9A6D0E" />
+      <ComponentRef Id="comp_27023F11_E363_4B5B_A683_8242AC5DB1D2" />
+      <ComponentRef Id="comp_8B28205A_F246_43F2_AD22_9CB0CB6666A7" />
+    </Feature>
+  </Product>
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="dir_67A42E6F_A901_439A_95BA_86121C9423B0" Name="bin">
+        <Component Id="comp_F08C0236_F682_474E_B8F2_1D89B1FFA7CA" Guid="3D2B85C6-2AFC-4C96-BCAB-0F17B60F0D31" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_CB77C4AE_4028_4BD8_B369_58CC28E303F6" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="ByteSize.dll" Source="..\packages\ByteSize.1.3.0\lib\net45\ByteSize.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="comp_C66518BB_9B24_417A_866D_C7B036079DAE" Guid="7F33FEB4-1778-4F1D-B719-5DB920ADA3AE" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_489185AF_0025_4FE1_8AA7_8F8094502DF6" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="INIFileParser.dll" Source="..\packages\INIFileParser.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="comp_C1FA30D5_7A03_43C3_A153_E1ED0C96F9EE" Guid="487ADB14-56CA-4E13-A4B9-1BD5AD6BA760" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_6E0AC672_3925_4812_A91E_FAC559650B65" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.Cab.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.Cab.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="comp_EAD71018_7A28_4BE4_B489_A48CA44EAB2C" Guid="07FADBD9-85C5-47CD-99B4-B14A6BE4A0FC" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_4624333D_FE16_4ABE_8B78_309A8377DC4A" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="comp_F74B4CA8_7B0E_4C8F_8726_1D146CF156C6" Guid="DE9F75AC-AEF3-474B-AEEC-1E8BD448A80B" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_1FBAA079_FBB3_4380_AEE5_741E9B4269C8" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="AutoUpdater.NET.dll" Source="..\packages\Autoupdater.NET.Official.1.5.1\lib\net40\AutoUpdater.NET.dll" KeyPath="yes" />
+        </Component>
+        <Directory Id="ConfigMgr.QuickTools.Binaries" />
+        <Directory Id="ConfigMgr.QuickTools.Warranty.Binaries" />
+        <Directory Id="ConfigMgr.QuickTools.Device.Binaries" />
+        <Directory Id="ConfigMgr.QuickTools.DriverManager.Binaries" />
+      </Directory>
+      <Directory Id="dir_5B7F8171_5C1F_42D9_BF39_8E9286581B6F" Name="XmlStorage">
+        <Directory Id="dir_B7998808_25BD_4DB0_96F9_D043B26E1FC2" Name="Extensions">
+          <Directory Id="dir_C14AF37A_9164_4CBE_9D6C_23F106268968" Name="Forms">
+            <Component Id="comp_17EABA84_A7F3_49C1_9D2B_CFAC59682110" Guid="36628D59-3F5D-4C75-91B5-0490EAFB6065" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_7BF4A2D2_E4CA_4570_87BC_39395A3B427F" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="CollectionResource.xml" Source="..\Extensions\Forms\CollectionResource.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_8AF071A6_8B24_4FD6_8FF5_86D18E1895F8" Guid="56B46654-99A1-482A-8AD2-DDD88BE1EF8B" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_F7C95573_4630_4229_A74A_E5989683F263" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsAddResourcesListDialog.xml" Source="..\Extensions\Forms\QuickToolsAddResourcesListDialog.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_2F86847A_A2BC_4C85_B077_1CF222734E4C" Guid="40C1613E-2215-4D91-9DE7-7033F9EED234" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_41F7693E_10EA_472A_9B05_38893ED83326" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsCleanSoftwareUpdatesWizard.xml" Source="..\Extensions\Forms\QuickToolsCleanSoftwareUpdatesWizard.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" Guid="CF3AADFC-12A0-4594-BDA7-EECC077ECD6D" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_C69E88A5_5C77_4AAD_A3D3_6D7719CF2ED5" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDellDriverPackWizard.xml" Source="..\Extensions\Forms\QuickToolsDellDriverPackWizard.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_D35D81DA_EB8C_45A8_A32B_4C2A0AA9F346" Guid="8D7857C6-FBBF-4829-910D-FDD99302211C" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_E82F0AFC_56AA_4BEE_AE30_08F577BFD2FE" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverGrabberWizard.xml" Source="..\Extensions\Forms\QuickToolsDriverGrabberWizard.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_420EDF78_5A4E_4D81_BB61_8F6326CD1827" Guid="979FD977-13F2-419B-9C8B-EF2E14095D4B" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_B3F61F82_17E6_4B21_A5BD_3744AEFF3237" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverPackageImportWizard.xml" Source="..\Extensions\Forms\QuickToolsDriverPackageImportWizard.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_A38829BE_9E4A_43AA_978E_0FF7FC9A6D0E" Guid="DB683CCE-340A-49FC-A5B3-94612CF74C1B" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_BE2B5903_BCA7_4130_9B9A_C8296D41475E" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsIncrementalCollectionsWizard.xml" Source="..\Extensions\Forms\QuickToolsIncrementalCollectionsWizard.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_27023F11_E363_4B5B_A683_8242AC5DB1D2" Guid="6DF708CA-C1D5-4A58-9375-49A41498D057" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_96745F15_EA04_4FD5_A5DD_3085D553D689" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsOptions.xml" Source="..\Extensions\Forms\QuickToolsOptions.xml" KeyPath="yes" />
+            </Component>
+            <Component Id="comp_8B28205A_F246_43F2_AD22_9CB0CB6666A7" Guid="15A97E72-3DCA-43F3-8301-0376DE9E458F" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_06CC7ACF_BBDE_42F9_9E85_E25EB8E9D2B0" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsRemoveRetiredContentWizard.xml" Source="..\Extensions\Forms\QuickToolsRemoveRetiredContentWizard.xml" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="dir_7ABFEF4F_0A52_47E1_96ED_F76708FD1A5B" Name="Actions">
+            <Directory Id="dir_BC4B3130_B4E3_49AC_BF99_340A1BABE891" Name="0ae7814c-1256-4358-b5a6-710f64ba2188">
+              <Component Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" Guid="E01B8EE5-D554-4DE8-8B82-617D260008E2" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_69D30E21_901F_44FA_984F_A1A884E92095" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDellDriverPackAction.xml" Source="..\Extensions\Actions\0ae7814c-1256-4358-b5a6-710f64ba2188\QuickToolsDellDriverPackAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_387FB9B2_0526_473C_87DB_6F58E816ADAC" Name="3fd01cd1-9e01-461e-92cd-94866b8d1f39">
+              <Component Id="comp_895EE644_07D6_4FE3_80C2_7735D7FB32B7" Guid="2B21B40B-1C5C-4006-906E-255A70CD3116" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_649A9736_EF2F_458C_8897_5EC532E1D5BA" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevices.xml" Source="..\Extensions\Actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39\QuickToolsDevices.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_E738D5C9_087E_4AEE_95C0_A33A305570F0" Guid="8C33DCBB-7436-471E-8901-A376B3742372" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_A5C5D2E7_FF65_48A2_8DAA_DD759CC706D1" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesClientActions.xml" Source="..\Extensions\Actions\3fd01cd1-9e01-461e-92cd-94866b8d1f39\QuickToolsDevicesClientActions.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_61FCDBC7_A2DC_4A1E_8C77_55B6AD88F2B3" Name="6d357b6b-96b3-45f4-ba09-b74e8ce5a509">
+              <Component Id="comp_16420F47_AB85_4939_9EBB_AD9D2FA2C9CE" Guid="99F98422-6072-46E5-9AC9-66C7EE7B9B16" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_99B6DB0E_A2FA_4CE0_9F86_8D08D8C76288" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsIncrementalCollectionsAction.xml" Source="..\Extensions\Actions\6d357b6b-96b3-45f4-ba09-b74e8ce5a509\QuickToolsIncrementalCollectionsAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_4E70C982_41D7_47A6_AB09_3DC6062A9121" Name="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">
+              <Component Id="comp_1649DFFC_4752_4288_A5C9_B837B82A2C39" Guid="EDEE76B5-6F93-4BC9-8295-90492D2A79CF" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_AC6681F3_F190_488C_A0E2_B637E1E9BA43" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsCleanSoftwareUpdatesAction.xml" Source="..\Extensions\Actions\23e7a3fe-b0f0-4b24-813a-dc425239f9a2\QuickToolsCleanSoftwareUpdatesAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_72D51B7E_C47E_4784_A03F_D0E78766D32D" Name="172d85e7-bb7a-4479-a6a2-768f175b75cb">
+              <Component Id="comp_EDE12ECA_CF61_41CE_8FD6_F02A0A337006" Guid="62F42131-C7F5-41C6-8D59-5E1018ED5D51" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_0D1A00E0_EC9F_4BD5_A6F1_B96016472830" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsTSDeploymentMsg.xml" Source="..\Extensions\Actions\172d85e7-bb7a-4479-a6a2-768f175b75cb\QuickToolsTSDeploymentMsg.xml" KeyPath="yes" />
+                <util:XmlFile Id="UpdateConfigMgrPath" SelectionLanguage="XPath" File="[#_0D1A00E0_EC9F_4BD5_A6F1_B96016472830]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_A3C70C31_6860_4254_B258_A5B82A86C304" Name="a92615d6-9df3-49ba-a8c9-6ecb0e8b956b">
+              <Component Id="comp_25C1C551_E0F0_49A7_AC5D_BC0319F06224" Guid="235D0D54-374D-4A09-84A4-FC1A4402BE18" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_A92AAB3A_A355_4CB8_93D5_556D7470CE0A" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsCollectionAddResource.xml" Source="..\Extensions\Actions\a92615d6-9df3-49ba-a8c9-6ecb0e8b956b\QuickToolsCollectionAddResource.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_0A919C16_63D2_48D6_8217_C01B064C723D" Guid="530C54A3-3D21-439F-982B-E555F426BE2C" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_3CD8C6E3_12FF_4C47_BA93_24A483CD1299" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsCollectionClientActions.xml" Source="..\Extensions\Actions\a92615d6-9df3-49ba-a8c9-6ecb0e8b956b\QuickToolsCollectionClientActions.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_F38866B9_B604_4B38_A00A_B35A637DC7B3" Name="d2e2cba7-98f5-4d3b-bc2f-b670f0621207">
+              <Component Id="comp_D61E8ECB_2ED0_4252_838A_929C4B54D1F3" Guid="5BDA144E-87EA-4494-BE4D-4D99B9CB11BD" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_743943ED_DE24_46A5_9AD1_9F086F6DA964" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsRemoveRetiredContentAction.xml" Source="..\Extensions\Actions\d2e2cba7-98f5-4d3b-bc2f-b670f0621207\QuickToolsRemoveRetiredContentAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_49C8A308_540E_4FE0_B660_2D80B1C8168F" Name="ed9dee86-eadd-4ac8-82a1-7234a4646e62">
+              <Component Id="comp_7974CF3E_0F6F_4C59_9BBF_03F05F7E75AB" Guid="5B204553-B857-4C7D-8D82-EDEDFA22BD11" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_7B769D0F_D4AA_4F9D_868A_726D677EEE12" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevices.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevices.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_331A6D48_68D1_40AB_B7DD_ED71B9BCACF0" Guid="98FA73F0-72A4-45E6-8840-5BCE9AB8ED4A" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_EC61D62F_E669_444F_A2A4_640F0884FD75" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesClientActions.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesClientActions.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
 </Wix>

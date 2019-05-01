@@ -13,7 +13,6 @@ namespace ConfigMgr.QuickTools.DriverManager
     public partial class DriverPackageImportPage : SmsPageControl
     {
         #region Private
-        private ModifyRegistry registry = new ModifyRegistry();
         private int importProgresStepPercent;
         private int importProgresPercent;
         #endregion

@@ -8,7 +8,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     internal class Vendor
     {
         #region Private
-        private static ModifyRegistry registry = new ModifyRegistry();
+        private static readonly ModifyRegistry registry = new ModifyRegistry();
         private readonly ConnectionManagerBase connectionManager;
         private BackgroundWorker backgroundWorker;
         #endregion
@@ -48,7 +48,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 {
                     string architectureName = new DirectoryInfo(sourceDirectory).Name;
                     string driverPackageName = string.Join("-", Name, modelName, architectureName);
-                    string packageName = string.Join("-", modelName, architectureName);
+                    string packageName = string.Join("-", Name, modelName, architectureName);
                     string targetDirectory = Path.Combine(PackageLocation, Name, packageName);
 
                     DriverPackage package = new DriverPackage(connectionManager, driverPackageName, sourceDirectory, targetDirectory)
