@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigMgr.QuickTools.Driver
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SetupConfigMgrQuickTools", "SetupConfigMgrQuickTools\SetupConfigMgrQuickTools.wixproj", "{740A92B2-5958-4A1E-9626-54EF9D6BBB49}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INIFileParser", "IniFileParser\INIFileParser.csproj", "{5E46DCF4-C473-4171-9F9B-F3910B5EC407}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,14 @@ Global
 		{740A92B2-5958-4A1E-9626-54EF9D6BBB49}.Release|Any CPU.ActiveCfg = Release|x86
 		{740A92B2-5958-4A1E-9626-54EF9D6BBB49}.Release|x86.ActiveCfg = Release|x86
 		{740A92B2-5958-4A1E-9626-54EF9D6BBB49}.Release|x86.Build.0 = Release|x86
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Debug|x86.Build.0 = Debug|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Release|x86.ActiveCfg = Release|Any CPU
+		{5E46DCF4-C473-4171-9F9B-F3910B5EC407}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
