@@ -279,9 +279,11 @@ namespace ConfigMgr.QuickTools
             if (string.IsNullOrEmpty(objectPath))
                 return;
             DateTime dateTime = DateTime.Now.AddSeconds(ReadObjectLockTimeout());
-            Dictionary<string, object> methodParameters = new Dictionary<string, object>();
-            methodParameters["ObjectRelPath"] = objectPath;
-            methodParameters["RequestTransfer"] = true;
+            Dictionary<string, object> methodParameters = new Dictionary<string, object>
+            {
+                ["ObjectRelPath"] = objectPath,
+                ["RequestTransfer"] = true
+            };
             while (DateTime.Now < dateTime)
             {
                 IResultObject resultObject;

@@ -26,10 +26,11 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
         public override void InitializePageControl()
         {
             base.InitializePageControl();
+
             listViewListCollections.UpdateColumnWidth(columnHeaderCollection);
             listViewListCollections.Items.Clear();
-
             listViewListCollections.IsLoading = true;
+
             string query = string.Format("SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where ResourceID = '{0}' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID", PropertyManager["ResourceID"].IntegerValue);
 
             backgroundWorker = new SmsBackgroundWorker();
@@ -42,9 +43,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
         private void BackgroundWorker_QueryProcessorObjectsReady(object sender, QueryProcessorObjectsEventArgs e)
         {
-            ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "BackgroundWorker_QueryProcessorObjectsReady");
             if (e.ResultObjects == null)
                 return;
+
             foreach (IResultObject resultObject in e.ResultObjects)
             {
                 listViewListCollections.Items.Add(new ListViewItem()
@@ -62,7 +63,6 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
         {
             try
             {
-                ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "BackgroundWorker_RunWorkerCompleted");
                 if (e.Error != null)
                     SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
                 else if (e.Cancelled)

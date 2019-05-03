@@ -36,7 +36,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.InitializePageControl();
 
-            labelInformation.Text = string.Format("Welcome to the Driver Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your driver packages as no ConfigMgr skill are required. Just create your driver structure and manage all drivers and packages on a storage level.\r\n\r\nThe tool will import your driver packages from {0}.", registry.ReadString("DriverPackageFolder"));
+            labelInformation.Text = string.Format("Welcome to the Driver Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your driver packages as no ConfigMgr skill are required. Just create your driver structure and manage all drivers and packages on a storage level.\r\n\r\nThe tool will import your driver packages from {0}.", registry.ReadString("DriverSourceFolder"));
 
             Initialized = true;
 

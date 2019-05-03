@@ -117,6 +117,12 @@
     <Compile Include="ResultCollectionsControl.designer.cs">
       <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResultMaintenanceWindowsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultMaintenanceWindowsControl.Designer.cs">
+      <DependentUpon>ResultMaintenanceWindowsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResultSoftwareUpdatesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ResultCollectionsControl.resx">
       <DependentUpon>ResultCollectionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultMaintenanceWindowsControl.resx">
+      <DependentUpon>ResultMaintenanceWindowsControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResultSoftwareUpdatesControl.resx">
       <DependentUpon>ResultSoftwareUpdatesControl.cs</DependentUpon>
