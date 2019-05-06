@@ -47,6 +47,7 @@ namespace ConfigMgr.QuickTools.Warranty
 
             if (!PropertyManager["IsClient"].BooleanValue)
             {
+                labelHttpResponse.Text = "No ConfigMgr client installed";
                 buttonSURefresh.Enabled = false;
             }
 
@@ -76,6 +77,12 @@ namespace ConfigMgr.QuickTools.Warranty
             Dictionary<string, object> dialogData = (Dictionary<string, object>)PropertyManager.UserDataObject;
             labelHttpResponse.Text = (string)dialogData["HttpResponse"];
             buttonSURefresh.Enabled = (bool)dialogData["RefreshEnabled"];
+
+            if (!PropertyManager["IsClient"].BooleanValue)
+            {
+                labelHttpResponse.Text = "No ConfigMgr client installed";
+                buttonSURefresh.Enabled = false;
+            }
         }
 
         private async void InfoWorker_DoWorkAsync(object sender, DoWorkEventArgs e)
