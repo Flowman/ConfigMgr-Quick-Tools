@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-    <version>1.0.7.0</version>
-    <url>https://github.com/Flowman/ConfigMgr-Quick-Tools/releases/download/v1.0/ConfigMgr_Quick_Tools.msi</url>
+    <version>1.1.1.0</version>
+    <url>https://github.com/Flowman/ConfigMgr-Quick-Tools/releases/download/v1.1/ConfigMgr_Quick_Tools.msi</url>
     <changelog>https://github.com/Flowman/ConfigMgr-Quick-Tools/releases</changelog>
     <mandatory>false</mandatory>
 </item>
