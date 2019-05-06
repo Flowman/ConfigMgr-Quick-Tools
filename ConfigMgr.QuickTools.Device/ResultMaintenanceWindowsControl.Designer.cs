@@ -86,7 +86,7 @@
             // columnHeaderCollection
             // 
             this.columnHeaderCollection.Text = "Collection";
-            this.columnHeaderCollection.Width = 150;
+            this.columnHeaderCollection.Width = 200;
             // 
             // label2
             // 
@@ -132,12 +132,12 @@
             // columnHeaderUpcomingTime
             // 
             this.columnHeaderUpcomingTime.Text = "Date";
-            this.columnHeaderUpcomingTime.Width = 200;
+            this.columnHeaderUpcomingTime.Width = 150;
             // 
             // columnHeaderUpcomingName
             // 
             this.columnHeaderUpcomingName.Text = "Name";
-            this.columnHeaderUpcomingName.Width = 150;
+            this.columnHeaderUpcomingName.Width = 250;
             // 
             // ResultMaintenanceWindowsControl
             // 

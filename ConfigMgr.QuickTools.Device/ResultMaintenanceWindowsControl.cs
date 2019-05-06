@@ -53,8 +53,6 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
             foreach (IResultObject resultObject in e.ResultObjects)
             {
-                //string query = string.Format("SELECT * FROM SMS_CollectionSettings where CollectionID = '{0}'", resultObject["CollectionID"].StringValue);
-                //IResultObject collectionSettings = Utility.GetFirstWMIInstance(ConnectionManager, query);
                 IResultObject collectionSettings = ConnectionManager.GetInstance("SMS_CollectionSettings.CollectionID='" + resultObject["CollectionID"].StringValue + "'");
                 collectionSettings.Get();
 
@@ -114,16 +112,46 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
                                 break;
                             case 4:
-
-                                if (schedule["WeekOrder"].IntegerValue >= 1)
+                                // monthly schedule with week selection, check when next windows occures
+                                currentTime = new DateTime(currentTime.Year, currentTime.Month, 1);
+                                // add months
+                                if (schedule["ForNumberOfMonths"].IntegerValue > 1)
                                 {
-                                    DateTime firstDayOfMonth = new DateTime(currentTime.Year, currentTime.Month, 1);
-
-                                    //while ((int)firstDayOfMonth.DayOfWeek != (schedule["Day"].IntegerValue - 1))
-                                    //{
-                                    //    firstDayOfMonth = firstDayOfMonth.AddDays(1);
-                                   // }
+                                    currentTime = currentTime.AddMonths(schedule["ForNumberOfMonths"].IntegerValue);
                                 }
+                                // find the day in month
+                                while ((int)currentTime.DayOfWeek != (schedule["Day"].IntegerValue - 1))
+                                {
+                                    currentTime = currentTime.AddDays(1);
+                                }
+                                // add weeks
+                                currentTime = currentTime.AddDays(days[(schedule["WeekOrder"].IntegerValue - 1)]);
+                                currentTime = currentTime.Date.Add(startTime.TimeOfDay);
+
+                                date = currentTime.ToLongDateString();
+
+                                break;
+                            case 5:
+                                // monthly schedule, check when next windows occures
+                                int monthDay = schedule["MonthDay"].IntegerValue;
+                                // day of month
+                                if (monthDay >= 1)
+                                {
+                                    currentTime = new DateTime(currentTime.Year, currentTime.Month, monthDay);
+                                }
+                                // last day of month
+                                else if (monthDay == 0)
+                                {
+                                    currentTime = new DateTime(currentTime.Year, currentTime.Month, DateTime.DaysInMonth(currentTime.Year, currentTime.Month));
+                                }
+
+                                if (schedule["ForNumberOfMonths"].IntegerValue > 1)
+                                {
+                                    currentTime = currentTime.AddMonths(schedule["ForNumberOfMonths"].IntegerValue);
+                                }
+                                currentTime = currentTime.Date.Add(startTime.TimeOfDay);
+
+                                date = currentTime.ToLongDateString();
 
                                 break;
                         }
