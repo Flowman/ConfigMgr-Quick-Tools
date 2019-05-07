@@ -407,6 +407,11 @@ namespace ConfigMgr.QuickTools
                 return builder.ToString().ToLower();
             return builder.ToString();
         }
+
+        public static bool InclusiveBetween(IComparable a, IComparable b, IComparable c)
+        {
+            return a.CompareTo(b) >= 0 && a.CompareTo(c) <= 0;
+        }
     }
 
     public class ModifyRegistry

@@ -79,7 +79,7 @@ namespace ConfigMgr.QuickTools.Device
             refreshDataList.Add(new PropertyDataUpdateItem(selectedResultObject, PropertyDataUpdateAction.Delete));
             if (dataUpdatedDelegate == null)
                 return;
-            int num = dataUpdatedDelegate(sender, refreshDataList) ? 1 : 0;
+            _ = dataUpdatedDelegate(sender, refreshDataList) ? 1 : 0;
         }
     }
 }

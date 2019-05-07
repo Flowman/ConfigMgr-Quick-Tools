@@ -93,6 +93,12 @@
     <Compile Include="CleanSoftwareUpdatesPage.designer.cs">
       <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollevalStatisticsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollevalStatisticsDialog.Designer.cs">
+      <DependentUpon>CollevalStatisticsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="IncrementalCollectionsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -126,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CleanSoftwareUpdatesPage.resx">
       <DependentUpon>CleanSoftwareUpdatesPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CollevalStatisticsDialog.resx">
+      <DependentUpon>CollevalStatisticsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IncrementalCollectionsPage.resx">
       <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
