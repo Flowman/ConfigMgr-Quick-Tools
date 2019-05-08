@@ -25,20 +25,14 @@
         <ImageResourceName>tools</ImageResourceName>
       </ImagesDescription>
       <ActionGroups>
-        <ActionDescription Class="ShowDialog" DisplayName="Driver Package Importer" MnemonicDisplayName="Driver Package Importer" Description="Import driver packages into ConfigMgr">
+        <ActionDescription NamespaceGuid="2C0E131F-EF42-42BA-AC39-F467A396FC50" Class="ShowDialog" DisplayName="Driver Package Importer" MnemonicDisplayName="Driver Package Importer" Description="Import driver packages into ConfigMgr">
           <ShowOn>
             <string>DefaultHomeTab</string>
             <string>ContextMenu</string>
           </ShowOn>
           <DialogId>QuickToolsDriverPackageImportWizard</DialogId>
-        </ActionDescription>        
-        <ActionDescription Class="ShowDialog" DisplayName="Dell Driver Pack" MnemonicDisplayName="Dell Driver Pack" Description="Download Dell driver pack">
-          <ShowOn>
-            <string>DefaultHomeTab</string>
-            <string>ContextMenu</string>
-          </ShowOn>
-          <DialogId>QuickToolsDellDriverPackWizard</DialogId>
         </ActionDescription>
+        <ActionDescription NamespaceGuid="E1B981C9-BDFC-4490-A5FB-0876A9F07837" Class="None" />
       </ActionGroups>
     </ActionDescription>
   </ActionGroups>

@@ -35,6 +35,8 @@
     <Content Include="AutoUpdate.xml" />
     <Content Include="Resources\icon.ico" />
     <Content Include="Resources\License.rtf" />
+    <Content Include="Resources\WixUIBannerBmp.bmp" />
+    <Content Include="Resources\WixUIDialogBmp.bmp" />
     <Content Include="XSLT\readme.txt" />
     <Content Include="XSLT\RegisterForCOM.xml" />
     <Content Include="XSLT\XslFile.xslt" />

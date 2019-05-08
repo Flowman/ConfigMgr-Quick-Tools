@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?define Name="ConfigMgr Quick Tools" ?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension" xmlns:adx="http://schemas.add-in-express.com/wixdesigner">
-  <Product Id="*" Name="ConfigMgr Quick Tools" Language="1033" Version="!(bind.FileVersion._41380E34_01D9_4FAA_BBF1_878B7ABD54DF)" Manufacturer="Otherland" UpgradeCode="efcfe1d5-ad7c-4f9d-8a1b-8f5dd8c62bc5">
+  <Product Id="*" Name="$(var.Name)" Language="1033" Version="!(bind.FileVersion._41380E34_01D9_4FAA_BBF1_878B7ABD54DF)" Manufacturer="Otherland" UpgradeCode="efcfe1d5-ad7c-4f9d-8a1b-8f5dd8c62bc5">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <Property Id="TARGETDIR">
       <RegistrySearch Id="ConfigMgrLocation" Type="raw" Root="HKLM" Key="SOFTWARE\WOW6432Node\Microsoft\ConfigMgr10\Setup" Name="UI Installation Directory" />
     </Property>
     <Property Id="WIXUI_INSTALLDIR" Value="TARGETDIR" />
-    <UIRef Id="WixUI_InstallDir" />
+    <UIRef Id="WixUI_FeatureTree" />
     <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Resources\License.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Resources\WixUIBannerBmp.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Resources\WixUIDialogBmp.bmp" />
     <Icon Id="icon.ico" SourceFile="$(var.ProjectDir)\Resources\icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="icon.ico" />
     <MajorUpgrade Schedule="afterInstallInitialize" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
-    <Feature Id="ProductFeature" Title="SetupConfigMgrQuickTools" Level="1">
+    <Feature Id="ProductFeature" Title="$(var.Name)" Level="1" ConfigurableDirectory="TARGETDIR" Display="expand" Absent="disallow" AllowAdvertise="no">
       <ComponentGroupRef Id="ConfigMgr.QuickTools.Binaries" />
       <ComponentGroupRef Id="ConfigMgr.QuickTools.Warranty.Binaries" />
       <ComponentGroupRef Id="ConfigMgr.QuickTools.Device.Binaries" />
       <ComponentGroupRef Id="ConfigMgr.QuickTools.DriverManager.Binaries" />
       <ComponentGroupRef Id="INIFileParser.Binaries" />
       <ComponentRef Id="comp_EDE12ECA_CF61_41CE_8FD6_F02A0A337006" />
-      <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
       <ComponentRef Id="comp_1649DFFC_4752_4288_A5C9_B837B82A2C39" />
       <ComponentRef Id="comp_895EE644_07D6_4FE3_80C2_7735D7FB32B7" />
       <ComponentRef Id="comp_E738D5C9_087E_4AEE_95C0_A33A305570F0" />
@@ -27,7 +29,6 @@
       <ComponentRef Id="comp_17EABA84_A7F3_49C1_9D2B_CFAC59682110" />
       <ComponentRef Id="comp_8AF071A6_8B24_4FD6_8FF5_86D18E1895F8" />
       <ComponentRef Id="comp_2F86847A_A2BC_4C85_B077_1CF222734E4C" />
-      <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
       <ComponentRef Id="comp_D35D81DA_EB8C_45A8_A32B_4C2A0AA9F346" />
       <ComponentRef Id="comp_25C1C551_E0F0_49A7_AC5D_BC0319F06224" />
       <ComponentRef Id="comp_0A919C16_63D2_48D6_8217_C01B064C723D" />
@@ -43,6 +44,16 @@
       <ComponentRef Id="comp_2556135F_916E_45AE_AE42_52D915E27351" />
       <ComponentRef Id="comp_3990668A_8EC7_4FBB_84E6_90DC5E1CCC73" />
       <ComponentRef Id="comp_23512A03_59AF_4E6B_AAB3_E626523EAC06" />
+      <ComponentRef Id="comp_357FC2F4_2A1D_4DCA_988B_0AD7D16DC395" />
+      <Feature Id="DellTools" Title="Dell Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support Dell devices.">
+        <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
+        <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
+        <ComponentRef Id="comp_EBBD2AAC_24F1_4826_BF6A_EB20C36EE268" />
+        <ComponentRef Id="comp_99DBF020_FA1F_47A5_8166_9E1D3CD991CC" />
+      </Feature>
+      <Feature Id="LAPSIntegrations" Title="LAPS Integration" Level="1" Absent="allow" AllowAdvertise="no" Description="A tool that retrieves LAPS password from Active Directory.">
+        <ComponentRef Id="comp_5C6A231A_3F9F_4B9B_B5FF_B2C325FA4647" />
+      </Feature>
     </Feature>
   </Product>
   <Fragment>
@@ -96,11 +107,17 @@
             <Component Id="comp_8B28205A_F246_43F2_AD22_9CB0CB6666A7" Guid="15A97E72-3DCA-43F3-8301-0376DE9E458F" Permanent="no" SharedDllRefCount="no" Transitive="no">
               <File Id="_06CC7ACF_BBDE_42F9_9E85_E25EB8E9D2B0" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsRemoveRetiredContentWizard.xml" Source="..\Extensions\Forms\QuickToolsRemoveRetiredContentWizard.xml" KeyPath="yes" />
             </Component>
+            <Component Id="comp_99DBF020_FA1F_47A5_8166_9E1D3CD991CC" Guid="5D7B2949-2435-4092-89CA-D8CBEAA65BC4" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_8BE0C66E_5046_463F_A89F_6B9F0D1DF5BC" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDellWarranty.xml" Source="..\Extensions\Forms\QuickToolsDellWarranty.xml" KeyPath="yes" />
+            </Component>
           </Directory>
           <Directory Id="dir_7ABFEF4F_0A52_47E1_96ED_F76708FD1A5B" Name="Actions">
             <Directory Id="dir_BC4B3130_B4E3_49AC_BF99_340A1BABE891" Name="0ae7814c-1256-4358-b5a6-710f64ba2188">
               <Component Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" Guid="E01B8EE5-D554-4DE8-8B82-617D260008E2" Permanent="no" SharedDllRefCount="no" Transitive="no">
-                <File Id="_69D30E21_901F_44FA_984F_A1A884E92095" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDellDriverPackAction.xml" Source="..\Extensions\Actions\0ae7814c-1256-4358-b5a6-710f64ba2188\QuickToolsDellDriverPackAction.xml" KeyPath="yes" />
+                <File Id="_69D30E21_901F_44FA_984F_A1A884E92095" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverPackActionDell.xml" Source="..\Extensions\Actions\0ae7814c-1256-4358-b5a6-710f64ba2188\QuickToolsDriverPackActionDell.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_357FC2F4_2A1D_4DCA_988B_0AD7D16DC395" Guid="E9FE96F7-B96C-4AE1-AC5C-6FAB2EFD6126" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_1E8D100A_B7E0_4023_995F_371DE5F244B6" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverPackAction.xml" Source="..\Extensions\Actions\0ae7814c-1256-4358-b5a6-710f64ba2188\QuickToolsDriverPackAction.xml" KeyPath="yes" />
               </Component>
             </Directory>
             <Directory Id="dir_387FB9B2_0526_473C_87DB_6F58E816ADAC" Name="3fd01cd1-9e01-461e-92cd-94866b8d1f39">
@@ -151,6 +168,12 @@
               </Component>
               <Component Id="comp_331A6D48_68D1_40AB_B7DD_ED71B9BCACF0" Guid="98FA73F0-72A4-45E6-8840-5BCE9AB8ED4A" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_EC61D62F_E669_444F_A2A4_640F0884FD75" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesClientActions.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesClientActions.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_5C6A231A_3F9F_4B9B_B5FF_B2C325FA4647" Guid="F8E88AB2-CEC3-47B0-B924-2E6E3CCCF841" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_D050D25A_BDE6_4414_8588_7479A4EEC59A" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesLAPS.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesLAPS.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_EBBD2AAC_24F1_4826_BF6A_EB20C36EE268" Guid="00E63409-C83F-4F3D-9F66-0D5B1ABA7F03" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_C6BE3701_5600_481A_9B1A_ABFA1D06E33E" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesDellWarranty.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesDellWarranty.xml" KeyPath="yes" />
               </Component>
             </Directory>
           </Directory>

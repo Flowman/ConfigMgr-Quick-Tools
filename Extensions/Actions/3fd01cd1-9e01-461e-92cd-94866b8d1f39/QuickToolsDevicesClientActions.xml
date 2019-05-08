@@ -139,7 +139,12 @@
       <ShowOn>
         <string>ContextMenu</string>
       </ShowOn>
-    </ActionDescription>    
+    </ActionDescription>
+    <ActionDescription Class="Separator">
+      <ShowOn>
+        <string>ContextMenu</string>
+      </ShowOn>
+    </ActionDescription> 
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Restart SMS Agent Host Service" MnemonicDisplayName="Restart SMS Agent Host Service" Description="Restart SMS Agent Host Service" >
       <ShowOn>
         <string>DefaultHomeTab</string>

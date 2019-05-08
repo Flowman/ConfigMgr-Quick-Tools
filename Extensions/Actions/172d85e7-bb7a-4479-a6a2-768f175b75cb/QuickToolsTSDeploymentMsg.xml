@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ActionDescription Class="Executable" DisplayName="ShowMessages" MnemonicDisplayName="Show Messages" Description="Show Messages for this deployment">
   <ShowOn>
     <string>ContextMenu</string>
