@@ -32,6 +32,17 @@
           </ShowOn>
           <DialogId>QuickToolsIncrementalCollectionsWizard</DialogId>
         </ActionDescription>
+        <ActionDescription Class="AssemblyType" DisplayName="Collection Evaluation Statistics" MnemonicDisplayName="Collection Evaluation Statistics" Description="Show collection evaluation statistics">
+          <ShowOn>
+            <string>DefaultHomeTab</string>
+            <string>ContextMenu</string>
+          </ShowOn>
+          <ActionAssembly>
+            <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+            <Type>ConfigMgr.QuickTools.CollevalStatisticsDialog</Type>
+            <Method>Show</Method>
+          </ActionAssembly>          
+        </ActionDescription>        
       </ActionGroups>
       <SecurityConfiguration>
         <ClassPermissions>

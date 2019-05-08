@@ -8,15 +8,15 @@ using System.Management;
 using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace ConfigMgr.QuickTools
 {
     public partial class CollevalStatisticsDialog : SmsCustomDialog
     {
         private BackgroundWorker backgroundWorker;
-        private ConnectionManagerBase connectionManager;
+        private readonly ConnectionManagerBase connectionManager;
 
         public CollevalStatisticsDialog(ActionDescription action, ScopeNode scopeNode)
         {
@@ -172,9 +172,20 @@ namespace ConfigMgr.QuickTools
             Close();
         }
 
-        private void CollevalStatisticsDialog_Load(object sender, EventArgs e)
+        private void ListViewListCollections_CopyKeyEvent(object sender, EventArgs e)
         {
-
+            StringBuilder buffer = new StringBuilder();
+            foreach (ListViewItem item in listViewListCollections.SelectedItems)
+            {
+                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                {
+                    buffer.Append(subitem.Text);
+                    buffer.Append("\t");
+                }
+                buffer.AppendLine();
+            }
+            buffer.Remove(buffer.Length - 1, 1);
+            Clipboard.SetData(DataFormats.Text, buffer.ToString());
         }
     }
 }

@@ -216,6 +216,7 @@
             this.listViewListCollections.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListCollections.UseCompatibleStateImageBehavior = false;
             this.listViewListCollections.View = System.Windows.Forms.View.Details;
+            this.listViewListCollections.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListCollections_CopyKeyEvent);
             // 
             // columnHeaderName
             // 
@@ -329,11 +330,11 @@
             this.label13.TabIndex = 26;
             this.label13.Text = ":";
             // 
-            // labelCollShort
+            // labelCollShortTime
             // 
             this.labelCollShortTime.AutoSize = true;
             this.labelCollShortTime.Location = new System.Drawing.Point(191, 184);
-            this.labelCollShortTime.Name = "labelCollShort";
+            this.labelCollShortTime.Name = "labelCollShortTime";
             this.labelCollShortTime.Size = new System.Drawing.Size(0, 13);
             this.labelCollShortTime.TabIndex = 25;
             // 
@@ -381,7 +382,6 @@
             this.Name = "CollevalStatisticsDialog";
             this.Text = "CollevalStatisticsDialog";
             this.Title = "CollevalStatisticsDialog";
-            this.Load += new System.EventHandler(this.CollevalStatisticsDialog_Load);
             this.Shown += new System.EventHandler(this.CollevalStatisticsDialog_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

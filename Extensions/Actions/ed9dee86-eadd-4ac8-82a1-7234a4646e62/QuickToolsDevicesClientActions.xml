@@ -135,5 +135,16 @@
         <Method>RunClientActionWindowsInstaller</Method>
       </ActionAssembly>
     </ActionDescription>
+    <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Restart SMS Agent Host Service" MnemonicDisplayName="Restart SMS Agent Host Service" Description="Restart SMS Agent Host Service" >
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ActionAssembly>
+        <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
+        <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
+        <Method>RunClientActionRestartService</Method>
+      </ActionAssembly>
+    </ActionDescription>      
   </ActionGroups>
 </ActionDescription>

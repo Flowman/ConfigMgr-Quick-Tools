@@ -1,0 +1,29 @@
+<ActionDescription Class="AssemblyType" DisplayName="Delete" MnemonicDisplayName="Delete" Description="Delete" RibbonDisplayType="TextAndSmallImage" InsertBefore="8962c12f-c096-4e07-8125-7c681c270a98">
+  <ShowOn>
+    <string>DefaultHomeTab</string>    
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>AdminUI.UIResources.dll</Assembly>
+      <Type>Microsoft.ConfigurationManagement.AdminConsole.UIResources.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>Delete</ImageResourceName>
+  </ImagesDescription>
+  <ActionStateAssembly>
+    <Assembly>AdminUI.CollectionProperty.dll</Assembly>
+    <Type>Microsoft.ConfigurationManagement.AdminConsole.CollectionProperty.DeployWizard.DeployWizardForm</Type>
+    <Method>IsDeleteDeploymentActionEnabled</Method>
+  </ActionStateAssembly>
+  <ActionAssembly>
+    <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
+    <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
+    <Method>DeleteDeploymentForMonitoring</Method>
+  </ActionAssembly>
+  <SecurityConfiguration>
+    <ClassPermissions>
+      <ActionSecurityDescription ClassObject="SMS_Application" RequiredPermissions="1" />
+      <ActionSecurityDescription ClassObject="SMS_Collection" RequiredPermissions="1048577" />
+    </ClassPermissions>
+  </SecurityConfiguration>
+</ActionDescription>

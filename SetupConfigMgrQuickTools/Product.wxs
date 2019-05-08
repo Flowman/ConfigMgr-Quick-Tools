@@ -42,6 +42,7 @@
       <ComponentRef Id="comp_A5846E30_94DF_422F_A862_BA25A850C95B" />
       <ComponentRef Id="comp_2556135F_916E_45AE_AE42_52D915E27351" />
       <ComponentRef Id="comp_3990668A_8EC7_4FBB_84E6_90DC5E1CCC73" />
+      <ComponentRef Id="comp_23512A03_59AF_4E6B_AAB3_E626523EAC06" />
     </Feature>
   </Product>
   <Fragment>
@@ -118,6 +119,11 @@
             <Directory Id="dir_4E70C982_41D7_47A6_AB09_3DC6062A9121" Name="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">
               <Component Id="comp_1649DFFC_4752_4288_A5C9_B837B82A2C39" Guid="EDEE76B5-6F93-4BC9-8295-90492D2A79CF" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_AC6681F3_F190_488C_A0E2_B637E1E9BA43" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsCleanSoftwareUpdatesAction.xml" Source="..\Extensions\Actions\23e7a3fe-b0f0-4b24-813a-dc425239f9a2\QuickToolsCleanSoftwareUpdatesAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_00546C87_8A8B_4207_A4AC_283170871C7D" Name="d1621955-48ad-4bba-9c85-95f74c0c6538">
+              <Component Id="comp_23512A03_59AF_4E6B_AAB3_E626523EAC06" Guid="A1952BD0-6AE7-46E3-8F69-A261C184EF40" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_BBD90E93_3F9E_4BEE_9F09_853BA9962432" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsMonitoringDeploymentsActions.xml" Source="..\Extensions\Actions\d1621955-48ad-4bba-9c85-95f74c0c6538\QuickToolsMonitoringDeploymentsActions.xml" KeyPath="yes" />
               </Component>
             </Directory>
             <Directory Id="dir_72D51B7E_C47E_4784_A03F_D0E78766D32D" Name="172d85e7-bb7a-4479-a6a2-768f175b75cb">
