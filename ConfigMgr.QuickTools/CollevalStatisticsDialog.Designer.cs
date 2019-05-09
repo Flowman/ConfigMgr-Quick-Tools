@@ -75,9 +75,9 @@
             this.labelStartTime.AutoSize = true;
             this.labelStartTime.Location = new System.Drawing.Point(191, 9);
             this.labelStartTime.Name = "labelStartTime";
-            this.labelStartTime.Size = new System.Drawing.Size(57, 13);
+            this.labelStartTime.Size = new System.Drawing.Size(45, 13);
             this.labelStartTime.TabIndex = 1;
-            this.labelStartTime.Text = "Not Found";
+            this.labelStartTime.Text = "No data";
             // 
             // label3
             // 
@@ -120,9 +120,9 @@
             this.labelEndTime.AutoSize = true;
             this.labelEndTime.Location = new System.Drawing.Point(191, 34);
             this.labelEndTime.Name = "labelEndTime";
-            this.labelEndTime.Size = new System.Drawing.Size(57, 13);
+            this.labelEndTime.Size = new System.Drawing.Size(45, 13);
             this.labelEndTime.TabIndex = 5;
-            this.labelEndTime.Text = "Not Found";
+            this.labelEndTime.Text = "No data";
             // 
             // labelTimeTaken
             // 

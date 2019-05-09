@@ -10,6 +10,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace ConfigMgr.QuickTools
 {
@@ -79,49 +80,53 @@ namespace ConfigMgr.QuickTools
                 {
                     DateTime startTime = DateTime.Parse(startMatch.Groups[1].Value);
                     DateTime endTime = DateTime.Parse(endMatch.Groups[1].Value);
+                    TimeSpan duration = endTime - startTime;
 
                     if (endTime.CompareTo(startTime) > 0)
                     {
+                        // get collection count
                         regex = new Regex(@"PF:\s(\d.)\scollections in incremental evaluation graph.*(\d.-\d.-\d{4}\s\d.:\d.:\d.)", RegexOptions.RightToLeft);
                         Match match = regex.Match(input);                      
 
                         int collectionCount = match.Success ? Convert.ToInt32(match.Groups[1].Value) : 0;
-
-                        TimeSpan duration = endTime - startTime;
-
-                        labelStartTime.Text = startTime.ToString();
-                        labelEndTime.Text = endTime.ToString();
-                        labelTimeTaken.Text = duration.ToString();
-                        labelCollectionCount.Text = collectionCount.ToString();
-
+                        // get evaluated collections
                         regex = new Regex(@"\[Express Evaluator] successfully evaluated collection.*\[(.*)\].*used\s(.*)\sseconds.*(\d.-\d.-\d{4} \d.:\d.:\d.)");
                         MatchCollection matches = regex.Matches(input);
 
-                        foreach (Match test in matches)
+                        List<IResultObject> collections = Utility.SearchWMIToList(connectionManager, "SELECT CollectionID,Name FROM SMS_Collection");
+
+                        foreach (Match obj in matches)
                         {
-                            DateTime collectionTime = DateTime.Parse(test.Groups[3].Value);
+                            DateTime collectionTime = DateTime.Parse(obj.Groups[3].Value);
 
                             if (Utility.InclusiveBetween(collectionTime, startTime, endTime))
                             {
+                                IResultObject collection = collections.Where(x => x.Properties["CollectionID"].StringValue.Equals(obj.Groups[1].Value)).FirstOrDefault();
                                 listViewListCollections.Items.Add(new ListViewItem()
                                 {
-                                    Text = "CollName",
+                                    Text = collection["Name"].StringValue,
                                     SubItems = {
-                                        test.Groups[2].Value,
-                                        test.Groups[1].Value
+                                        obj.Groups[2].Value,
+                                        obj.Groups[1].Value
                                     }
                                 });
                             }
                         }
 
-                        double[] columnData = (from ListViewItem row in listViewListCollections.Items
-                                            where row.SubItems[1].Text.ToString() != string.Empty
-                                            select Convert.ToDouble(row.SubItems[1].Text)).ToArray();
+                        labelStartTime.Text = startTime.ToString();
+                        labelEndTime.Text = endTime.ToString();
+                        labelTimeTaken.Text = duration.ToString(@"mm\:ss");
+                        labelCollectionCount.Text = collectionCount.ToString();
 
-                        labelCollAverageTime.Text = Math.Round(columnData.Average(), 2).ToString() + " seconds";
-                        labelCollTime.Text = Math.Round(columnData.Sum() / 60, 2).ToString() + " minutes";
-                        labelCollLongTime.Text  = Math.Round(columnData.Max(), 2).ToString() + " seconds";
-                        labelCollShortTime.Text = Math.Round(columnData.Min(), 2).ToString() + " seconds";
+                        double[] columnData = (from ListViewItem row in listViewListCollections.Items
+                                               where row.SubItems[1].Text.ToString() != string.Empty
+                                               select Convert.ToDouble(row.SubItems[1].Text)
+                                              ).ToArray();
+
+                        labelCollAverageTime.Text = Math.Round(columnData.Average(), 3).ToString() + " sec";
+                        labelCollTime.Text = TimeSpan.FromSeconds(columnData.Sum()).ToString(@"mm\:ss\.fff");
+                        labelCollLongTime.Text  = Math.Round(columnData.Max(), 3).ToString() + " sec";
+                        labelCollShortTime.Text = Math.Round(columnData.Min(), 3).ToString() + " sec";
                     }
                 }
             }
