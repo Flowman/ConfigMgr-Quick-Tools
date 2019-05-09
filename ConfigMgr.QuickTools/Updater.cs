@@ -8,7 +8,7 @@ namespace ConfigMgr.QuickTools
 {
     public class Updater
     {
-        private static ModifyRegistry registry = new ModifyRegistry();
+        private static readonly ModifyRegistry registry = new ModifyRegistry();
         private static bool check = false;
 
         public static void CheckUpdates()

@@ -32,7 +32,6 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AutoUpdate.xml" />
     <Content Include="Resources\icon.ico" />
     <Content Include="Resources\License.rtf" />
     <Content Include="Resources\WixUIBannerBmp.bmp" />

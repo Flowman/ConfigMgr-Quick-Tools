@@ -45,6 +45,8 @@
       <ComponentRef Id="comp_3990668A_8EC7_4FBB_84E6_90DC5E1CCC73" />
       <ComponentRef Id="comp_23512A03_59AF_4E6B_AAB3_E626523EAC06" />
       <ComponentRef Id="comp_357FC2F4_2A1D_4DCA_988B_0AD7D16DC395" />
+      <ComponentRef Id="comp_2630FCCB_55C8_449E_BB5A_51714BFCFEE1" />
+      <ComponentRef Id="comp_1D33B728_D9D2_465E_B078_9AC88E6A81F7" />
       <Feature Id="DellTools" Title="Dell Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support Dell devices.">
         <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
         <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
@@ -69,7 +71,13 @@
           <File Id="_EE0C981E_29A7_48E2_9D0E_889CFBC39A09" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="Microsoft.Deployment.Compression.dll" Source="..\packages\MSFTCompressionCab.1.0.0\lib\Microsoft.Deployment.Compression.dll" KeyPath="yes" />
         </Component>
         <Component Id="comp_3990668A_8EC7_4FBB_84E6_90DC5E1CCC73" Guid="28CC9326-6D92-4507-8121-A6A749D87DE7" Permanent="no" SharedDllRefCount="no" Transitive="no">
-          <File Id="_5CF1E5A8_F9B4_4C5B_8D42_BE6509ED0BC2" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="AutoUpdater.NET.dll" Source="..\Build\Release\AutoUpdater.NET.dll" KeyPath="yes" />
+          <File Id="_5CF1E5A8_F9B4_4C5B_8D42_BE6509ED0BC2" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="AutoUpdater.NET.dll" Source="..\packages\Autoupdater.NET.Official.1.5.1\lib\net40\AutoUpdater.NET.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="comp_2630FCCB_55C8_449E_BB5A_51714BFCFEE1" Guid="3D62E84D-BDA4-445E-AEF3-86D52B14F635" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_912ADC10_8955_4944_82E7_8A945DDD42C5" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="log4net.dll" Source="..\packages\log4net.2.0.8\lib\net45-full\log4net.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="comp_1D33B728_D9D2_465E_B078_9AC88E6A81F7" Guid="48E36828-2DA0-4B74-A60E-6539B35D1AE5" Permanent="no" SharedDllRefCount="no" Transitive="no">
+          <File Id="_F2266E5C_05BF_488A_B745_B53253A8771D" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="log4net.config" Source="..\Build\$(var.ConfigMgr.QuickTools.Configuration)\log4net.config" KeyPath="yes" />
         </Component>
         <Directory Id="ConfigMgr.QuickTools.Binaries" />
         <Directory Id="ConfigMgr.QuickTools.Warranty.Binaries" />

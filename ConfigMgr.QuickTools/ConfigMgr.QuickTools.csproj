@@ -53,6 +53,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autoupdater.NET.Official.1.5.1\lib\net40\AutoUpdater.NET.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ConfigurationManagement">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\Microsoft.ConfigurationManagement.exe</HintPath>
     </Reference>
@@ -105,6 +109,7 @@
     <Compile Include="IncrementalCollectionsPage.designer.cs">
       <DependentUpon>IncrementalCollectionsPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="CMTrace.cs" />
     <Compile Include="OptionsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,6 +153,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Resources\update.ico" />
   </ItemGroup>

@@ -9,7 +9,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     public partial class OptionsControl : SmsPageControl
     {
         private ControlsValidator controlsValidator;
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
 
         public OptionsControl(SmsPageData pageData)
           : base(pageData)

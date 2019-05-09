@@ -6,7 +6,7 @@ namespace ConfigMgr.QuickTools.Warranty
 {
     public partial class OptionsControl : SmsPageControl
     {
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
 
         public OptionsControl(SmsPageData pageData)
           : base(pageData)
@@ -44,14 +44,14 @@ namespace ConfigMgr.QuickTools.Warranty
             registry.Write("DellAPIURI", textBoxAPIUri.Text);
             registry.Write("DellAPIKey", textBoxAPIKey.Text);
 
-            Dirty = false;
-
             if (PropertyManager != null)
             {
                 UpdateUserData();
 
                 PropertyManager.UserDataObject = UserData;
             }
+
+            Dirty = false;
 
             return base.ApplyChanges(out errorControl, out showError);
         }

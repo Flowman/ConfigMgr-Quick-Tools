@@ -18,8 +18,8 @@ namespace ConfigMgr.QuickTools.Warranty
 {
     public partial class ResultDellWarrantyControl : SmsPageControl
     {
-        private ModifyRegistry registry = new ModifyRegistry();
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private BackgroundWorker backgroundWorker;
 
         public ResultDellWarrantyControl(SmsPageData pageData)
@@ -101,6 +101,8 @@ namespace ConfigMgr.QuickTools.Warranty
                     string serviceTag = contentObject["SerialNumber"].StringValue;
                     labelServiceTag.Text = serviceTag;
 
+                    log.InfoFormat("Processing warranty request for service tag : {0}", serviceTag);
+
                     using (HttpClient client = new HttpClient())
                     {
                         try
@@ -111,13 +113,19 @@ namespace ConfigMgr.QuickTools.Warranty
                             client.DefaultRequestHeaders.Accept.Clear();
                             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"));
 
+                            log.InfoFormat("Connecting to dell API : {0}", client.BaseAddress);
+
                             HttpResponseMessage response = await client.GetAsync(string.Format("getassetwarranty/{0}?apikey={1}", serviceTag, registry.ReadString("DellApiKey")));
+                            log.DebugFormat("URL : {0}", response.RequestMessage.RequestUri.OriginalString);
+                            log.DebugFormat("Response status code : {0}", response.StatusCode);
                             if (response.IsSuccessStatusCode)
                             {
                                 labelHttpResponse.Text = "Success";
                                 string resultContent = response.Content.ReadAsStringAsync().Result;
                                 XElement assetInformation = XElement.Parse(resultContent);
                                 XNamespace ns = assetInformation.GetDefaultNamespace();
+
+                                log.Info("Connected successfully, processing xml data");
 
                                 CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                                 TextInfo textInfo = cultureInfo.TextInfo;
@@ -153,16 +161,22 @@ namespace ConfigMgr.QuickTools.Warranty
                             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                             {
                                 labelHttpResponse.Text = "Unauthorized - Check API Key";
+                                log.Warn(labelHttpResponse.Text);
                             }
                             else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                             {
                                 labelHttpResponse.Text = "Resource Not found";
+                                log.Warn(labelHttpResponse.Text);
                             }
                         }
                         catch (HttpRequestException ex)
                         {
-                            throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+                            string msg = string.Format("{0}: {1}", ex.GetType().Name, ex.Message);
+                            log.Error(msg);
+                            throw new InvalidOperationException(msg);
                         }
+
+                        log.InfoFormat("Finished processing request for service tag : {0}", serviceTag);
                     }
                 }
                 else
@@ -175,7 +189,9 @@ namespace ConfigMgr.QuickTools.Warranty
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+                string msg = string.Format("{0}: {1}", ex.GetType().Name, ex.Message);
+                log.Error(msg);
+                throw new InvalidOperationException(msg);
             }
         }
 

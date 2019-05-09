@@ -6,7 +6,7 @@ namespace ConfigMgr.QuickTools
 {
     public partial class OptionsControl : SmsPageControl
     {
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
 
         public OptionsControl(SmsPageData pageData)
           : base(pageData)
@@ -39,6 +39,8 @@ namespace ConfigMgr.QuickTools
             numericUpDownInterval.Value = registry.ReadInt("UpdateInterval");
 
             checkEnable.Checked = registry.ReadBool("UpdateEnabled");
+
+            Dirty = false;
 
             Initialized = true;
         }
