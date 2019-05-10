@@ -60,7 +60,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
                 ManagementScope scope = Utility.GetWMIScope(host, @"ccm\SoftwareUpdates\DeploymentAgent");
                 ObjectQuery query = new ObjectQuery("SELECT * FROM CCM_AssignmentCompliance");
-                List<ManagementObject> compliance = Utility.SearchWMI(scope, query).ToList();
+                List<ManagementObject> compliance = Utility.SearchWMIToList(scope, query);
                 // it is faster to run two separate queries than one. SELECT SMS_AuthorizationList.LocalizedDisplayName FROM SMS_UpdateGroupAssignment JOIN SMS_AuthorizationList ON SMS_AuthorizationList.CI_ID = SMS_UpdateGroupAssignment.AssignedUpdateGroup WHERE SMS_UpdateGroupAssignment.AssignmentUniqueID =          
                 List<IResultObject> assignments = Utility.SearchWMIToList(ConnectionManager, "SELECT * FROM SMS_UpdateGroupAssignment");
                 List<IResultObject> updateGroups = Utility.SearchWMIToList(ConnectionManager, "SELECT * FROM SMS_AuthorizationList");

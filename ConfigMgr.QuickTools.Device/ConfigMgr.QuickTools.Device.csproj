@@ -51,6 +51,10 @@
     <Reference Include="AdminUI.WqlQueryEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft Configuration Manager\AdminConsole\bin\AdminUI.WqlQueryEngine.dll</HintPath>
     </Reference>
+    <Reference Include="ByteSize, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ByteSize.1.3.0\lib\net45\ByteSize.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -86,6 +90,12 @@
   <ItemGroup>
     <Compile Include="ClientActionProgressBar.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ClientCacheDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientCacheDialog.Designer.cs">
+      <DependentUpon>ClientCacheDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Device.cs" />
     <Compile Include="ClientActions.cs" />
@@ -139,10 +149,19 @@
     <Compile Include="ResultSUComplianceControl.designer.cs">
       <DependentUpon>ResultSUComplianceControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TrackBarWithoutFocus.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TrackBarWithoutFocus.Designer.cs">
+      <DependentUpon>TrackBarWithoutFocus.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ClientActionsDialog.resx">
       <DependentUpon>ClientActionsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientCacheDialog.resx">
+      <DependentUpon>ClientCacheDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LAPSDialog.resx">
       <DependentUpon>LAPSDialog.cs</DependentUpon>

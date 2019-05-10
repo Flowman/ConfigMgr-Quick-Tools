@@ -232,7 +232,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, @"cimv2");
             }
-            catch (IOException ex)
+            catch (InvalidOperationException ex)
             {
                 throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
             }

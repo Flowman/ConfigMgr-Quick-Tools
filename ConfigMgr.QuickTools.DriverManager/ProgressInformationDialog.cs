@@ -50,7 +50,6 @@ namespace ConfigMgr.QuickTools.DriverManager
             base.OnShown(e);
         }
 
-
         protected override void OnClosing(CancelEventArgs e)
         {
             if (!CanClose)

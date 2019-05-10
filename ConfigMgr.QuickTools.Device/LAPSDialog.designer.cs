@@ -93,8 +93,6 @@
             this.Controls.Add(this.buttonOK);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LAPSDialog";
-            this.Text = "LAPSDialog";
-            this.Title = "LAPSDialog";
             this.Shown += new System.EventHandler(this.LAPSDialog_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

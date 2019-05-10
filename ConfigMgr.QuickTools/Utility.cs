@@ -162,6 +162,7 @@ namespace ConfigMgr.QuickTools
 
         public static ManagementScope GetWMIScope(string host, string space, string username = null, string password = null)
         {
+            // TODO update to have all the wmi connection catch here, so we can remove it from the other places
             ConnectionOptions options = new ConnectionOptions
             {
                 Authentication = AuthenticationLevel.PacketPrivacy,
@@ -226,6 +227,17 @@ namespace ConfigMgr.QuickTools
             return managmentObject;
         }
 
+        public static ManagementObject GetFirstWMIInstance(string host, string space, string query, string select = "*")
+        {
+            ManagementScope scope = GetWMIScope(host, space);
+
+            ObjectQuery wmiquery = new ObjectQuery(string.Format("SELECT {0} FROM {1}", select, query));
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, wmiquery);
+            var enu = searcher.Get().GetEnumerator();
+            if (!enu.MoveNext()) throw new Exception("Unexpected WMI query failure");
+            return (ManagementObject)enu.Current;
+        }
+
         public static IEnumerable<IResultObject> SearchWMI(ConnectionManagerBase connectionManager, string query)
         {
             using (IResultObject resultObjects = connectionManager.QueryProcessor.ExecuteQuery(query))
@@ -259,17 +271,6 @@ namespace ConfigMgr.QuickTools
                     resultObject = resultObject1;
             }
             return resultObject;
-        }
-
-        public static ManagementObject GetFirstWMIInstance(string host, string space, string query)
-        {
-            ManagementScope scope = GetWMIScope(host, space);
-
-            ObjectQuery wmiquery = new ObjectQuery(string.Format("SELECT * FROM {0}", query));
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, wmiquery);
-            var enu = searcher.Get().GetEnumerator();
-            if (!enu.MoveNext()) throw new Exception("Unexpected WMI query failure");
-            return (ManagementObject)enu.Current;    
         }
 
         public static void RequestLock(ConnectionManagerBase connectionManager, string objectPath)
