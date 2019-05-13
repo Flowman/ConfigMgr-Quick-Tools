@@ -29,6 +29,8 @@ namespace ConfigMgr.QuickTools.Warranty
             buttonSURefresh.Image = new Icon(Properties.Resources.reload, new Size(16, 16)).ToBitmap();
             buttonOptions.Image = new Icon(Properties.Resources.options, new Size(16, 16)).ToBitmap();
             Title = "Dell Warranty";
+
+            Updater.CheckUpdates();
         }
 
         public override void InitializePageControl()

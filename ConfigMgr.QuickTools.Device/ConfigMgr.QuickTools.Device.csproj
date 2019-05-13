@@ -91,11 +91,11 @@
     <Compile Include="ClientActionProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ClientCacheDialog.cs">
-      <SubType>Form</SubType>
+    <Compile Include="ResultCacheControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ClientCacheDialog.Designer.cs">
-      <DependentUpon>ClientCacheDialog.cs</DependentUpon>
+    <Compile Include="ResultCacheControl.Designer.cs">
+      <DependentUpon>ResultCacheControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Device.cs" />
     <Compile Include="ClientActions.cs" />
@@ -160,8 +160,8 @@
     <EmbeddedResource Include="ClientActionsDialog.resx">
       <DependentUpon>ClientActionsDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ClientCacheDialog.resx">
-      <DependentUpon>ClientCacheDialog.cs</DependentUpon>
+    <EmbeddedResource Include="ResultCacheControl.resx">
+      <DependentUpon>ResultCacheControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LAPSDialog.resx">
       <DependentUpon>LAPSDialog.cs</DependentUpon>

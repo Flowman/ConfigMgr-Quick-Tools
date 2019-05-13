@@ -16,7 +16,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     public partial class DriverGrabberSelectPage : SmsPageControl
     {
         #region Private
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private string architecture = null;
         #endregion
 

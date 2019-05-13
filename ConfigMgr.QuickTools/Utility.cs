@@ -201,6 +201,11 @@ namespace ConfigMgr.QuickTools
             }
         }
 
+        public static List<ManagementObject> SearchWMIToList(ManagementScope scope, string query)
+        {
+            return SearchWMIToList(scope, new ObjectQuery(query));
+        }
+
         public static List<ManagementObject> SearchWMIToList(ManagementScope scope, ObjectQuery query)
         {
             List<ManagementObject> list = new List<ManagementObject>();
@@ -213,6 +218,11 @@ namespace ConfigMgr.QuickTools
                 }
             }
             return list;
+        }
+
+        public static ManagementObject GetFirstWMIInstance(ManagementScope scope, string query)
+        {
+            return GetFirstWMIInstance(scope, new ObjectQuery(query));
         }
 
         public static ManagementObject GetFirstWMIInstance(ManagementScope scope, ObjectQuery query)
