@@ -91,6 +91,12 @@
     <Compile Include="ClientActionProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DeviceProgressDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeviceProgressDialog.Designer.cs">
+      <DependentUpon>DeviceProgressDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResultCacheControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -159,6 +165,9 @@
   <ItemGroup>
     <EmbeddedResource Include="ClientActionsDialog.resx">
       <DependentUpon>ClientActionsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeviceProgressDialog.resx">
+      <DependentUpon>DeviceProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResultCacheControl.resx">
       <DependentUpon>ResultCacheControl.cs</DependentUpon>

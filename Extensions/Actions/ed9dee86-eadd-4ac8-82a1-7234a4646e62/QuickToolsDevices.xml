@@ -21,6 +21,13 @@
       </ShowOn>
       <DialogId>QuickToolsDriverGrabberWizard</DialogId>
     </ActionDescription>
+    <ActionDescription NamespaceGuid="19AE1136-B335-42A4-A471-EDCF9367F64C" Class="ShowDialog" DisplayName="Client Cache" MnemonicDisplayName="Client Cache" Description="Change the client cache settings">
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <DialogId>QuickToolsDeviceCache</DialogId>
+    </ActionDescription>    
     <ActionDescription NamespaceGuid="8619EFC7-4B95-435C-9A2E-2A3ADE321698" Class="None" />
   </ActionGroups>
 </ActionDescription>

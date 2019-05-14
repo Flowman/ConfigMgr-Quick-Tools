@@ -68,7 +68,7 @@ namespace ConfigMgr.QuickTools.Warranty
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
             buttonSURefresh.Enabled = false;
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -215,7 +215,7 @@ namespace ConfigMgr.QuickTools.Warranty
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     listViewListWarranty.IsLoading = false;
                     listViewListWarranty.UpdateColumnWidth(columnHeaderDescription);
                     listViewListWarranty.Sorting = SortOrder.Ascending;

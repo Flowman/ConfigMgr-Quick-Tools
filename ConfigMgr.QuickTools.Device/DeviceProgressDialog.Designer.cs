@@ -37,6 +37,8 @@
             this.labelCompleted = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.listViewHosts = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonOK = new System.Windows.Forms.Button();
             this.clientActionProgressBar1 = new ConfigMgr.QuickTools.Device.ClientActionProgressBar();
             this.SuspendLayout();
@@ -44,7 +46,7 @@
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(207, 326);
+            this.buttonCancel.Location = new System.Drawing.Point(247, 326);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 19;
@@ -54,18 +56,18 @@
             // 
             // labelTotal
             // 
-            this.labelTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.labelTotal.AutoSize = true;
-            this.labelTotal.Location = new System.Drawing.Point(235, 304);
+            this.labelTotal.Location = new System.Drawing.Point(275, 304);
             this.labelTotal.Name = "labelTotal";
             this.labelTotal.Size = new System.Drawing.Size(0, 13);
             this.labelTotal.TabIndex = 18;
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(202, 304);
+            this.label3.Location = new System.Drawing.Point(242, 304);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 17;
@@ -118,6 +120,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewHosts.AutoSort = true;
             this.listViewHosts.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewHosts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderName,
+            this.columnHeaderStatus});
             this.listViewHosts.CustomNoResultsText = null;
             this.listViewHosts.FullRowSelect = true;
             this.listViewHosts.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
@@ -128,7 +133,7 @@
             this.listViewHosts.MultiSelect = true;
             this.listViewHosts.Name = "listViewHosts";
             this.listViewHosts.ShowSearchBar = true;
-            this.listViewHosts.Size = new System.Drawing.Size(270, 256);
+            this.listViewHosts.Size = new System.Drawing.Size(310, 256);
             this.listViewHosts.SmallImageList = null;
             this.listViewHosts.Sorting = System.Windows.Forms.SortOrder.None;
             this.listViewHosts.StateImageList = null;
@@ -137,11 +142,21 @@
             this.listViewHosts.UseCompatibleStateImageBehavior = false;
             this.listViewHosts.View = System.Windows.Forms.View.Details;
             // 
+            // columnHeaderName
+            // 
+            this.columnHeaderName.Text = "Name";
+            this.columnHeaderName.Width = 150;
+            // 
+            // columnHeaderStatus
+            // 
+            this.columnHeaderStatus.Text = "Status";
+            this.columnHeaderStatus.Width = 90;
+            // 
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.Enabled = false;
-            this.buttonOK.Location = new System.Drawing.Point(126, 326);
+            this.buttonOK.Location = new System.Drawing.Point(166, 326);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 11;
@@ -158,14 +173,14 @@
             this.clientActionProgressBar1.Location = new System.Drawing.Point(12, 274);
             this.clientActionProgressBar1.Name = "clientActionProgressBar1";
             this.clientActionProgressBar1.Offline = 0;
-            this.clientActionProgressBar1.Size = new System.Drawing.Size(270, 23);
+            this.clientActionProgressBar1.Size = new System.Drawing.Size(310, 23);
             this.clientActionProgressBar1.TabIndex = 10;
             // 
             // DeviceProgressDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 361);
+            this.ClientSize = new System.Drawing.Size(334, 361);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.labelTotal);
             this.Controls.Add(this.label3);
@@ -176,9 +191,11 @@
             this.Controls.Add(this.listViewHosts);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.clientActionProgressBar1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(310, 350);
             this.Name = "DeviceProgressDialog";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DeviceProgressDialog_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -196,5 +213,7 @@
         private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewHosts;
         private System.Windows.Forms.Button buttonOK;
         private ClientActionProgressBar clientActionProgressBar1;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
+        private System.Windows.Forms.ColumnHeader columnHeaderStatus;
     }
 }

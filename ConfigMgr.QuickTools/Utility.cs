@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Management;
 using System.Windows.Forms;
+using Microsoft.ConfigurationManagement.ManagementProvider.DialogFramework;
 
 namespace ConfigMgr.QuickTools
 {
@@ -394,7 +395,7 @@ namespace ConfigMgr.QuickTools
                     num -= dataGridViewColumn.Width;
             }
 
-            var vScrollbar = dataGridView.Controls.OfType<VScrollBar>().First();
+            VScrollBar vScrollbar = dataGridView.Controls.OfType<VScrollBar>().First();
             if (vScrollbar.Visible)
             {
                 num -= SystemInformation.VerticalScrollBarWidth;

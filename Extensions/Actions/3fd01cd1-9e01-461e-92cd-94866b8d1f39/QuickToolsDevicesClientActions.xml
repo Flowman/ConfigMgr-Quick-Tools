@@ -22,8 +22,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionApplicationDeployment</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000121}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Discovery Data Collection Cycle" MnemonicDisplayName="Discovery Data Collection Cycle" Description="Discovery Data Collection Cycle" >
       <ShowOn>
@@ -33,8 +34,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionDataCollection</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000003}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="File Collection Cycle" MnemonicDisplayName="File Collection Cycle" Description="File Collection Cycle" >
       <ShowOn>
@@ -44,8 +46,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionFileCollection</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000010}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Hardware Inventory Cycle" MnemonicDisplayName="Hardware Inventory Cycle" Description="Hardware Inventory Cycle" >
       <ShowOn>
@@ -55,8 +58,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionHardwareInventory</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000001}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Full Hardware Inventory Cycle" MnemonicDisplayName="Full Hardware Inventory Cycle" Description="Full Hardware Inventory Cycle" >
       <ShowOn>
@@ -66,8 +70,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionFullHardwareInventory</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000001},true</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Machine Policy Retrieval and Evaluation Cycle" MnemonicDisplayName="Machine Policy Retrieval and Evaluation Cycle" Description="Machine Policy Retrieval and Evaluation Cycle" >
       <ShowOn>
@@ -77,8 +82,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionMachinePolicy</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000021}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Software Inventory Cycle" MnemonicDisplayName="Software Inventory Cycle" Description="Software Inventory Cycle" >
       <ShowOn>
@@ -88,8 +94,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionSoftwareInventory</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000002}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Software Metering Usage Report Cycle" MnemonicDisplayName="Software Metering Usage Report Cycle" Description="Software Metering Usage Report Cycle" >
       <ShowOn>
@@ -99,8 +106,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionSoftwareMetering</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000031}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Software Updates Deployment Evaluation Cycle" MnemonicDisplayName="Software Updates Deployment Evaluation Cycle" Description="Software Updates Deployment Evaluation Cycle" >
       <ShowOn>
@@ -110,8 +118,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionSoftwareUpdateDeployment</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000108}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Software Updates Scan Cycle" MnemonicDisplayName="Software Updates Scan Cycle" Description="Software Updates Scan Cycle" >
       <ShowOn>
@@ -121,8 +130,9 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionSoftwareUpdateScan</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000113}</DialogId>
     </ActionDescription>
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Windows Installer Source List Update Cycle" MnemonicDisplayName="Windows Installer Source List Update Cycle" Description="Windows Installer Source List Update Cycle" >
       <ShowOn>
@@ -132,19 +142,15 @@
       <ActionAssembly>
         <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
         <Type>ConfigMgr.QuickTools.Device.ClientActions</Type>
-        <Method>RunClientActionWindowsInstaller</Method>
+        <Method>RunClientAction</Method>
       </ActionAssembly>
+      <DialogId>{00000000-0000-0000-0000-000000000032}</DialogId>
     </ActionDescription>
     <ActionDescription Class="Separator">
       <ShowOn>
         <string>ContextMenu</string>
       </ShowOn>
-    </ActionDescription>
-    <ActionDescription Class="Separator">
-      <ShowOn>
-        <string>ContextMenu</string>
-      </ShowOn>
-    </ActionDescription> 
+    </ActionDescription>    
     <ActionDescription Class="AssemblyType" SelectionMode="Both" DisplayName="Restart SMS Agent Host Service" MnemonicDisplayName="Restart SMS Agent Host Service" Description="Restart SMS Agent Host Service" >
       <ShowOn>
         <string>DefaultHomeTab</string>

@@ -75,9 +75,8 @@ namespace ConfigMgr.QuickTools.Device
             }
         }
 
-        public void UpdateValues(int max, int complete, int offline, int failed)
+        public void UpdateValues(int complete, int offline, int failed)
         {
-            Maximum = max;
             this.complete = complete;
             this.offline = offline;
             this.failed = failed;
