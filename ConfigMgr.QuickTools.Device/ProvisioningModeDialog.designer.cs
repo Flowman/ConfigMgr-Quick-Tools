@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientActionsDialog));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProvisioningModeDialog));
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.buttonOK = new System.Windows.Forms.Button();
             this.listViewHosts = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();

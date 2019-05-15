@@ -4,23 +4,16 @@ using Microsoft.ConfigurationManagement.AdminConsole.Schema;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.Management;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.ServiceProcess;
-using System.ComponentModel;
-using System.Windows.Forms;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ConfigMgr.QuickTools.Device
 {
     public static class ClientActions
     {
-        private static BackgroundWorker progressWorker;
-        private static IResultObject resultObjects;
         private static DeviceProgressDialog deviceProgressDialog;
-        private static bool showProgressDialog = false;
         private static string scheduleId;
         private static bool fullScan = false;
         private static string method;
@@ -47,37 +40,28 @@ namespace ConfigMgr.QuickTools.Device
             ProcessAction(scopeNode, action, selectedResultObjects);
         }
 
-        private static void ProcessAction(ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects)
+        private static void ProcessAction(ScopeNode scopeNode, ActionDescription action, IResultObject resultObjects)
         {
-            resultObjects = selectedResultObjects;
-
-            deviceProgressDialog = new DeviceProgressDialog(action);
-            // show dialog if more then one object is selected
+            bool showProgressDialog = false;
             if (resultObjects.ObjectClass == "SMS_Collection" || resultObjects.Count > 1)
             {
                 showProgressDialog = true;
             }
-            // run the background work so we can update the progress dialog
-            progressWorker = new BackgroundWorker();
-            progressWorker.DoWork += new DoWorkEventHandler(ClientAction_DoWork);
-            progressWorker.WorkerReportsProgress = false;
-            progressWorker.RunWorkerAsync();
-            // show the dialog if required
-            if (showProgressDialog)
-                deviceProgressDialog.ShowDialog();
 
-            return;
-        }
+            int total = resultObjects.Count;
 
-        private static void ClientAction_DoWork(object sender, DoWorkEventArgs e)
-        {
-            List<IResultObject> result = new List<IResultObject>();
             if (resultObjects.ObjectClass == "SMS_Collection")
             {
                 try
                 {
+                    total = 0;
                     string query = string.Format("SELECT * FROM SMS_FullCollectionMembership WHERE CollectionID='{0}'", resultObjects["CollectionID"].StringValue);
-                    result = Utility.SearchWMIToList(resultObjects.ConnectionManager, query);
+                    // query processor does not have count implemented?!?!?
+                    foreach (IResultObject tmp in resultObjects.ConnectionManager.QueryProcessor.ExecuteQuery(query))
+                    {
+                        total++;
+                    }
+
                     resultObjects = resultObjects.ConnectionManager.QueryProcessor.ExecuteQuery(query);
                 }
                 catch (SmsQueryException ex)
@@ -86,204 +70,82 @@ namespace ConfigMgr.QuickTools.Device
                     return;
                 }
             }
-            // update the dialog total count
+
             if (showProgressDialog)
             {
-                // query processor does not support count
-                deviceProgressDialog.Total = result.Count > 0 ? result.Count : resultObjects.Count;
-            }
-                
-            // get the method to run for the thread pool
-            Type type = typeof(ClientActions);
-            MethodInfo methodInfo = type.GetMethod(method);
+                Type type = typeof(ClientActions);
+                MethodInfo methodInfo = type.GetMethod(method);
 
-            foreach (IResultObject resultObject in resultObjects)
-            {
-                if (showProgressDialog)
-                    deviceProgressDialog.AddItem(resultObject["Name"].StringValue);
-
-                ThreadPool.QueueUserWorkItem(arg => { methodInfo.Invoke(null, new object[] { resultObject }); });
-            }
-        }
-
-        private static void ProccessException(IResultObject resultObject, Exception ex)
-        {
-            MethodInvoker invoker;
-
-            if (ex.GetType().IsAssignableFrom(typeof(ManagementException)))
-            {
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "WMI error: " + ex.Message); };
-                    deviceProgressDialog.Invoke(invoker);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Failed);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Other);
-                }
-                else
-                {
-                    SccmExceptionDialog.ShowDialog(SnapIn.Console, ex, "An error occured while invoking WMI method.");
-                }
-            }
-            else if (ex.GetType().IsAssignableFrom(typeof(COMException)))
-            {
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Offline"); };
-                    deviceProgressDialog.Invoke(invoker);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Offline);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Other);
-                }
-                else
-                {
-                    SccmExceptionDialog.ShowDialog(SnapIn.Console, ex, "An error occured while connecting to host.");
-                }
+                deviceProgressDialog = new DeviceProgressDialog(action, resultObjects, methodInfo);
+                deviceProgressDialog.Total = total;
+                deviceProgressDialog.ShowDialog();
             }
             else
             {
-                if (showProgressDialog)
+                foreach (IResultObject resultObject in resultObjects)
                 {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Error: " + ex.Message); };
-                    deviceProgressDialog.Invoke(invoker);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Failed);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Other);
+                    ThreadPool.QueueUserWorkItem(arg => { RunAction(resultObject); });
                 }
-                else
-                {
-                    SccmExceptionDialog.ShowDialog(SnapIn.Console, ex);
-                }
+            }
+
+            return;
+        }
+
+        private static void RunAction(IResultObject resultObject)
+        {
+            try
+            {
+                Type type = typeof(ClientActions);
+                MethodInfo methodInfo = type.GetMethod(method);
+
+                methodInfo.Invoke(null, new object[] { resultObject });
+            }
+            catch (TargetInvocationException ex)
+            {
+                SccmExceptionDialog.ShowDialog(SnapIn.Console, ex.InnerException);
             }
         }
 
         public static void ClientAction(IResultObject resultObject)
         {
-            MethodInvoker invoker;
-            if (deviceProgressDialog.CancellationTokenSource.IsCancellationRequested)
-            {
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Canceled"); };
-                    deviceProgressDialog.Invoke(invoker);
-                }
-                return;
-            }
-
             try
             {
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Connecting"); };
-                    deviceProgressDialog.Invoke(invoker);
-                }
-
-                ObjectGetOptions o = new ObjectGetOptions
-                {
-                    Timeout = TimeSpan.FromSeconds(5)
-                };
-
                 if (fullScan)
                 {
                     ManagementScope scope = Utility.GetWMIScope(resultObject["Name"].StringValue, @"ccm\InvAgt");
                     ManagementObject result = Utility.GetFirstWMIInstance(scope, string.Format("SELECT * FROM InventoryActionStatus WHERE InventoryActionID = '{0}'", scheduleId));
-                    result.Delete();
+                    if (result != null)
+                        result.Delete();
                 }
 
-                using (ManagementClass clientaction = new ManagementClass(string.Format(@"\\{0}\root\{1}:{2}", resultObject["Name"].StringValue, "ccm", "SMS_Client"), o))
+                ObjectGetOptions o = new ObjectGetOptions(null, TimeSpan.FromSeconds(5), true);
+                using (ManagementClass clientaction = new ManagementClass(string.Format(@"\\{0}\root\ccm:SMS_Client", resultObject["Name"].StringValue), o))
                 {
                     object[] methodArgs = { scheduleId };
                     clientaction.InvokeMethod("TriggerSchedule", methodArgs);
                 }
-
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Completed"); };
-                    deviceProgressDialog.Invoke(invoker);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Completed);
-                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ProccessException(resultObject, ex);
-            }
-            finally
-            {
-                if (showProgressDialog)
-                {
-                    // thread safe update of progress bar
-                    invoker = delegate { deviceProgressDialog.UpdateProgress(); };
-                    deviceProgressDialog.Invoke(invoker);
-                }
+                throw;
             }
         }
 
         public static async Task RestartServiceAsync(IResultObject resultObject)
         {
-            MethodInvoker invoker;
-            if (deviceProgressDialog.CancellationTokenSource.IsCancellationRequested)
+            using (ServiceController service = new ServiceController("SMS Agent Host", resultObject["Name"].StringValue))
             {
-                if (showProgressDialog)
+                if (service.Status == ServiceControllerStatus.Running)
                 {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Canceled"); };
-                    deviceProgressDialog.Invoke(invoker);
-                }
-                return;
-            }
+                    service.Stop();
 
-            try
-            {
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Connecting"); };
-                    deviceProgressDialog.Invoke(invoker);
-                }
+                    await service.WaitForStatusAsync(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20), deviceProgressDialog.CancellationTokenSource.Token);
 
-                using (ServiceController service = new ServiceController("SMS Agent Host", resultObject["Name"].StringValue))
-                {
-                    if (service.Status == ServiceControllerStatus.Running)
-                    {
-                        service.Stop();
-
-                        await service.WaitForStatusAsync(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(20), deviceProgressDialog.CancellationTokenSource.Token);
-
-                        service.Start();
-                    }
-                    else if (service.Status == ServiceControllerStatus.Stopped)
-                    {
-                        service.Start();
-                    }
+                    service.Start();
                 }
-
-                if (showProgressDialog)
+                else if (service.Status == ServiceControllerStatus.Stopped)
                 {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Completed"); };
-                    deviceProgressDialog.Invoke(invoker);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Completed);
-                }
-            }
-            catch (System.ServiceProcess.TimeoutException ex)
-            {
-                if (showProgressDialog)
-                {
-                    invoker = delegate { deviceProgressDialog.UpdateItem(resultObject["Name"].StringValue, "Service timed out: " + ex.Message); };
-                    deviceProgressDialog.Invoke(invoker);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Failed);
-                    deviceProgressDialog.UpdateProgress(DeviceProgressStatus.Other);
-                }
-                else
-                {
-                    SccmExceptionDialog.ShowDialog(SnapIn.Console, ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                ProccessException(resultObject, ex);
-            }
-            finally
-            {
-                if (showProgressDialog)
-                {
-                    // thread safe update of progress bar
-                    invoker = delegate { deviceProgressDialog.UpdateProgress(); };
-                    deviceProgressDialog.Invoke(invoker);
+                    service.Start();
                 }
             }
         }
@@ -301,8 +163,7 @@ namespace ConfigMgr.QuickTools.Device
                 {
                     throw new System.TimeoutException($"Failed to wait for '{controller.ServiceName}' to change status to '{desiredStatus}'.");
                 }
-                await Task.Delay(250, cancellationToken)
-                    .ConfigureAwait(false);
+                await Task.Delay(250, cancellationToken).ConfigureAwait(false);
                 controller.Refresh();
             }
         }

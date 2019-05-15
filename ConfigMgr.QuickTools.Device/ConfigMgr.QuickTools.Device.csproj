@@ -105,12 +105,6 @@
     </Compile>
     <Compile Include="Device.cs" />
     <Compile Include="ClientActions.cs" />
-    <Compile Include="ClientActionsDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ClientActionsDialog.designer.cs">
-      <DependentUpon>ClientActionsDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="LAPSDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,9 +157,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ClientActionsDialog.resx">
-      <DependentUpon>ClientActionsDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="DeviceProgressDialog.resx">
       <DependentUpon>DeviceProgressDialog.cs</DependentUpon>
     </EmbeddedResource>

@@ -196,6 +196,7 @@
             this.MinimumSize = new System.Drawing.Size(310, 350);
             this.Name = "DeviceProgressDialog";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DeviceProgressDialog_FormClosing);
+            this.Shown += new System.EventHandler(this.DeviceProgressDialog_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
