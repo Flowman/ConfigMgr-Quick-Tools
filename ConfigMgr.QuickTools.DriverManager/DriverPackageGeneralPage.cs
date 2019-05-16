@@ -64,12 +64,14 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 return base.OnNavigating(navigationType);
             }
+
             progressInformationDialog = new ProgressInformationDialog
             {
                 Title = "Processing Driver Packages",
                 Height = 130,
                 ProgressBarStyle = ProgressBarStyle.Continuous
             };
+
             progressWorker = new BackgroundWorker();
             progressWorker.DoWork += new DoWorkEventHandler(ProgressWorker_DoWork);
             progressWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressWorker_ProgressChanged);
@@ -77,9 +79,11 @@ namespace ConfigMgr.QuickTools.DriverManager
             progressWorker.WorkerReportsProgress = true;
             UseWaitCursor = true;
             progressWorker.RunWorkerAsync();
+
             progressInformationDialog.ShowDialog(this);
             if (!progressInformationDialog.Result)
                 return false;
+
             return base.OnNavigating(navigationType);
         }
 
@@ -231,7 +235,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             return flag;
         }
 
-        private void ButtonOptions_Click(object sender, System.EventArgs e)
+        private void ButtonOptions_Click(object sender, EventArgs e)
         {
             ShowDialog("QuickToolsOptions", PropertyManager);
 

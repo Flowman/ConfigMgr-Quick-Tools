@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows;
-using System.Diagnostics;
 
 namespace ConfigMgr.QuickTools.CollectionManagment
 {
@@ -74,20 +73,21 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             List<ListViewItem> list = new List<ListViewItem>();
             foreach (IResultObject resultObject in e.ResultObjects)
             {
-                ListViewItem listViewItem = new ListViewItem
+                string name = !resultObject.PropertyList.ContainsKey("Name") ? resultObject["ResourceID"].LongValue.ToString() : resultObject["Name"].StringValue;
+                string domain = resultObject["ResourceDomainORWorkgroup"].ObjectValue != null ? resultObject["ResourceDomainORWorkgroup"].StringValue : string.Empty;
+                string siteCode = (resultObject["SMSAssignedSites"].ObjectValue != null && resultObject["SMSAssignedSites"].StringArrayValue.Length > 0) ? resultObject["SMSAssignedSites"].StringArrayValue[0] : string.Empty;
+
+                ListViewItem listViewItem = new ListViewItem()
                 {
-                    Text = !resultObject.PropertyList.ContainsKey("Name") ? resultObject["ResourceID"].LongValue.ToString() : resultObject["Name"].StringValue
+                    Text = name,
+                    SubItems = {
+                        domain,
+                        siteCode
+                    },
+                    Tag = resultObject,
+                    Selected = true
                 };
-                string text1 = string.Empty;
-                if (resultObject["ResourceDomainORWorkgroup"].ObjectValue != null)
-                    text1 = resultObject["ResourceDomainORWorkgroup"].StringValue;
-                listViewItem.SubItems.Add(text1);
-                string text2 = string.Empty;
-                if (resultObject["SMSAssignedSites"].ObjectValue != null && resultObject["SMSAssignedSites"].StringArrayValue.Length > 0)
-                    text2 = resultObject["SMSAssignedSites"].StringArrayValue[0];
-                listViewItem.SubItems.Add(text2);
-                listViewItem.Tag = resultObject;
-                listViewItem.Selected = true;
+
                 list.Add(listViewItem);
             }
             listViewSelectedResources.BeginUpdate();
@@ -101,12 +101,13 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             {
                 if (e.Error != null)
                 {
-                    string message = string.Format("Error: {0}", listViewSelectedResources.Items.Count);
-                    SccmExceptionDialog.ShowDialog(this, e.Error, message);
+                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
+                    {
+                        int num = (int)sccmExceptionDialog.ShowDialog();
+                    }
                 }
                 else if (e.Cancelled)
                 {
-                    ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "User canceled");
                     if (listViewSelectedResources.Items.Count > 0)
                     {
                         listViewSelectedResources.Items[0].Selected = true;
@@ -139,11 +140,11 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             foreach (ListViewItem listViewItem in listViewSelectedResources.Items)
             {
                 IResultObject resource = (IResultObject)listViewItem.Tag;
-                IResultObject embeddedObjectInstance = ConnectionManager.CreateEmbeddedObjectInstance("SMS_CollectionRuleDirect");
-                embeddedObjectInstance["ResourceClassName"].StringValue = "SMS_R_System";
-                embeddedObjectInstance["RuleName"].StringValue = resource["Name"].StringValue;
-                embeddedObjectInstance["ResourceID"].IntegerValue = resource["ResourceID"].IntegerValue;
-                list.Add(embeddedObjectInstance);
+                IResultObject instance = ConnectionManager.CreateEmbeddedObjectInstance("SMS_CollectionRuleDirect");
+                instance["ResourceClassName"].StringValue = "SMS_R_System";
+                instance["RuleName"].StringValue = resource["Name"].StringValue;
+                instance["ResourceID"].IntegerValue = resource["ResourceID"].IntegerValue;
+                list.Add(instance);
             }
 
             SelectedObject.ExecuteMethod("AddMembershipRules", new Dictionary<string, object>()
@@ -154,10 +155,10 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 }
             });
 
-            int num = DataUpdatedDelegate(this, new List<PropertyDataUpdateItem>()
+            DataUpdatedDelegate(this, new List<PropertyDataUpdateItem>()
             {
                 new PropertyDataUpdateItem(SelectedObject, PropertyDataUpdateAction.Update)
-            }) ? 1 : 0;
+            });
 
             DialogResult = DialogResult.OK;
             Close();
@@ -174,7 +175,9 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 listViewSelectedResources.Items.Remove(listViewSelectedResources.SelectedItems[0]);
             }
             listViewSelectedResources.EndUpdate();
+
             UtilitiesClass.UpdateListViewColumnsSize(listViewSelectedResources, columnMachineName);
+
             controlsInspector.InspectAll();
         }
 

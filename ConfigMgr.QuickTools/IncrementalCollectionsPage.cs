@@ -59,6 +59,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
         {
             if (e.ResultObjects == null)
                 return;
+
             foreach (IResultObject resultObject in e.ResultObjects)
             {
                 DataGridViewRow dataGridViewRow = new DataGridViewRow();
@@ -146,10 +147,6 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 PrepareError(ex.Message);
                 throw;
             }
-            finally
-            {
-
-            }
         }
 
         public override void OnAddSummary(SummaryRequestHandler handler)
@@ -175,8 +172,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             {
                 if (Convert.ToBoolean(dataGridViewRow.Cells[columnDisable.Name].Value) == true)
                 {
-                    IResultObject collection = dataGridViewRow.Tag as IResultObject;
-                    if (collection != null)
+                    if (dataGridViewRow.Tag is IResultObject collection)
                     {
                         list.Add(collection);
                     }
@@ -235,6 +231,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 if (Convert.ToBoolean(dataGridViewRow.Cells[0].Value, CultureInfo.InvariantCulture))
                     return ControlDataState.Valid;
             }
+
             return ControlDataState.Invalid;
         }
 
@@ -242,6 +239,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
         {
             if (!dataGridViewCollections.IsCurrentCellDirty)
                 return;
+
             dataGridViewCollections.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 

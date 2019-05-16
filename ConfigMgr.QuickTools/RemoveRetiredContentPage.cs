@@ -61,6 +61,7 @@ namespace ConfigMgr.QuickTools
         {
             if (e.ResultObjects == null)
                 return;
+
             foreach (IResultObject resultObject in e.ResultObjects)
             {
                 DataGridViewRow dataGridViewRow = new DataGridViewRow();
@@ -237,6 +238,7 @@ namespace ConfigMgr.QuickTools
         {
             if (!dataGridViewApplications.IsCurrentCellDirty)
                 return;
+
             dataGridViewApplications.CommitEdit(DataGridViewDataErrorContexts.Commit);
         }
 

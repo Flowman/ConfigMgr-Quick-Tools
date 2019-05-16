@@ -76,10 +76,12 @@
             // columnMachineName
             // 
             this.columnMachineName.Text = "Name";
+            this.columnMachineName.Width = 150;
             // 
             // columnDomain
             // 
             this.columnDomain.Text = "Domain";
+            this.columnDomain.Width = 100;
             // 
             // columnSite
             // 

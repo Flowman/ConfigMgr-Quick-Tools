@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ConfigMgr.QuickTools
 {
@@ -53,7 +54,7 @@ namespace ConfigMgr.QuickTools
             backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(InfoWorker_RunWorkerCompleted);
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -78,14 +79,15 @@ namespace ConfigMgr.QuickTools
 
                 if (startMatch.Success && endMatch.Success)
                 {
-                    DateTime startTime = DateTime.Parse(startMatch.Groups[1].Value);
-                    DateTime endTime = DateTime.Parse(endMatch.Groups[1].Value);
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    DateTime startTime = DateTime.ParseExact(startMatch.Groups[1].Value, "MM-dd-yyyy HH:mm:ss", provider);
+                    DateTime endTime = DateTime.ParseExact(endMatch.Groups[1].Value, "MM-dd-yyyy HH:mm:ss", provider);
                     TimeSpan duration = endTime - startTime;
 
                     if (endTime.CompareTo(startTime) > 0)
                     {
                         // get collection count
-                        regex = new Regex(@"PF:\s(\d.)\scollections in incremental evaluation graph.*(\d.-\d.-\d{4}\s\d.:\d.:\d.)", RegexOptions.RightToLeft);
+                        regex = new Regex(@"PF: Found\s(\d.)\scandidate collections for incremental evaluation.*(\d.-\d.-\d{4}\s\d.:\d.:\d.)", RegexOptions.RightToLeft);
                         Match match = regex.Match(input);                      
 
                         int collectionCount = match.Success ? Convert.ToInt32(match.Groups[1].Value) : 0;
@@ -97,7 +99,7 @@ namespace ConfigMgr.QuickTools
 
                         foreach (Match obj in matches)
                         {
-                            DateTime collectionTime = DateTime.Parse(obj.Groups[3].Value);
+                            DateTime collectionTime = DateTime.ParseExact(obj.Groups[3].Value, "MM-dd-yyyy HH:mm:ss", provider);
 
                             if (Utility.InclusiveBetween(collectionTime, startTime, endTime))
                             {
@@ -154,7 +156,7 @@ namespace ConfigMgr.QuickTools
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     progressBar1.Visible = false;
                     listViewListCollections.IsLoading = false;
                     listViewListCollections.UpdateColumnWidth(columnHeaderName);

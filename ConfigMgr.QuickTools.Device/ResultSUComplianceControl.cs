@@ -20,7 +20,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
           : base(pageData)
         {
             InitializeComponent();
+
             buttonSURefresh.Image = new Icon(Properties.Resources.reload, new Size(16, 16)).ToBitmap();
+
             Title = "Software Updates Compliance";
         }
 
@@ -36,23 +38,23 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             Initialized = true;
         }
 
-        private void buttonSURefresh_Click(object sender, EventArgs e)
+        private void ButtonSURefresh_Click(object sender, EventArgs e)
         {
             listViewListSoftwareUpdates.IsLoading = true;
             listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
             listViewListSoftwareUpdates.Items.Clear();
 
             backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += new DoWorkEventHandler(infoWorker_DoWork);
-            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(infoWorker_RunWorkerCompleted);
+            backgroundWorker.DoWork += new DoWorkEventHandler(InfoWorker_DoWork);
+            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(InfoWorker_RunWorkerCompleted);
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
             buttonSURefresh.Enabled = false;
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
             backgroundWorker.RunWorkerAsync();
         }
 
-        private void infoWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void InfoWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -108,7 +110,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             }
         }
 
-        private void infoWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void InfoWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             try
             {
@@ -126,7 +128,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     listViewListSoftwareUpdates.IsLoading = false;
                     listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
                     buttonSURefresh.Enabled = true;
@@ -134,7 +136,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             }
         }
 
-        private void listViewListSoftwareUpdates_CopyKeyEvent(object sender, EventArgs e)
+        private void ListViewListSoftwareUpdates_CopyKeyEvent(object sender, EventArgs e)
         {
             StringBuilder buffer = new StringBuilder();
             foreach (ListViewItem item in listViewListSoftwareUpdates.SelectedItems)

@@ -47,6 +47,7 @@
       <ComponentRef Id="comp_357FC2F4_2A1D_4DCA_988B_0AD7D16DC395" />
       <ComponentRef Id="comp_2630FCCB_55C8_449E_BB5A_51714BFCFEE1" />
       <ComponentRef Id="comp_1D33B728_D9D2_465E_B078_9AC88E6A81F7" />
+      <ComponentRef Id="comp_A8780BC4_3FC5_408D_B6B1_B2A8B87E5547" />
       <Feature Id="DellTools" Title="Dell Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support Dell devices.">
         <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
         <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
@@ -182,6 +183,9 @@
               </Component>
               <Component Id="comp_EBBD2AAC_24F1_4826_BF6A_EB20C36EE268" Guid="00E63409-C83F-4F3D-9F66-0D5B1ABA7F03" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_C6BE3701_5600_481A_9B1A_ABFA1D06E33E" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesDellWarranty.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesDellWarranty.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_A8780BC4_3FC5_408D_B6B1_B2A8B87E5547" Guid="CA6277D5-F6E2-4442-A753-82FDD4119959" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_94B7A8E2_EF6C_4628_A06C_3FC2FAF7876F" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesCollections.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesCollections.xml" KeyPath="yes" />
               </Component>
             </Directory>
           </Directory>

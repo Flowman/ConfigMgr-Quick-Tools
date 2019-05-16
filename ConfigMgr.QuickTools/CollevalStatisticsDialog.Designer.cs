@@ -103,9 +103,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(12, 84);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(157, 13);
+            this.label5.Size = new System.Drawing.Size(141, 13);
             this.label5.TabIndex = 4;
-            this.label5.Text = "Incremental Collections in graph";
+            this.label5.Text = "Incremental Collection count";
             // 
             // label2
             // 

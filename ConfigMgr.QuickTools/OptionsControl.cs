@@ -12,6 +12,7 @@ namespace ConfigMgr.QuickTools
           : base(pageData)
         {
             InitializeComponent();
+
             Title = "Auto Updates";
         }
 

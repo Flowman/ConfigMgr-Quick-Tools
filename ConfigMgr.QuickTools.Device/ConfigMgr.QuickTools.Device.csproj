@@ -91,6 +91,7 @@
     <Compile Include="ClientActionProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ClientCache.cs" />
     <Compile Include="DeviceProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>

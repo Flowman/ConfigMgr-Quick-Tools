@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription NamespaceGuid="B7431C82-FB1B-4D55-8856-4EE4BC7C3000" Class="AssemblyType" SelectionMode="Both" DisplayName="Add Selected Items to Existing Device Collections" MnemonicDisplayName="Add Selected Items to Existing Device Collections" Description="Add Selected Items to Existing Device Collections" InsertBefore="da022b22-5c4f-45b0-b461-9b418fb9504d">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <ActionAssembly>
+    <Assembly>ConfigMgr.QuickTools.Device.dll</Assembly>
+    <Type>ConfigMgr.QuickTools.Device.Device</Type>
+    <Method>AddMulitDeviceCollection</Method>
+  </ActionAssembly>
+</ActionDescription>

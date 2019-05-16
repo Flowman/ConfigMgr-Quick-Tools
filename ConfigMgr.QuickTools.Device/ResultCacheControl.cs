@@ -37,7 +37,8 @@ namespace ConfigMgr.QuickTools.Device
             backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(InfoWorker_RunWorkerCompleted);
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
+            listViewListContent.IsLoading = true;
             backgroundWorker.RunWorkerAsync();
 
             Dirty = false;
@@ -105,7 +106,8 @@ namespace ConfigMgr.QuickTools.Device
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
+                    listViewListContent.IsLoading = false;
                     listViewListContent.UpdateColumnWidth(columnHeaderLocation);
                     listViewListContent.Sorting = SortOrder.Ascending;
                     Initialized = true;

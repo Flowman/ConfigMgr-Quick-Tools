@@ -424,6 +424,17 @@ namespace ConfigMgr.QuickTools
         {
             return a.CompareTo(b) >= 0 && a.CompareTo(c) <= 0;
         }
+
+        public static DialogResult ShowDialog(string dialogId, IResultObject resultObject)
+        {
+            ISmsForm dialog = DialogFactoryBase.DialogFactory.CreateDialog(dialogId, resultObject, (PropertyDataUpdated)null, false);
+            using (dialog.Form)
+            {
+                dialog.Initialize();
+                dialog.Form.ShowInTaskbar = false;
+                return dialog.Form.ShowDialog();
+            }
+        }
     }
 
     public class ModifyRegistry

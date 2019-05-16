@@ -71,7 +71,7 @@
             this.listViewListSoftwareUpdates.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListSoftwareUpdates.UseCompatibleStateImageBehavior = false;
             this.listViewListSoftwareUpdates.View = System.Windows.Forms.View.Details;
-            this.listViewListSoftwareUpdates.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.listViewListSoftwareUpdates_CopyKeyEvent);
+            this.listViewListSoftwareUpdates.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListSoftwareUpdates_CopyKeyEvent);
             // 
             // columnHeaderAssignment
             // 
@@ -91,7 +91,7 @@
             this.buttonSURefresh.Size = new System.Drawing.Size(24, 24);
             this.buttonSURefresh.TabIndex = 6;
             this.buttonSURefresh.UseVisualStyleBackColor = true;
-            this.buttonSURefresh.Click += new System.EventHandler(this.buttonSURefresh_Click);
+            this.buttonSURefresh.Click += new System.EventHandler(this.ButtonSURefresh_Click);
             // 
             // label1
             // 

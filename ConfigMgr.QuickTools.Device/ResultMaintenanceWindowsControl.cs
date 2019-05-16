@@ -20,6 +20,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
           : base(pageData)
         {
             InitializeComponent();
+
             Title = "Maintenance Windows";
 
             Updater.CheckUpdates();
@@ -42,7 +43,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             backgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(BackgroundWorker_RunWorkerCompleted);
             backgroundWorker.QueryProcessorObjectsReady += new EventHandler<QueryProcessorObjectsEventArgs>(BackgroundWorker_QueryProcessorObjectsReady);
             ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "InitializePageControl");
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
             QueryProcessor.ProcessQuery(backgroundWorker, query);
         }
 
@@ -186,7 +187,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     listViewListWindows.IsLoading = false;
                     listViewListUpcomingWindows.IsLoading = false;
                     listViewListWindows.UpdateColumnWidth(columnHeaderWindows);

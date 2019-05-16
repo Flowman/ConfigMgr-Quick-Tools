@@ -19,7 +19,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
           : base(pageData)
         {
             InitializeComponent();
+
             buttonSURefresh.Image = new Icon(Properties.Resources.reload, new Size(16, 16)).ToBitmap();
+
             Title = "Software Updates";
         }
 
@@ -47,7 +49,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
             buttonSURefresh.Enabled = false;
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -96,7 +98,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     listViewListSoftwareUpdates.IsLoading = false;
                     listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderTitle);
                     buttonSURefresh.Enabled = true;

@@ -22,8 +22,10 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
           : base(pageData)
         {
             InitializeComponent();
+
             buttonRefresh.Image = new Icon(Properties.Resources.reload, new Size(16, 16)).ToBitmap();
             buttonEval.Image = new Icon(Properties.Resources.activate, new Size(16, 16)).ToBitmap();
+
             Title = "Client Health";
         }
 
@@ -51,7 +53,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
             buttonRefresh.Enabled = false;
-            Cursor = Cursors.WaitCursor;
+            UseWaitCursor = true;
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -120,7 +122,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
-                    Cursor = Cursors.Default;
+                    UseWaitCursor = false;
                     listViewListClientHealth.IsLoading = false;
                     listViewListClientHealth.UpdateColumnWidth(columnHeaderDescription);
                     buttonRefresh.Enabled = true;

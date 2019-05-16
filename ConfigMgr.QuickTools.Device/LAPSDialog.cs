@@ -16,7 +16,9 @@ namespace ConfigMgr.QuickTools.Device
         public LAPSDialog(IResultObject selectedResultObjects, ActionDescription action)
         {
             InitializeComponent();
+
             resultObjects = selectedResultObjects;
+
             Title = action.DisplayName + ": " + resultObjects["Name"].StringValue;
 
             Updater.CheckUpdates();

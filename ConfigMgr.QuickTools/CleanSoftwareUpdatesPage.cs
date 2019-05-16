@@ -63,8 +63,10 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             {
                 DataGridViewRow dataGridViewRow = new DataGridViewRow();
                 dataGridViewRow.CreateCells(dataGridViewUpdates);
-                dataGridViewRow.Cells[0] = new DataGridViewImageCell();
-                dataGridViewRow.Cells[0].Value = resultObject["IsExpired"].BooleanValue ? new Icon(Properties.Resources.expiredupdate, new Size(16, 16)).ToBitmap() : new Icon(Properties.Resources.supersededupdate, new Size(16, 16)).ToBitmap();
+                dataGridViewRow.Cells[0] = new DataGridViewImageCell
+                {
+                    Value = resultObject["IsExpired"].BooleanValue ? new Icon(Properties.Resources.expiredupdate, new Size(16, 16)).ToBitmap() : new Icon(Properties.Resources.supersededupdate, new Size(16, 16)).ToBitmap()
+                };
                 dataGridViewRow.Cells[1].Value = false;
                 dataGridViewRow.Cells[2].Value = resultObject["LocalizedDisplayName"].StringValue;
                 dataGridViewRow.Cells[3].Value = resultObject["ArticleID"].StringValue;;
@@ -235,8 +237,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             {
                 if (Convert.ToBoolean(dataGridViewRow.Cells[columnRemove.Name].Value) == true)
                 {
-                    IResultObject update = dataGridViewRow.Tag as IResultObject;
-                    if (update != null)
+                    if (dataGridViewRow.Tag is IResultObject update)
                     {
                         list.Add(update);
                     }

@@ -76,8 +76,10 @@ namespace ConfigMgr.QuickTools.Device
                 Type type = typeof(ClientActions);
                 MethodInfo methodInfo = type.GetMethod(method);
 
-                deviceProgressDialog = new DeviceProgressDialog(action, resultObjects, methodInfo);
-                deviceProgressDialog.Total = total;
+                deviceProgressDialog = new DeviceProgressDialog(action, resultObjects, methodInfo)
+                {
+                    Total = total
+                };
                 deviceProgressDialog.ShowDialog();
             }
             else

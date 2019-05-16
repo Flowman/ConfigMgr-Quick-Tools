@@ -49,10 +49,10 @@ namespace ConfigMgr.QuickTools.Device
 
         public DeviceProgressDialog(ActionDescription action, IResultObject selectedResultObjects, MethodInfo method) : this()
         {
-            Title = action.DisplayName;
-
             resultObjects = selectedResultObjects;
             this.method = method;
+
+            Title = action.DisplayName;
         }
 
         private void DeviceProgressDialog_Shown(object sender, EventArgs e)
