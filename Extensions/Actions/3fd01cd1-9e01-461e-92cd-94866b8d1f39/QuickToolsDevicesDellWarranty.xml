@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription NamespaceGuid="5580868E-C1E3-498A-A04B-67F165CF370F" Class="ShowDialog" DisplayName="Dell Warranty" MnemonicDisplayName="Dell Warranty" Description="Get Dell warranty information" InsertBefore="8619EFC7-4B95-435C-9A2E-2A3ADE321698">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <DialogId>QuickToolsDellWarranty</DialogId>
+</ActionDescription>

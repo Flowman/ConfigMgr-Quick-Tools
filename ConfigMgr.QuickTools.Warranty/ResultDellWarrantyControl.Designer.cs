@@ -34,7 +34,6 @@
             this.columnHeaderStartDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderEndDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonSURefresh = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelServiceTag = new System.Windows.Forms.Label();
             this.labelModel = new System.Windows.Forms.Label();
@@ -108,15 +107,6 @@
             this.buttonSURefresh.TabIndex = 6;
             this.buttonSURefresh.UseVisualStyleBackColor = true;
             this.buttonSURefresh.Click += new System.EventHandler(this.ButtonSURefresh_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Dell Warranty for this resource:";
             // 
             // label3
             // 
@@ -219,7 +209,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listViewListWarranty);
             this.Controls.Add(this.buttonSURefresh);
-            this.Controls.Add(this.label1);
             this.Name = "ResultDellWarrantyControl";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -230,7 +219,6 @@
 
         private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListWarranty;
         private System.Windows.Forms.Button buttonSURefresh;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelServiceTag;
         private System.Windows.Forms.Label labelModel;
