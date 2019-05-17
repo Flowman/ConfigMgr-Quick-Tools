@@ -4,12 +4,13 @@ using Microsoft.ConfigurationManagement.AdminConsole.Schema;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.Reflection;
+using System.Windows;
 
 namespace ConfigMgr.QuickTools.Device
 {
     public static class ClientCache
     {
-        private static DeviceProgressDialog deviceProgressDialog;
+        //private static DeviceProgressDialog deviceProgressDialog;
 
         public static void ChangeClientCache(object sender, ScopeNode scopeNode, ActionDescription action, IResultObject selectedResultObjects, PropertyDataUpdated dataUpdatedDelegate, Status status)
         {
@@ -44,14 +45,15 @@ namespace ConfigMgr.QuickTools.Device
 
             if (showProgressDialog)
             {
-                Type type = typeof(ClientCache);
-                MethodInfo methodInfo = type.GetMethod("ChangeClientCacheSize");
+                MessageBox.Show("Not implemented yet!", "Configuration Manager", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                //Type type = typeof(ClientCache);
+                //MethodInfo methodInfo = type.GetMethod("ChangeClientCacheSize");
 
-                deviceProgressDialog = new DeviceProgressDialog(action, selectedResultObjects, methodInfo)
-                {
-                    Total = total
-                };
-                deviceProgressDialog.ShowDialog();
+                //deviceProgressDialog = new DeviceProgressDialog(action, selectedResultObjects, methodInfo)
+                //{
+                //    Total = total
+                //};
+                //deviceProgressDialog.ShowDialog();
             }
             else
             {
