@@ -53,15 +53,12 @@ namespace ConfigMgr.QuickTools.Device
                 cacheConfig = Utility.GetFirstWMIInstance(scope, "SELECT * FROM CacheConfig WHERE ConfigKey='Cache'");
                 List<ManagementObject> cacheContent = Utility.SearchWMIToList(scope, "SELECT * FROM CacheInfoEx");
 
-                double contentSize = cacheContent.Sum(item => double.Parse(item["ContentSize"].ToString()));
-
                 string location = cacheConfig["Location"].ToString();
 
                 ManagementObject disk = Utility.GetFirstWMIInstance(PropertyManager["Name"].StringValue, @"cimv2", string.Format("Win32_LogicalDisk WHERE DeviceID='{0}:'", location[0]));
 
                 ByteSize cacheSize = ByteSize.FromMegaBytes(double.Parse(cacheConfig["Size"].ToString()));
                 ByteSize freeSpace = ByteSize.FromBytes(double.Parse(disk["FreeSpace"].ToString()));
-                ByteSize usedSize = ByteSize.FromKiloBytes(contentSize);
 
                 trackBarWithoutFocus1.Maximum = Convert.ToInt32(freeSpace.MegaBytes);
                 trackBarWithoutFocus1.TickFrequency = Convert.ToInt32(trackBarWithoutFocus1.Maximum / 10);
@@ -73,7 +70,6 @@ namespace ConfigMgr.QuickTools.Device
                 labelLocation.Text = location;
                 labelCacheSize.Text = cacheSize.ToString();
                 labelSpaceToUse.Text = cacheSize.ToString();
-                labelUsedSize.Text = usedSize.ToString();
 
                 trackBarWithoutFocus1.Enabled = true;
                 numericUpDown1.Enabled = true;
@@ -160,6 +156,10 @@ namespace ConfigMgr.QuickTools.Device
                     Tag = item
                 });
             }
+
+            double contentSize = items.Sum(item => double.Parse(item["ContentSize"].ToString()));
+            ByteSize usedSize = ByteSize.FromKiloBytes(contentSize);
+            labelUsedSize.Text = usedSize.ToString();
         }
 
         private void RemoveCachedItems(ListView.SelectedListViewItemCollection items)
