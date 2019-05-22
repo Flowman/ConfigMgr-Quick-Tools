@@ -1,6 +1,5 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
 using Microsoft.ConfigurationManagement.ManagementProvider;
-using Microsoft.ConfigurationManagement.AdminConsole.Common;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.Collections.Generic;
@@ -21,11 +20,11 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
         public CleanSoftwareUpdatesPage(SmsPageData pageData)
             : base(pageData)
         {
+            InitializeComponent();
+
             FormTitle = "Clean Up Software Updates";
             Title = "Select Updates";
             Headline = "Clean up selected software updates from groups";
-
-            InitializeComponent();
 
             Updater.CheckUpdates();
         }
@@ -35,7 +34,6 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             base.InitializePageControl();
 
             dataGridViewUpdates.Rows.Clear();
-            UtilitiesClass.UpdateDataGridViewColumnsSize(dataGridViewUpdates, columnTitle);
 
             ControlsInspector.AddControl(dataGridViewUpdates, new ControlDataStateEvaluator(ValidateSelectedUpdatesPackages), "Select updates to remove");
 
@@ -44,7 +42,6 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             backgroundWorker = new SmsBackgroundWorker();
             backgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(BackgroundWorker_RunWorkerCompleted);
             backgroundWorker.QueryProcessorObjectsReady += new EventHandler<QueryProcessorObjectsEventArgs>(BackgroundWorker_QueryProcessorObjectsReady);
-            ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "InitializePageControl");
             UseWaitCursor = true;
             QueryProcessor.ProcessQuery(backgroundWorker, query);
         }
@@ -59,6 +56,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
         {
             if (e.ResultObjects == null)
                 return;
+
             foreach (IResultObject resultObject in e.ResultObjects)
             {
                 DataGridViewRow dataGridViewRow = new DataGridViewRow();
@@ -69,7 +67,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
                 };
                 dataGridViewRow.Cells[1].Value = false;
                 dataGridViewRow.Cells[2].Value = resultObject["LocalizedDisplayName"].StringValue;
-                dataGridViewRow.Cells[3].Value = resultObject["ArticleID"].StringValue;;
+                dataGridViewRow.Cells[3].Value = resultObject["ArticleID"].StringValue;
 
                 dataGridViewRow.Tag = resultObject;
                 dataGridViewUpdates.Rows.Add(dataGridViewRow);
@@ -98,9 +96,9 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
                 {
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
+                    UseWaitCursor = false;
                     dataGridViewUpdates.Sort(columnTitle, ListSortDirection.Ascending);
                     Utility.UpdateDataGridViewColumnsSize(dataGridViewUpdates, columnTitle);
-                    UseWaitCursor = false;
                 }
             }
         }
@@ -209,10 +207,6 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
                 AddRefreshResultObject(null, PropertyDataUpdateAction.RefreshAll);
                 PrepareError(ex.Message);
                 throw;
-            }
-            finally
-            {
-
             }
         }
 

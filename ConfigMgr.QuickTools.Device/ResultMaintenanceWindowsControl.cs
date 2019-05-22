@@ -65,7 +65,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                         {
                             Text = arrayItem["Name"].StringValue,
                             SubItems = {
-                                ResourceDisplayClass.GetAliasDisplayText(resultObject, "Name"),
+                                resultObject["Name"].StringValue,
                                 GetServiceWindowType((ServiceWindowTypesControl.ServiceWindowTypes) arrayItem["ServiceWindowType"].IntegerValue)
                             }
                         });

@@ -29,12 +29,18 @@ namespace ConfigMgr.QuickTools.DriverManager
                 registry.Write("DellCatalogURI", "http://downloads.dell.com/catalog/DriverPackCatalog.cab");
             }
 
+            if (string.IsNullOrEmpty(registry.ReadString("HPCatalogURI")))
+            {
+                registry.Write("HPCatalogURI", "https://ftp.hp.com/pub/caps-softpaq/cmit/HPClientDriverPackCatalog.cab");
+            }
+
             if (string.IsNullOrEmpty(registry.ReadString("TempDownloadPath")))
             {
                 registry.Write("TempDownloadPath", Path.GetTempPath());
             }
 
             textBoxDellCatalogUri.Text = registry.ReadString("DellCatalogURI");
+            textBoxHPCatalogUri.Text = registry.ReadString("HPCatalogURI");
 
             browseFolderControlDownload.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("TempDownloadPath");
 
@@ -56,6 +62,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             registry.Write("TempDownloadPath", browseFolderControlDownload.FolderPath);
             registry.Write("DellCatalogURI", textBoxDellCatalogUri.Text);
+            registry.Write("HPCatalogURI", textBoxHPCatalogUri.Text);
 
             Dirty = false;
 
@@ -67,12 +74,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             return browseFolderControlDownload.FolderPath.Length > 0 ? ControlDataState.Valid : ControlDataState.Invalid;
         }
 
-        private void BrowseFolderControlDownload_FolderTextChanged(object sender, EventArgs e)
-        {
-            Dirty = true;
-        }
-
-        private void TextBoxDellCatalogUri_TextChanged(object sender, EventArgs e)
+        private void Control_TextChanged(object sender, EventArgs e)
         {
             Dirty = true;
         }

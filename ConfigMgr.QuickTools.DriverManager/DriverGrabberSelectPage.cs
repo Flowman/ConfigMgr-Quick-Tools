@@ -138,7 +138,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                                 DirectoryInfo source = new DirectoryInfo(path);
                                 worker.ReportProgress(percent, string.Format("Processing Driver: {0}\n Copying Folder: {1}", driver["DeviceName"].ToString(), source.Name));
                                 string target = Path.Combine(driverFolder, source.Name);
-                                Copy(path, target);
+                                Utility.Copy(path, target);
                             }
                         }
                         successful.Add(driver["DeviceName"].ToString());
@@ -164,7 +164,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 CredentialCache netCache = new CredentialCache();
 
                 netCache.Remove(new Uri(labelDestination.Text), "Digest");
-                netCache.Remove(new Uri(string.Format(@"\\{0}", PropertyManager["Name"].StringValue)), "Basic");
+                netCache.Remove(new Uri(string.Format(@"\\{0}", PropertyManager["Name"].StringValue)), "Digest");
             }
         }
 
@@ -382,20 +382,6 @@ namespace ConfigMgr.QuickTools.DriverManager
             catch { }
 
             return catalogFile;
-        }
-
-        private void Copy(string sourceDir, string targetDir)
-        {
-            if (!Directory.Exists(targetDir))
-            {
-                Directory.CreateDirectory(targetDir);
-
-                foreach (var file in Directory.GetFiles(sourceDir))
-                    File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)));
-
-                foreach (var directory in Directory.GetDirectories(sourceDir))
-                    Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
-            }
         }
 
         private void ButtonSelect_Click(object sender, EventArgs e)

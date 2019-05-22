@@ -15,10 +15,8 @@ namespace ConfigMgr.QuickTools.DriverManager
     {
         private BackgroundWorker progressWorker;
         private ProgressInformationDialog progressInformationDialog;
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private bool valiadated = false;
-        private string previousOS;
-        private string previousArchitecture;
         private bool downloadedCatalog = false;
 
         public DellDriverPackGeneralPage(SmsPageData pageData)
@@ -68,20 +66,40 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 return base.OnNavigating(navigationType);
             }
-            progressInformationDialog = new ProgressInformationDialog
+
+            string cabFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
+
+            if (File.Exists(cabFile))
             {
-                Title = "Downloading Catalog",
-            };
-            progressWorker = new BackgroundWorker();
-            progressWorker.DoWork += new DoWorkEventHandler(ProgressWorker_DoWork);
-            progressWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressWorker_ProgressChanged);
-            progressWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ProgressWorker_RunWorkerCompleted);
-            progressWorker.WorkerReportsProgress = true;
-            UseWaitCursor = true;
-            progressWorker.RunWorkerAsync();
-            progressInformationDialog.ShowDialog(this);
-            if (!progressInformationDialog.Result)
-                return false;
+                long fileSize = new FileInfo(cabFile).Length;
+                long webSize = Utility.GetFileSize(registry.ReadString("DellCatalogURI"));
+
+                if (fileSize == webSize)
+                {
+                    downloadedCatalog = true;
+                }
+            }
+
+            if (downloadedCatalog == false)
+            {
+                progressInformationDialog = new ProgressInformationDialog
+                {
+                    Title = "Downloading Catalog",
+                };
+
+                progressWorker = new BackgroundWorker();
+                progressWorker.DoWork += new DoWorkEventHandler(ProgressWorker_DoWork);
+                progressWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressWorker_ProgressChanged);
+                progressWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ProgressWorker_RunWorkerCompleted);
+                progressWorker.WorkerReportsProgress = true;
+                UseWaitCursor = true;
+                progressWorker.RunWorkerAsync();
+
+                progressInformationDialog.ShowDialog(this);
+                if (!progressInformationDialog.Result)
+                    return false;
+            }
+
             return base.OnNavigating(navigationType);
         }
 
@@ -162,30 +180,21 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private bool DownloadCatalog(BackgroundWorker progressWorker)
         {
-            bool flag = false;
-
             progressWorker.ReportProgress(0, "Downloading DriverPackCatalog.cab...");
 
-            if (downloadedCatalog == false)
+            Uri DellXMLCabinetSource = new Uri(registry.ReadString("DellCatalogURI"));
+            string tempFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
+
+            using (WebClient client = new WebClient())
             {
-                Uri DellXMLCabinetSource = new Uri(registry.ReadString("DellCatalogURI"));
-                string tempFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
-
-                using (WebClient client = new WebClient())
-                {
-                    client.DownloadFile(DellXMLCabinetSource, tempFile);
-                }
-
-                downloadedCatalog = true;
-                previousOS = comboBoxOS.Text;
-                previousArchitecture = comboBoxArchitecture.Text;
+                client.DownloadFile(DellXMLCabinetSource, tempFile);
             }
 
-            flag = true;
+            downloadedCatalog = true;
 
             progressWorker.ReportProgress(100, "Done");
 
-            return flag;
+            return true;
         }
 
         private void ButtonOptions_Click(object sender, EventArgs e)

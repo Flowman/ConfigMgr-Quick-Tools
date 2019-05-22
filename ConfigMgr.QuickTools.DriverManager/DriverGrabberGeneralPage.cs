@@ -2,13 +2,12 @@
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.ComponentModel;
-using System.IO;
-using System.Net;
 using System.Management;
 using System.Windows.Forms;
 using Microsoft.ConfigurationManagement.AdminConsole.WizardFramework;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
@@ -16,7 +15,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     {
         private BackgroundWorker progressWorker;
         private ProgressInformationDialog progressInformationDialog;
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private List<ManagementObject> signedDrivers;
         private bool valiadated = false;
 
@@ -167,18 +166,12 @@ namespace ConfigMgr.QuickTools.DriverManager
         private bool ValidateConnections(BackgroundWorker progressWorker)
         {
             bool flag = false;
+
             try
             {
                 progressWorker.ReportProgress(0, "Validating connection to WMI");
-                ConnectionOptions options = new ConnectionOptions
-                {
-                    Authentication = AuthenticationLevel.PacketPrivacy,
-                    Impersonation = ImpersonationLevel.Impersonate,
-                    EnablePrivileges = true,
-                    Timeout = TimeSpan.FromSeconds(5)
-                };
-                ManagementScope scope = new ManagementScope(string.Format(@"\\{0}\root\cimv2", PropertyManager["Name"].StringValue), options);
-                scope.Connect();
+
+                ManagementScope scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, "cimv2");
 
                 if (scope.IsConnected == true)
                 {
@@ -197,23 +190,18 @@ namespace ConfigMgr.QuickTools.DriverManager
             if (progressInformationDialog.ReceivedRequestToClose)
                 return false;
 
-            try
+            progressWorker.ReportProgress(50, "Validating connection to ADMIN$ share");
+
+            //FileSystemRights.Modify
+            if (Utility.CheckFolderPermissions(string.Format(@"\\{0}\admin$", PropertyManager["Name"].StringValue), FileSystemRights.ReadData))
             {
-                progressWorker.ReportProgress(50, "Validating connection to ADMIN$ share");
-                CredentialCache netCache = new CredentialCache
-                {
-                    { new Uri(string.Format(@"\\{0}\admin$", PropertyManager["Name"].StringValue)), "Digest", CredentialCache.DefaultNetworkCredentials }
-                };
-                Directory.GetAccessControl(string.Format(@"\\{0}\admin$", PropertyManager["Name"].StringValue));
                 checkBoxShare.Checked = true;
                 labelShareStatus.Text = "Connected successfully";
-                flag = true;
             }
-            catch (Exception ex)
+            else
             {
                 checkBoxShare.Checked = false;
-                labelShareStatus.Text = ex.Message;
-                flag = false;
+                labelShareStatus.Text = "Access denied";
             }
 
             progressWorker.ReportProgress(100, "Verification completed");
@@ -223,38 +211,37 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private bool GetDrivers(BackgroundWorker progressWorker)
         {
-            bool flag = false;
-
-            progressWorker.ReportProgress(0, "Retrieving driver data from WMI");
-
-            ManagementScope scope = new ManagementScope();
             try
             {
-                scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, @"cimv2");
+                progressWorker.ReportProgress(0, "Retrieving driver data from WMI");
+
+                ManagementScope scope = Utility.GetWMIScope(PropertyManager["Name"].StringValue, @"cimv2");
+
+                ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName != 'Microsoft' AND DriverProviderName IS NOT NULL");
+                //ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName IS NOT NULL");
+                signedDrivers = Utility.SearchWMIToList(scope, query);
+
+                progressWorker.ReportProgress(0, "Retrieving computer system data from WMI");
+
+                query = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
+                ManagementObject computerSystem = Utility.GetFirstWMIInstance(scope, query);
+
+                progressWorker.ReportProgress(0, "Retrieving operating system data from WMI");
+
+                query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+                ManagementObject operatingSystem = Utility.GetFirstWMIInstance(scope, query);
+
+                UserData["SignedDrivers"] = signedDrivers;
+                UserData["ComputerSystem"] = computerSystem;
+                UserData["OperatingSystem"] = operatingSystem;
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
-                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+                string msg = string.Format("{0}: {1}", ex.GetType().Name, ex.Message);
+                throw new InvalidOperationException(msg);
             }
-            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName != 'Microsoft' AND DriverProviderName IS NOT NULL");
-            //ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_PnPSignedDriver WHERE DriverProviderName IS NOT NULL");
-            signedDrivers = Utility.SearchWMIToList(scope, query);
 
-            progressWorker.ReportProgress(0, "Retrieving computer system data from WMI");
-            query = new ObjectQuery("SELECT * FROM Win32_ComputerSystem");
-            ManagementObject computerSystem = Utility.GetFirstWMIInstance(scope, query);
-
-            progressWorker.ReportProgress(0, "Retrieving operating system data from WMI");
-            query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            ManagementObject operatingSystem = Utility.GetFirstWMIInstance(scope, query);
-
-            UserData["SignedDrivers"] = signedDrivers;
-            UserData["ComputerSystem"] = computerSystem;
-            UserData["OperatingSystem"] = operatingSystem;
-
-            flag = true;
-
-            return flag;
+            return true;
         }
 
         private void ButtonOptions_Click(object sender, EventArgs e)

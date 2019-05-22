@@ -11,31 +11,37 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    public partial class DellDriverPackCatalogPage : SmsPageControl
+    public partial class HPDriverPackCatalogPage : SmsPageControl
     {
-        #region Private
         private BackgroundWorker backgroundWorker;
         private readonly ModifyRegistry registry = new ModifyRegistry();
+        private XElement catalog;
+        private Process extractProcess;
         private WebClient webClient;
         private Queue<KeyValuePair<string, Uri>> _downloadUrls = new Queue<KeyValuePair<string, Uri>>();
-        private bool queueFinished = false;
+        private bool downloadQueueFinished = false;
+        private Queue<KeyValuePair<string, string>> _extractFiles = new Queue<KeyValuePair<string, string>>();
+        private bool extractQueueFinished = false;
         private readonly Dictionary<string, string> error = new Dictionary<string, string>();
         private readonly List<string> successful = new List<string>();
         private int totalPacks;
         private int downloadedPacks = 0;
+        private int extracted = 1;
         private string currentDownloadFileName;
-        private string currentDownloadModel;
-        private readonly Dictionary<string, string> cabs = new Dictionary<string, string>();
-        XElement catalog;
-        #endregion
+        private string currentModel;
+        private string os;
+        private string structure;
+        private string tempFolderPath;
+        private string sourceFolderPath;
 
-        public DellDriverPackCatalogPage(SmsPageData pageData)
+        public HPDriverPackCatalogPage(SmsPageData pageData)
             : base(pageData)
         {
             Title = "Select Driver Pack";
@@ -71,14 +77,16 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 foreach (XElement package in packages)
                 {
-                    XNamespace ns = package.GetDefaultNamespace();
-                    XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
+                    XElement softPaq = catalog.Element("HPClientDriverPackCatalog").Element("SoftPaqList").Elements("SoftPaq").Where(
+                        x => x.Element("Id").Value == package.Element("SoftPaqId").Value
+                        ).FirstOrDefault();
 
-                    Uri uri = new Uri(string.Format("http://{0}/{1}", UserData["baseLocation"], package.Attribute("path").Value));
-                    //Uri uri = new Uri("http://github.com/Flowman/pxc-alpine/releases/download/5.7.22-29.26/percona-xtradb-cluster-dev-5.7.22-r0.apk");
+                    Uri uri = new Uri(softPaq.Element("Url").Value);
 
                     string filename = Path.GetFileName(uri.LocalPath);
-                    _downloadUrls.Enqueue(new KeyValuePair<string, Uri>(result.Attribute("name").Value, uri));
+                    string model = package.Element("SystemName").Value;
+
+                    _downloadUrls.Enqueue(new KeyValuePair<string, Uri>(model.TrimStart("HP").TrimEnd("PC").Trim().Split('(')[0], uri));
                 }
 
                 DownloadFiles();
@@ -86,46 +94,29 @@ namespace ConfigMgr.QuickTools.DriverManager
                 do // wait for all the download to finish
                 {
                     Thread.Sleep(1000);
-                } while (queueFinished == false);
+                } while (downloadQueueFinished == false);
+
 
                 worker.ReportProgress(50, "Extracting Driver Packs ...");
 
-                string destination = registry.ReadString("DriverSourceFolder");
-                int num = 0;
-                foreach (KeyValuePair<string, string> item in cabs)
+                CredentialCache netCache = new CredentialCache();
+                try
                 {
-                    try
-                    {
-                        // still hate to create progress bars
-                        double start = 100 / totalPacks * num;
-                        worker.ReportProgress(Convert.ToInt32(50 + (start * 0.5)), string.Format("Extracting: {0}", item.Key));
-
-                        string os = string.Format("Win{0}", UserData["OS"].ToString().Split(' ')[1].Replace(".", ""));
-                        string folderName = null;
-
-                        string structure = registry.ReadString("LegacyFolderStructure");
-
-                        if (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
-                        {
-                            folderName = string.Format(@"{0}\{1}\{2}-{3}", "Dell Inc", item.Key, os, UserData["Architecture"].ToString());
-                        }
-                        else
-                        {
-                            folderName = string.Format(@"{0}-{1}-{2}-{3}", "Dell Inc", item.Key, os, UserData["Architecture"].ToString());
-                        }
-
-                        string destinationFolder = Path.Combine(destination, folderName);
-
-                        var cab = new CabInfo(item.Value);
-                        cab.Unpack(destinationFolder);
-                        successful.Add(item.Key);
-                    }
-                    catch (Exception ex)
-                    {
-                        error.Add(item.Key, "Cannot extract driver pack: " + ex.Message);
-                    }
-                    ++num;
+                    netCache.Add(new Uri(sourceFolderPath), "Digest", CredentialCache.DefaultNetworkCredentials);
                 }
+                catch (IOException ex)
+                {
+                    throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+                }
+
+                ExtractFiles();
+
+                do // wait for all the download to finish
+                {
+                    Thread.Sleep(500);
+                } while (extractQueueFinished == false);
+
+                netCache.Remove(new Uri(sourceFolderPath), "Digest");
 
                 PrepareCompletion(successful, error);
                 base.PostApply(worker, e);
@@ -163,9 +154,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             foreach (XElement package in list)
             {
-                XNamespace ns = package.GetDefaultNamespace();
-                XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
-                AddActionDetailMessage("DriverPackInformation", result.Attribute("name").Value);
+                AddActionDetailMessage("DriverPackInformation", package.Element("SystemName").Value);
             }
         }
 
@@ -213,6 +202,14 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.OnActivated();
 
+            Regex regex = new Regex(@"Windows\s(\d\.\d|\d{2}|\d).*(\d{2})-bit");
+            Match match = regex.Match(UserData["OS"].ToString());
+
+            os = match.Success ? string.Format("Win{0}-{1}", match.Groups[1].Value, match.Groups[2].Value) : "unknown";
+            structure = registry.ReadString("LegacyFolderStructure");
+            sourceFolderPath = registry.ReadString("DriverSourceFolder");
+            tempFolderPath = registry.ReadString("TempDownloadPath");
+
             ProcessCatalog();
 
             Utility.UpdateDataGridViewColumnsSize(dataGridViewDriverPackages, columnPack);
@@ -229,7 +226,8 @@ namespace ConfigMgr.QuickTools.DriverManager
             dataGridViewDriverPackages.Rows.Clear();
 
             bool known = false;
-            string tempFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
+
+            string tempFile = Path.Combine(Path.GetTempPath(), "HPClientDriverPackCatalog.cab");
             using (FileStream innerCab = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
                 CabEngine engine = new CabEngine();
@@ -238,27 +236,25 @@ namespace ConfigMgr.QuickTools.DriverManager
                     using (Stream stream = engine.Unpack(innerCab, archiveFileInfo.Name))
                     {
                         catalog = XElement.Load(stream);
-                        XNamespace ns = catalog.GetDefaultNamespace();
-                        // Get download base location from DriverPackCatalog.xml 
-                        UserData["baseLocation"] = catalog.Attribute("baseLocation").Value;
 
-                        IEnumerable<XElement> nodeList = catalog.Elements(ns + "DriverPackage").Where(
-                            x => x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osArch").Value == UserData["Architecture"].ToString() &&
-                            x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osCode").Value == UserData["OS"].ToString().Replace(" ", string.Empty)
+                        IEnumerable<XElement> nodeList = catalog.Element("HPClientDriverPackCatalog").Element("ProductOSDriverPackList").Elements("ProductOSDriverPack").Where(
+                            x => x.Element("OSName").Value == UserData["OS"].ToString()
                             );
                         foreach (XElement package in nodeList)
                         {
-                            XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
+                            XElement softPaq = catalog.Element("HPClientDriverPackCatalog").Element("SoftPaqList").Elements("SoftPaq").Where(
+                                x => x.Element("Id").Value == package.Element("SoftPaqId").Value
+                                ).FirstOrDefault();
 
-                            string model = result.Attribute("name").Value;
-                            ByteSize size = ByteSize.FromBytes(double.Parse(package.Attribute("size").Value));
+                            string model = package.Element("SystemName").Value;
+                            ByteSize size = ByteSize.FromBytes(double.Parse(softPaq.Element("Size").Value));
 
                             DataGridViewRow dataGridViewRow = new DataGridViewRow();
                             dataGridViewRow.CreateCells(dataGridViewDriverPackages);
 
                             dataGridViewRow.Cells[0].Value = false;
-                            dataGridViewRow.Cells[1].Value = model;
-                            dataGridViewRow.Cells[2].Value = package.Attribute("dellVersion").Value;
+                            dataGridViewRow.Cells[1].Value = model.TrimStart("HP").TrimEnd("PC").Trim().Split('(')[0];
+                            dataGridViewRow.Cells[2].Value = softPaq.Element("Version").Value.TrimEnd("A 1").Trim();
                             dataGridViewRow.Cells[3].Value = size.ToString();
 
                             dataGridViewRow.Tag = package;
@@ -268,14 +264,22 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
             }
 
-            string query = "SELECT DISTINCT Model FROM SMS_G_System_COMPUTER_SYSTEM WHERE Manufacturer = 'Dell Inc.'";
+            string query = "SELECT DISTINCT Model FROM SMS_G_System_COMPUTER_SYSTEM WHERE Manufacturer = 'HP' OR Manufacturer = 'Hewlett-Packard'";
             List<IResultObject> models = Utility.SearchWMIToList(ConnectionManager, query);
 
             foreach (IResultObject model in models)
             {
+                string testModel = model["Model"].StringValue;
+                testModel = Regex.Replace(testModel, "HP", "", RegexOptions.IgnoreCase);
+                testModel = Regex.Replace(testModel, "COMPAQ", "", RegexOptions.IgnoreCase);
+                testModel = Regex.Replace(testModel, "SFF", "Small Form Factor");
+                testModel = Regex.Replace(testModel, "USDT", "Desktop");
+                testModel = Regex.Replace(testModel, " TWR", " Tower");
+                testModel = testModel.TrimEnd("PC").Trim();
+
                 DataGridViewRow row = dataGridViewDriverPackages.Rows
                     .Cast<DataGridViewRow>()
-                    .Where(r => r.Cells[1].Value.ToString().Equals(model["Model"].StringValue))
+                    .Where(r => r.Cells[1].Value.ToString().Equals(testModel))
                     .FirstOrDefault();
 
                 if (row != null)
@@ -286,9 +290,27 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
             }
 
+            foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
+            {
+                string folderName = GenerateModelFolderName(dataGridViewRow.Cells[columnPack.Name].Value.ToString());
+
+                if (Directory.Exists(Path.Combine(sourceFolderPath, folderName)))
+                {
+                    dataGridViewRow.Cells[0].Value = false;
+                    dataGridViewRow.Cells[4].Value = "Downloaded";
+                }
+            }
+
             dataGridViewDriverPackages.Sort(known ? columnStatus : columnPack, known ? ListSortDirection.Descending : ListSortDirection.Ascending);
 
             Initialized = true;
+        }
+
+        private string GenerateModelFolderName(string model)
+        {
+            return (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
+                ? string.Format(@"{0}\{1}\{2}", "HP", model, os)
+                : string.Format(@"{0}-{1}-{2}", "HP", model, os);
         }
 
         private void DownloadFiles()
@@ -299,8 +321,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 Uri url = data.Value;
                 string filename = Path.GetFileName(url.LocalPath);
 
-                currentDownloadFileName = Path.Combine(registry.ReadString("TempDownloadPath"), filename);
-                currentDownloadModel = data.Key;
+                currentDownloadFileName = Path.Combine(tempFolderPath, filename);
+                currentModel = data.Key;
 
                 // check if file already exists and is the same size as the one that will be downloaded
                 if (File.Exists(currentDownloadFileName))
@@ -310,7 +332,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                     if (fileSize == webSize)
                     {
-                        cabs.Add(currentDownloadModel, currentDownloadFileName);
+                        _extractFiles.Enqueue(new KeyValuePair<string, string>(currentModel, currentDownloadFileName));
 
                         CheckDownloadQueueCompleted();
 
@@ -339,7 +361,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             double start = 100 / totalPacks * downloadedPacks;
             backgroundWorker.ReportProgress(Convert.ToInt32((start + (percentage / totalPacks)) * 0.5), string.Format("Downloading: {0} - {1} of {2}", new object[3]
                 {
-                    currentDownloadModel,
+                    currentModel,
                     ByteSize.FromBytes(bytesIn).ToString("#"),
                     ByteSize.FromBytes(totalBytes).ToString("#")
                 }));
@@ -351,12 +373,12 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 if (e.Error != null)
                 {
-                    error.Add(currentDownloadModel, "Could download driver pack: " + e.Error.Message);
+                    error.Add(currentModel, "Could download driver pack: " + e.Error.Message);
                 }
                 else
                 {
                     // add the downloaded file into the extraction list
-                    cabs.Add(currentDownloadModel, currentDownloadFileName);
+                    _extractFiles.Enqueue(new KeyValuePair<string, string>(currentModel, currentDownloadFileName));
                 }
             }
             finally
@@ -366,7 +388,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     webClient.Dispose();
                     webClient = null;
 
-                    CheckDownloadQueueCompleted();
+                   CheckDownloadQueueCompleted();
                 }
             }
         }
@@ -382,7 +404,75 @@ namespace ConfigMgr.QuickTools.DriverManager
             else
             {
                 // all downloads are done, kill of the while loop
-                queueFinished = true;
+                downloadQueueFinished = true;
+            }
+        }
+
+        private void ExtractFiles()
+        {
+            if (_extractFiles.Any())
+            {
+                KeyValuePair<string, string> data = _extractFiles.Dequeue();
+                // add model so we can re-use it in functions
+                currentModel = data.Key;
+                // update my best friend the progress bar
+                backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((50 / totalPacks * extracted) * 0.5) ), string.Format("Processing {0} : extracting to temp folder", currentModel));
+                // generate model folder name
+                string folderName = GenerateModelFolderName(currentModel);
+
+                // hp sp extract does not work directly to network share, put in temp folder first and than copy to share
+                string tempFolder = Path.Combine(tempFolderPath, folderName);
+                string destinationFolder = Path.Combine(sourceFolderPath, folderName);
+
+                using (extractProcess = new Process())
+                {
+                    try
+                    {
+                        // Start a process to print a file and raise an event when done.
+                        extractProcess.StartInfo.FileName = data.Value;
+                        extractProcess.StartInfo.Arguments = string.Format("-pdf -f \"{0}\" -s -e", tempFolder);
+                        extractProcess.StartInfo.CreateNoWindow = true;
+                        extractProcess.StartInfo.UseShellExecute = true;
+                        extractProcess.StartInfo.Verb = "RunAs";
+                        extractProcess.Start();
+                        extractProcess.WaitForExit();
+                        extractProcess.Close();
+                        // update my best friend the progress bar
+
+                        backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((100 / totalPacks * extracted) * 0.5) - 1), string.Format("Processing {0} : moving to destination folder", currentModel));
+
+                        if (!Directory.Exists(tempFolder))
+                            throw new DirectoryNotFoundException("Temp folder not found " + tempFolder);
+
+                        Utility.Copy(tempFolder, destinationFolder, true);
+
+                        Directory.Delete(tempFolder, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        error.Add(currentModel, "Cannot extract driver pack: " + ex.Message);
+                    }
+                }
+
+                successful.Add(currentModel);
+
+                CheckExtractQueueCompleted();
+
+                return;
+            }
+        }
+
+        private void CheckExtractQueueCompleted()
+        {
+            // if queue is still active download next file
+            if (_extractFiles.Count > 0)
+            {
+                ExtractFiles();
+            }
+            else
+            {
+                // all downloads are done, kill of the while loop
+                extractQueueFinished = true;
             }
         }
 
@@ -446,15 +536,14 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 if (row.Tag is XElement package)
                 {
-                    XNamespace ns = package.GetDefaultNamespace();
-
-                    XElement result = package.Element(ns + "ImportantInfo");
-
+                    XElement softPaq = catalog.Element("HPClientDriverPackCatalog").Element("SoftPaqList").Elements("SoftPaq").Where(
+                        x => x.Element("Id").Value == package.Element("SoftPaqId").Value
+                        ).FirstOrDefault();
 
                     Process process = new Process();
                     try
                     {
-                        process.StartInfo.FileName = result.Attribute("URL").Value;
+                        process.StartInfo.FileName = softPaq.Element("ReleaseNotesUrl").Value;
                         process.StartInfo.UseShellExecute = true;
                         process.Start();
                     }
@@ -468,6 +557,29 @@ namespace ConfigMgr.QuickTools.DriverManager
                     }
                 }
             }
+        }
+    }
+
+    static class StringTrimExtension
+    {
+        public static string TrimStart(this string value, string toTrim)
+        {
+            if (value.StartsWith(toTrim))
+            {
+                int startIndex = toTrim.Length;
+                return value.Substring(startIndex);
+            }
+            return value;
+        }
+
+        public static string TrimEnd(this string value, string toTrim)
+        {
+            if (value.EndsWith(toTrim))
+            {
+                int startIndex = toTrim.Length;
+                return value.Substring(0, value.Length - startIndex);
+            }
+            return value;
         }
     }
 }

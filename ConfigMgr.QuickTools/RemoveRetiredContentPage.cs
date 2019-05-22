@@ -37,7 +37,6 @@ namespace ConfigMgr.QuickTools
             base.InitializePageControl();
 
             dataGridViewApplications.Rows.Clear();
-            UtilitiesClass.UpdateDataGridViewColumnsSize(dataGridViewApplications, columnName);
 
             ControlsInspector.AddControl(dataGridViewApplications, new ControlDataStateEvaluator(ValidateSelectedApplications), "Select an application");
 
@@ -46,7 +45,6 @@ namespace ConfigMgr.QuickTools
             backgroundWorker = new SmsBackgroundWorker();
             backgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(BackgroundWorker_RunWorkerCompleted);
             backgroundWorker.QueryProcessorObjectsReady += new EventHandler<QueryProcessorObjectsEventArgs>(BackgroundWorker_QueryProcessorObjectsReady);
-            ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "InitializePageControl");
             UseWaitCursor = true;
             QueryProcessor.ProcessQuery(backgroundWorker, query);
         }
@@ -198,7 +196,7 @@ namespace ConfigMgr.QuickTools
             AddAction("ApplicationInformation", string.Empty);
 
             foreach (IResultObject application in (IEnumerable)list)
-                AddActionDetailMessage("ApplicationInformation", ResourceDisplayClass.GetAliasDisplayText(application, "LocalizedDisplayName"));
+                AddActionDetailMessage("ApplicationInformation", application["LocalizedDisplayName"].StringValue);
         }
 
         private void PrepareCompletion(List<string> success, Dictionary<string, string> error)

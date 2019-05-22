@@ -1,6 +1,6 @@
 ﻿namespace ConfigMgr.QuickTools.DriverManager
 {
-    partial class DellDriverPackCatalogPage
+    partial class HPDriverPackCatalogPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -49,7 +49,7 @@
             this.labelDescription.Location = new System.Drawing.Point(3, 4);
             this.labelDescription.Name = "labelDescription";
             this.labelDescription.Size = new System.Drawing.Size(71, 13);
-            this.labelDescription.TabIndex = 18;
+            this.labelDescription.TabIndex = 21;
             this.labelDescription.Text = "Driver Packs:";
             // 
             // dataGridViewDriverPackages
@@ -75,7 +75,7 @@
             this.dataGridViewDriverPackages.RowHeadersVisible = false;
             this.dataGridViewDriverPackages.Size = new System.Drawing.Size(455, 300);
             this.dataGridViewDriverPackages.StandardTab = true;
-            this.dataGridViewDriverPackages.TabIndex = 8;
+            this.dataGridViewDriverPackages.TabIndex = 20;
             this.dataGridViewDriverPackages.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewDriverPackages_CellMouseDown);
             this.dataGridViewDriverPackages.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewDriverPackages_CellValueChanged);
             this.dataGridViewDriverPackages.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewDriverPackages_CurrentCellDirtyStateChanged);
@@ -102,7 +102,7 @@
             this.buttonDeselectAll.Location = new System.Drawing.Point(370, 323);
             this.buttonDeselectAll.Name = "buttonDeselectAll";
             this.buttonDeselectAll.Size = new System.Drawing.Size(91, 23);
-            this.buttonDeselectAll.TabIndex = 4;
+            this.buttonDeselectAll.TabIndex = 19;
             this.buttonDeselectAll.Text = "Deselect All";
             this.buttonDeselectAll.UseVisualStyleBackColor = true;
             this.buttonDeselectAll.Click += new System.EventHandler(this.ButtonDeselectAll_Click);
@@ -120,7 +120,7 @@
             this.columnPack.MinimumWidth = 50;
             this.columnPack.Name = "columnPack";
             this.columnPack.ReadOnly = true;
-            this.columnPack.Width = 190;
+            this.columnPack.Width = 170;
             // 
             // ColumnVersion
             // 
@@ -140,14 +140,14 @@
             this.columnStatus.Name = "columnStatus";
             this.columnStatus.ReadOnly = true;
             // 
-            // DellDriverPackCatalogPage
+            // HPDriverPackCatalogPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.dataGridViewDriverPackages);
             this.Controls.Add(this.buttonDeselectAll);
-            this.Name = "DellDriverPackCatalogPage";
+            this.Name = "HPDriverPackCatalogPage";
             this.Size = new System.Drawing.Size(485, 360);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDriverPackages)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -157,9 +157,10 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.DataGridView dataGridViewDriverPackages;
         private System.Windows.Forms.Button buttonDeselectAll;
-        private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem releaseNotesToolStripMenuItem;
         private System.Windows.Forms.DataGridViewCheckBoxColumn columnImport;

@@ -14,20 +14,20 @@ namespace ConfigMgr.QuickTools.CollectionManagment
     public partial class AddResourcesListDialog : SmsCustomDialog
     {
         private long searchCompleteTime = -1L;
-        private ControlsInspector controlsInspector;
+        private readonly ControlsInspector controlsInspector;
         private SmsBackgroundWorker backgroundWorkerQueryMachine;
 
         public AddResourcesListDialog()
         {
             InitializeComponent();
 
-            controlsInspector = new ControlsInspector();
-            controlsInspector.AddControl(listViewSelectedResources, new ControlDataStateEvaluator(ValidateResourceValue), "Search for resources");
-            controlsInspector.InspectAll();
-
             Title = "Add Resources to Collection";
 
             Updater.CheckUpdates();
+
+            controlsInspector = new ControlsInspector();
+            controlsInspector.AddControl(listViewSelectedResources, new ControlDataStateEvaluator(ValidateResourceValue), "Search for resources");
+            controlsInspector.InspectAll();
         }
 
         private ControlDataState ValidateResourceValue()
@@ -119,18 +119,17 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                     listViewSelectedResources.Items[0].Selected = true;
                     listViewSelectedResources.Items[0].Focused = true;
                 }
-
-                UtilitiesClass.UpdateListViewColumnsSize(listViewSelectedResources, columnMachineName);
-                buttonSearch.Focus();
-                buttonSearch.Text = "Search";
-                UseWaitCursor = false;
-                searchCompleteTime = DateTime.Now.Ticks;
-                controlsInspector.InspectAll();
             }
             finally
             {
                 backgroundWorkerQueryMachine.Dispose();
                 backgroundWorkerQueryMachine = null;
+                UseWaitCursor = false;
+                buttonSearch.Focus();
+                buttonSearch.Text = "Search";
+                searchCompleteTime = DateTime.Now.Ticks;
+                controlsInspector.InspectAll();
+                UtilitiesClass.UpdateListViewColumnsSize(listViewSelectedResources, columnMachineName);
             }
         }
 

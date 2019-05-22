@@ -71,7 +71,7 @@ namespace ConfigMgr.QuickTools.Device
 
             if (confirmDialog)
             {
-                if (System.Windows.MessageBox.Show(string.Format("Delete the selected '{0}' deployment?", ResourceDisplayClass.GetAliasDisplayText(selectedResultObject, displayPropertyName)), "Configuration Manager", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) != MessageBoxResult.Yes)
+                if (System.Windows.MessageBox.Show(string.Format("Delete the selected '{0}' deployment?", selectedResultObject[displayPropertyName].StringValue), "Configuration Manager", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) != MessageBoxResult.Yes)
                     return;
             }
             deploymentFromSummarizer.Delete();

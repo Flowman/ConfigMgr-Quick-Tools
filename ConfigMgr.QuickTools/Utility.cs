@@ -12,6 +12,8 @@ using System.Threading;
 using System.Management;
 using System.Windows.Forms;
 using Microsoft.ConfigurationManagement.ManagementProvider.DialogFramework;
+using System.Net;
+using System.Security.AccessControl;
 
 namespace ConfigMgr.QuickTools
 {
@@ -434,6 +436,64 @@ namespace ConfigMgr.QuickTools
                 dialog.Form.ShowInTaskbar = false;
                 return dialog.Form.ShowDialog();
             }
+        }
+        public static long GetFileSize(Uri url)
+        {
+            long result = -1;
+
+            WebRequest req = WebRequest.Create(url);
+            req.Method = "HEAD";
+            using (WebResponse resp = req.GetResponse())
+            {
+                if (long.TryParse(resp.Headers.Get("Content-Length"), out long ContentLength))
+                {
+                    result = ContentLength;
+                }
+            }
+
+            return result;
+        }
+
+        public static long GetFileSize(string url)
+        {
+            return GetFileSize(new Uri(url)); 
+        }
+
+        public static void Copy(string sourceDir, string targetDir, bool overwrite = false)
+        {
+            if (!Directory.Exists(targetDir) || overwrite)
+            {
+                Directory.CreateDirectory(targetDir);
+
+                foreach (var file in Directory.GetFiles(sourceDir))
+                {
+                    File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), overwrite);
+                }
+
+                foreach (var directory in Directory.GetDirectories(sourceDir))
+                    Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
+            }
+        }
+
+        public static bool CheckFolderPermissions(string directoryPath, FileSystemRights accessType)
+        {
+            bool hasAccess = true;
+            try
+            {
+                AuthorizationRuleCollection collection = Directory.GetAccessControl(directoryPath).GetAccessRules(true, true, typeof(System.Security.Principal.NTAccount));
+                foreach (FileSystemAccessRule rule in collection)
+                {
+                    if ((rule.FileSystemRights & accessType) > 0)
+                    {
+                        return hasAccess;
+                    }
+                }
+            }
+            catch
+            {
+                hasAccess = false;
+            }
+            return hasAccess;
         }
     }
 

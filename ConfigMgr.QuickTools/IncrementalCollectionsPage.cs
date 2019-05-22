@@ -21,11 +21,11 @@ namespace ConfigMgr.QuickTools.CollectionManagment
         public IncrementalCollectionsPage(SmsPageData pageData)
             : base(pageData)
         {
+            InitializeComponent();
+
             FormTitle = "Incremental Collections";
             Title = "Select Collections";
             Headline = "Disable incremental updates for selected collections";
-
-            InitializeComponent();
 
             Updater.CheckUpdates();
         }
@@ -35,7 +35,6 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             base.InitializePageControl();
 
             dataGridViewCollections.Rows.Clear();
-            UtilitiesClass.UpdateDataGridViewColumnsSize(dataGridViewCollections, columnCollection);
 
             ControlsInspector.AddControl(dataGridViewCollections, new ControlDataStateEvaluator(ValidateSelectedCollections), "Select collections to disable");
 
@@ -44,7 +43,6 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             backgroundWorker = new SmsBackgroundWorker();
             backgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(BackgroundWorker_RunWorkerCompleted);
             backgroundWorker.QueryProcessorObjectsReady += new EventHandler<QueryProcessorObjectsEventArgs>(BackgroundWorker_QueryProcessorObjectsReady);
-            ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "InitializePageControl");
             UseWaitCursor = true;
             QueryProcessor.ProcessQuery(backgroundWorker, query);
         }
@@ -66,8 +64,8 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 dataGridViewRow.CreateCells(dataGridViewCollections);
 
                 dataGridViewRow.Cells[0].Value = false;
-                dataGridViewRow.Cells[1].Value = ResourceDisplayClass.GetAliasDisplayText(resultObject, "Name");
-                dataGridViewRow.Cells[2].Value = ResourceDisplayClass.GetAliasDisplayText(resultObject, "CollectionID");
+                dataGridViewRow.Cells[1].Value = resultObject["Name"].StringValue;
+                dataGridViewRow.Cells[2].Value = resultObject["CollectionID"].StringValue;
 
                 dataGridViewRow.Tag = resultObject;
                 dataGridViewCollections.Rows.Add(dataGridViewRow);
@@ -112,7 +110,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 List<IResultObject> collections = (List<IResultObject>)UserData["CollectionItems"];
                 foreach (IResultObject collection in collections)
                 {
-                    worker.ReportProgress(num * 100 / collections.Count, string.Format("Disabling incremental updates for collection: {0}", ResourceDisplayClass.GetAliasDisplayText(collection, "Name")));
+                    worker.ReportProgress(num * 100 / collections.Count, string.Format("Disabling incremental updates for collection: {0}", collection["Name"].StringValue));
 
                     collection["RefreshType"].IntegerValue = collection["RefreshType"].IntegerValue == 4 ? 1 : 2;
                     bool er = false;
@@ -131,7 +129,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
 
                     if (!er)
                     {
-                        success.Add(ResourceDisplayClass.GetAliasDisplayText(collection, "Name"));
+                        success.Add(collection["Name"].StringValue);
                     }
 
                     ++num;
@@ -185,7 +183,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
 
             foreach (IResultObject collection in (IEnumerable)list)
             {
-                AddActionDetailMessage("CollectionInformation", ResourceDisplayClass.GetAliasDisplayText(collection, "Name"));
+                AddActionDetailMessage("CollectionInformation", collection["Name"].StringValue);
             }
         }
 
@@ -263,10 +261,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 process.StartInfo.UseShellExecute = true;
                 process.Start();
             }
-            catch (Win32Exception ex)
-            {
-                ExceptionUtilities.TraceException((Exception)ex);
-            }
+            catch (Win32Exception) { }
             finally
             {
                 process?.Dispose();

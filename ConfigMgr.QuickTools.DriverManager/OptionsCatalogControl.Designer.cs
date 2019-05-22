@@ -32,6 +32,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.browseFolderControlDownload = new Microsoft.ConfigurationManagement.AdminConsole.OsdCommon.BrowseFolderControl();
+            this.textBoxHPCatalogUri = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxDellCatalogUri
@@ -42,7 +44,7 @@
             this.textBoxDellCatalogUri.Name = "textBoxDellCatalogUri";
             this.textBoxDellCatalogUri.Size = new System.Drawing.Size(360, 20);
             this.textBoxDellCatalogUri.TabIndex = 17;
-            this.textBoxDellCatalogUri.TextChanged += new System.EventHandler(this.TextBoxDellCatalogUri_TextChanged);
+            this.textBoxDellCatalogUri.TextChanged += new System.EventHandler(this.Control_TextChanged);
             // 
             // label2
             // 
@@ -77,12 +79,33 @@
             this.browseFolderControlDownload.Name = "browseFolderControlDownload";
             this.browseFolderControlDownload.Size = new System.Drawing.Size(360, 25);
             this.browseFolderControlDownload.TabIndex = 19;
-            this.browseFolderControlDownload.FolderTextChanged += new System.EventHandler(this.BrowseFolderControlDownload_FolderTextChanged);
+            this.browseFolderControlDownload.FolderTextChanged += new System.EventHandler(this.Control_TextChanged);
+            // 
+            // textBoxHPCatalogUri
+            // 
+            this.textBoxHPCatalogUri.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxHPCatalogUri.Location = new System.Drawing.Point(10, 86);
+            this.textBoxHPCatalogUri.Name = "textBoxHPCatalogUri";
+            this.textBoxHPCatalogUri.Size = new System.Drawing.Size(360, 20);
+            this.textBoxHPCatalogUri.TabIndex = 21;
+            this.textBoxHPCatalogUri.TextChanged += new System.EventHandler(this.Control_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 70);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(193, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "HP HPClientDriverPackCatalog.cab url:";
             // 
             // OptionsCatalogControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.textBoxHPCatalogUri);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.browseFolderControlDownload);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxDellCatalogUri);
@@ -99,5 +122,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private Microsoft.ConfigurationManagement.AdminConsole.OsdCommon.BrowseFolderControl browseFolderControlDownload;
+        private System.Windows.Forms.TextBox textBoxHPCatalogUri;
+        private System.Windows.Forms.Label label3;
     }
 }

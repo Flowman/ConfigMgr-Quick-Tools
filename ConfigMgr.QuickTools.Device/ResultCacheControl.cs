@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.IO;
-using System.Net;
+using System.Security.AccessControl;
 
 namespace ConfigMgr.QuickTools.Device
 {
@@ -23,6 +23,7 @@ namespace ConfigMgr.QuickTools.Device
           : base(pageData)
         {
             InitializeComponent();
+
             Title = "Client Cache";
 
             Updater.CheckUpdates();
@@ -164,17 +165,6 @@ namespace ConfigMgr.QuickTools.Device
 
         private void RemoveCachedItems(ListView.SelectedListViewItemCollection items)
         {
-            // check that we have access to the device
-            CredentialCache netCache = new CredentialCache();
-            try
-            {
-                netCache.Add(new Uri(string.Format(@"\\{0}", PropertyManager["Name"].StringValue)), "Digest", CredentialCache.DefaultNetworkCredentials);
-            }
-            catch (IOException ex)
-            {
-                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
-            }
-
             foreach (ListViewItem item in items)
             {
                 try
@@ -184,11 +174,18 @@ namespace ConfigMgr.QuickTools.Device
                     // create location string
                     string str = (managementObject["Location"] as string).Replace(':', '$');
                     string path = string.Format(@"\\{0}\{1}", PropertyManager["Name"].StringValue, str);
-                    // check if cached content exists
-                    if (Directory.Exists(path))
+                    // check if cached content exists and we have persmissions to remove it
+                    if (Directory.Exists(path) && Utility.CheckFolderPermissions(path, FileSystemRights.Delete))
+                    {
+                        // delete folder
                         Directory.Delete(path, true);
-                    // remove wmi object
-                    managementObject.Delete();
+                        // remove wmi object
+                        managementObject.Delete();
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show(string.Format("Cannot remove item: Access denied", items.Count), "Configuration Manager", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    }
                 }
                 catch (Exception ex)
                 {

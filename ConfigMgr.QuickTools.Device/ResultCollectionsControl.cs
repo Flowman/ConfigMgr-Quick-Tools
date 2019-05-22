@@ -53,7 +53,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                 {
                     Text = resultObject["Name"].StringValue,
                     SubItems = {
-                        ResourceDisplayClass.GetAliasDisplayText(resultObject, "CollectionID")
+                        resultObject["CollectionID"].StringValue 
                     }
                 });
                 resultObject.Dispose();

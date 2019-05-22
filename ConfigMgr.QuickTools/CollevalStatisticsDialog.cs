@@ -146,7 +146,7 @@ namespace ConfigMgr.QuickTools
                 {
                     using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
                     {
-                        int num = (int)sccmExceptionDialog.ShowDialog();
+                        sccmExceptionDialog.ShowDialog();
                     }
                 }
             }
