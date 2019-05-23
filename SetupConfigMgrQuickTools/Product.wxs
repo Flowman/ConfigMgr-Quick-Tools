@@ -57,6 +57,10 @@
         <ComponentRef Id="comp_99DBF020_FA1F_47A5_8166_9E1D3CD991CC" />
         <ComponentRef Id="comp_818F7E89_65EC_4CDF_B060_F0C5AB3A5891" />
       </Feature>
+      <Feature Id="HPTools" Title="HP Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support HP devices.">
+        <ComponentRef Id="comp_43F8D782_3A9C_4925_B269_EAA37028FD76" />
+        <ComponentRef Id="comp_B1213856_985B_4A7D_8D47_14B52D4B0585" />
+      </Feature>
       <Feature Id="LAPSIntegrations" Title="LAPS Integration" Level="1" Absent="allow" AllowAdvertise="no" Description="A tool that retrieves LAPS password from Active Directory.">
         <ComponentRef Id="comp_5C6A231A_3F9F_4B9B_B5FF_B2C325FA4647" />
         <ComponentRef Id="comp_BE4B2C52_29E8_4567_B8C9_C0115E5C3F46" />
@@ -126,6 +130,9 @@
             <Component Id="comp_88130D29_81FB_48B1_A7DE_103B60EBB5B6" Guid="5C850966-FF52-464A-B6B6-51121160484A" Permanent="no" SharedDllRefCount="no" Transitive="no">
               <File Id="_A67E39C7_A139_42AD_BF5C_E9B1A2B5FD52" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDeviceCache.xml" Source="..\Extensions\Forms\QuickToolsDeviceCache.xml" KeyPath="yes" />
             </Component>
+            <Component Id="comp_43F8D782_3A9C_4925_B269_EAA37028FD76" Guid="EF928078-EC36-43BD-A103-FF7649C9A4EB" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_4EC50B91_5F83_48FD_B213_44EC240DC712" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsHPDriverPackWizard.xml" Source="..\Extensions\Forms\QuickToolsHPDriverPackWizard.xml" KeyPath="yes" />
+            </Component>
           </Directory>
           <Directory Id="dir_7ABFEF4F_0A52_47E1_96ED_F76708FD1A5B" Name="Actions">
             <Directory Id="dir_BC4B3130_B4E3_49AC_BF99_340A1BABE891" Name="0ae7814c-1256-4358-b5a6-710f64ba2188">
@@ -134,6 +141,9 @@
               </Component>
               <Component Id="comp_357FC2F4_2A1D_4DCA_988B_0AD7D16DC395" Guid="E9FE96F7-B96C-4AE1-AC5C-6FAB2EFD6126" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_1E8D100A_B7E0_4023_995F_371DE5F244B6" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverPackAction.xml" Source="..\Extensions\Actions\0ae7814c-1256-4358-b5a6-710f64ba2188\QuickToolsDriverPackAction.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_B1213856_985B_4A7D_8D47_14B52D4B0585" Guid="8F8E30B5-414C-4B49-91F7-B2063EA4C360" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_02B39561_4F29_480E_9B21_FD104DACA477" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverPackActionHP.xml" Source="..\Extensions\Actions\0ae7814c-1256-4358-b5a6-710f64ba2188\QuickToolsDriverPackActionHP.xml" KeyPath="yes" />
               </Component>
             </Directory>
             <Directory Id="dir_387FB9B2_0526_473C_87DB_6F58E816ADAC" Name="3fd01cd1-9e01-461e-92cd-94866b8d1f39">
