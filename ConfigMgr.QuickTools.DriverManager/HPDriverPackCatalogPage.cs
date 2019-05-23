@@ -48,6 +48,8 @@ namespace ConfigMgr.QuickTools.DriverManager
             Headline = "Select driver pack to download";
 
             InitializeComponent();
+
+            checkBoxOverwrite.Visible = false;
         }
 
         public override void InitializePageControl()

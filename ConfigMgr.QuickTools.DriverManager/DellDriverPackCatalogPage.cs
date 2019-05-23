@@ -22,17 +22,24 @@ namespace ConfigMgr.QuickTools.DriverManager
         #region Private
         private BackgroundWorker backgroundWorker;
         private readonly ModifyRegistry registry = new ModifyRegistry();
+        private XElement catalog;
         private WebClient webClient;
-        private Queue<KeyValuePair<string, Uri>> _downloadUrls = new Queue<KeyValuePair<string, Uri>>();
+        private readonly Queue<KeyValuePair<DellDriverPackage, Uri>> _downloadUrls = new Queue<KeyValuePair<DellDriverPackage, Uri>>();
         private bool queueFinished = false;
+        private readonly Queue<KeyValuePair<DellDriverPackage, string>> _extractFiles = new Queue<KeyValuePair<DellDriverPackage, string>>();
+        private bool extractQueueFinished = false;
         private readonly Dictionary<string, string> error = new Dictionary<string, string>();
         private readonly List<string> successful = new List<string>();
         private int totalPacks;
         private int downloadedPacks = 0;
+        private readonly int extracted = 1;
         private string currentDownloadFileName;
-        private string currentDownloadModel;
-        private readonly Dictionary<string, string> cabs = new Dictionary<string, string>();
-        XElement catalog;
+        private string currentModel;
+        private DellDriverPackage currentPackage;
+        private string os;
+        private string structure;
+        private string tempFolderPath;
+        private string sourceFolderPath;
         #endregion
 
         public DellDriverPackCatalogPage(SmsPageData pageData)
@@ -66,19 +73,15 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 worker.ReportProgress(0, "Queuing up Driver Pack downloads ...");
 
-                List<XElement> packages = (List<XElement>)UserData["DriverPackItems"];
+                List<DellDriverPackage> packages = (List<DellDriverPackage>)UserData["DriverPackItems"];
                 totalPacks = packages.Count;
 
-                foreach (XElement package in packages)
+                foreach (DellDriverPackage package in packages)
                 {
-                    XNamespace ns = package.GetDefaultNamespace();
-                    XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
-
-                    Uri uri = new Uri(string.Format("http://{0}/{1}", UserData["baseLocation"], package.Attribute("path").Value));
-                    //Uri uri = new Uri("http://github.com/Flowman/pxc-alpine/releases/download/5.7.22-29.26/percona-xtradb-cluster-dev-5.7.22-r0.apk");
+                    Uri uri = new Uri(string.Format("http://{0}/{1}", UserData["baseLocation"], package.Url));
 
                     string filename = Path.GetFileName(uri.LocalPath);
-                    _downloadUrls.Enqueue(new KeyValuePair<string, Uri>(result.Attribute("name").Value, uri));
+                    _downloadUrls.Enqueue(new KeyValuePair<DellDriverPackage, Uri>(package, uri));
                 }
 
                 DownloadFiles();
@@ -90,42 +93,12 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 worker.ReportProgress(50, "Extracting Driver Packs ...");
 
-                string destination = registry.ReadString("DriverSourceFolder");
-                int num = 0;
-                foreach (KeyValuePair<string, string> item in cabs)
+                ExtractFiles();
+
+                do // wait for all the extractions to finish
                 {
-                    try
-                    {
-                        // still hate to create progress bars
-                        double start = 100 / totalPacks * num;
-                        worker.ReportProgress(Convert.ToInt32(50 + (start * 0.5)), string.Format("Extracting: {0}", item.Key));
-
-                        string os = string.Format("Win{0}", UserData["OS"].ToString().Split(' ')[1].Replace(".", ""));
-                        string folderName = null;
-
-                        string structure = registry.ReadString("LegacyFolderStructure");
-
-                        if (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
-                        {
-                            folderName = string.Format(@"{0}\{1}\{2}-{3}", "Dell Inc", item.Key, os, UserData["Architecture"].ToString());
-                        }
-                        else
-                        {
-                            folderName = string.Format(@"{0}-{1}-{2}-{3}", "Dell Inc", item.Key, os, UserData["Architecture"].ToString());
-                        }
-
-                        string destinationFolder = Path.Combine(destination, folderName);
-
-                        var cab = new CabInfo(item.Value);
-                        cab.Unpack(destinationFolder);
-                        successful.Add(item.Key);
-                    }
-                    catch (Exception ex)
-                    {
-                        error.Add(item.Key, "Cannot extract driver pack: " + ex.Message);
-                    }
-                    ++num;
-                }
+                    Thread.Sleep(500);
+                } while (extractQueueFinished == false);
 
                 PrepareCompletion(successful, error);
                 base.PostApply(worker, e);
@@ -135,22 +108,18 @@ namespace ConfigMgr.QuickTools.DriverManager
                 PrepareError(ex.Message);
                 throw;
             }
-            finally
-            {
-
-            }
         }
 
         public override void OnAddSummary(SummaryRequestHandler handler)
         {
             base.OnAddSummary(handler);
 
-            List<XElement> list = new List<XElement>();
+            List<DellDriverPackage> list = new List<DellDriverPackage>();
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
             {
                 if (Convert.ToBoolean(dataGridViewRow.Cells[columnImport.Name].Value) == true)
                 {
-                    if (dataGridViewRow.Tag is XElement pack)
+                    if (dataGridViewRow.Tag is DellDriverPackage pack)
                     {
                         list.Add(pack);
                     }
@@ -161,11 +130,9 @@ namespace ConfigMgr.QuickTools.DriverManager
             AddAction("GeneralDescription", string.Format("The following driver pack(s) will be imported ({0}):", list.Count));
             AddAction("DriverPackInformation", string.Empty);
 
-            foreach (XElement package in list)
+            foreach (DellDriverPackage package in list)
             {
-                XNamespace ns = package.GetDefaultNamespace();
-                XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
-                AddActionDetailMessage("DriverPackInformation", result.Attribute("name").Value);
+                AddActionDetailMessage("DriverPackInformation", package.Name);
             }
         }
 
@@ -213,6 +180,12 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.OnActivated();
 
+            os = string.Format("Win{0}-{1}", UserData["OS"].ToString().Split(' ')[1].Replace(".", ""), UserData["Architecture"].ToString());
+
+            structure = registry.ReadString("LegacyFolderStructure");
+            sourceFolderPath = registry.ReadString("DriverSourceFolder");
+            tempFolderPath = registry.ReadString("TempDownloadPath");
+
             ProcessCatalog();
 
             Utility.UpdateDataGridViewColumnsSize(dataGridViewDriverPackages, columnPack);
@@ -246,20 +219,18 @@ namespace ConfigMgr.QuickTools.DriverManager
                             x => x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osArch").Value == UserData["Architecture"].ToString() &&
                             x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osCode").Value == UserData["OS"].ToString().Replace(" ", string.Empty)
                             );
-                        foreach (XElement package in nodeList)
+                        foreach (XElement node in nodeList)
                         {
-                            XElement result = package.Element(ns + "SupportedSystems").Element(ns + "Brand").Element(ns + "Model");
-
-                            string model = result.Attribute("name").Value;
-                            ByteSize size = ByteSize.FromBytes(double.Parse(package.Attribute("size").Value));
+                            DellDriverPackage package = new DellDriverPackage(node);
+                            package.GenerateModelFolderName(os, structure);
 
                             DataGridViewRow dataGridViewRow = new DataGridViewRow();
                             dataGridViewRow.CreateCells(dataGridViewDriverPackages);
 
                             dataGridViewRow.Cells[0].Value = false;
-                            dataGridViewRow.Cells[1].Value = model;
-                            dataGridViewRow.Cells[2].Value = package.Attribute("dellVersion").Value;
-                            dataGridViewRow.Cells[3].Value = size.ToString();
+                            dataGridViewRow.Cells[1].Value = package.Model;
+                            dataGridViewRow.Cells[2].Value = package.Version;
+                            dataGridViewRow.Cells[3].Value = package.Size.ToString();
 
                             dataGridViewRow.Tag = package;
                             dataGridViewDriverPackages.Rows.Add(dataGridViewRow);
@@ -286,6 +257,28 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
             }
 
+            foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
+            {
+                DellDriverPackage package = (DellDriverPackage)dataGridViewRow.Tag;
+
+                string path = Path.Combine(sourceFolderPath, package.FolderName);
+
+                if (Directory.Exists(path))
+                {
+                    string[] fileList = Directory.GetFiles(path, "*.version");
+                    if (File.Exists(Path.Combine(path, package.VersionFile)))
+                    {
+                        dataGridViewRow.Cells[0].Value = false;
+                        dataGridViewRow.Cells[4].Value = "Downloaded";
+                    }
+                    else if (fileList.Length > 0)
+                    {
+                        dataGridViewRow.Cells[0].Value = false;
+                        dataGridViewRow.Cells[4].Value = "New version";
+                    }
+                }
+            }
+
             dataGridViewDriverPackages.Sort(known ? columnStatus : columnPack, known ? ListSortDirection.Descending : ListSortDirection.Ascending);
 
             Initialized = true;
@@ -295,12 +288,16 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             if (_downloadUrls.Any())
             {
-                KeyValuePair<string, Uri> data = _downloadUrls.Dequeue();
+                KeyValuePair<DellDriverPackage, Uri> data = _downloadUrls.Dequeue();
+
+                DellDriverPackage package = data.Key;
                 Uri url = data.Value;
+
                 string filename = Path.GetFileName(url.LocalPath);
 
                 currentDownloadFileName = Path.Combine(registry.ReadString("TempDownloadPath"), filename);
-                currentDownloadModel = data.Key;
+                currentModel = package.Model;
+                currentPackage = package;
 
                 // check if file already exists and is the same size as the one that will be downloaded
                 if (File.Exists(currentDownloadFileName))
@@ -310,7 +307,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                     if (fileSize == webSize)
                     {
-                        cabs.Add(currentDownloadModel, currentDownloadFileName);
+                        _extractFiles.Enqueue(new KeyValuePair<DellDriverPackage, string>(package, currentDownloadFileName));
 
                         CheckDownloadQueueCompleted();
 
@@ -337,12 +334,9 @@ namespace ConfigMgr.QuickTools.DriverManager
             double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
             double percentage = bytesIn / totalBytes * 100;
             double start = 100 / totalPacks * downloadedPacks;
-            backgroundWorker.ReportProgress(Convert.ToInt32((start + (percentage / totalPacks)) * 0.5), string.Format("Downloading: {0} - {1} of {2}", new object[3]
-                {
-                    currentDownloadModel,
-                    ByteSize.FromBytes(bytesIn).ToString("#"),
-                    ByteSize.FromBytes(totalBytes).ToString("#")
-                }));
+            backgroundWorker.ReportProgress(Convert.ToInt32((start + (percentage / totalPacks)) * 0.5), 
+                string.Format("Downloading: {0} - {1} of {2}", currentModel, ByteSize.FromBytes(bytesIn).ToString("#"), ByteSize.FromBytes(totalBytes).ToString("#")
+                ));
         }
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -351,12 +345,12 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 if (e.Error != null)
                 {
-                    error.Add(currentDownloadModel, "Could download driver pack: " + e.Error.Message);
+                    error.Add(currentModel, "Could download driver pack: " + e.Error.Message);
                 }
                 else
                 {
                     // add the downloaded file into the extraction list
-                    cabs.Add(currentDownloadModel, currentDownloadFileName);
+                    _extractFiles.Enqueue(new KeyValuePair<DellDriverPackage, string>(currentPackage, currentDownloadFileName));
                 }
             }
             finally
@@ -383,6 +377,84 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 // all downloads are done, kill of the while loop
                 queueFinished = true;
+            }
+        }
+
+        private void ExtractFiles()
+        {
+            if (_extractFiles.Any())
+            {
+                KeyValuePair<DellDriverPackage, string> data = _extractFiles.Dequeue();
+
+                // add model so we can re-use it in functions
+                DellDriverPackage package = data.Key;
+                currentModel = package.Model;
+
+                // update my best friend the progress bar
+                backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((50 / totalPacks * extracted) * 0.5)), string.Format("Processing {0} : extracting to temp folder", currentModel));
+                // generate model folder name
+
+                // hp sp extract does not work directly to network share, put in temp folder first and than copy to share
+                string tempFolder = Path.Combine(tempFolderPath, "extract", package.FolderName);
+                string destinationFolder = Path.Combine(sourceFolderPath, package.FolderName);
+
+                try
+                {
+                    var cab = new CabInfo(data.Value);
+                    cab.Unpack(tempFolder);
+
+                    // update my best friend the progress bar
+                    backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((100 / totalPacks * extracted) * 0.5) - 1), string.Format("Processing {0} : moving to destination folder", currentModel));
+
+                    if (!Directory.Exists(tempFolder))
+                        throw new DirectoryNotFoundException("Temp folder not found " + tempFolder);
+
+                    // add a version file to the folder so we can check later if there is an update to the download
+                    string versionFile = Path.Combine(tempFolderPath, "extract", package.FolderName, package.VersionFile);
+                    File.Create(versionFile).Close();
+
+                    // remove old version file
+                    if (Directory.Exists(destinationFolder))
+                    {
+                        string[] fileList = Directory.GetFiles(destinationFolder, "*.version");
+                        foreach (string file in fileList)
+                        {
+                            File.Delete(file);
+                        }
+                    }
+
+                    Utility.Copy(tempFolder, destinationFolder, true);
+
+                    Directory.Delete(tempFolder, true);
+                }
+                catch (Exception ex)
+                {
+                    error.Add(package.Model, "Cannot extract driver pack: " + ex.Message);
+
+                    CheckExtractQueueCompleted();
+
+                    return;
+                }
+
+                successful.Add(currentModel);
+
+                CheckExtractQueueCompleted();
+
+                return;
+            }
+        }
+
+        private void CheckExtractQueueCompleted()
+        {
+            // if queue is still active download next file
+            if (_extractFiles.Count > 0)
+            {
+                ExtractFiles();
+            }
+            else
+            {
+                // all downloads are done, kill of the while loop
+                extractQueueFinished = true;
             }
         }
 
@@ -444,24 +516,16 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             foreach (DataGridViewRow row in dataGridViewDriverPackages.SelectedRows)
             {
-                if (row.Tag is XElement package)
+                if (row.Tag is DellDriverPackage package)
                 {
-                    XNamespace ns = package.GetDefaultNamespace();
-
-                    XElement result = package.Element(ns + "ImportantInfo");
-
-
                     Process process = new Process();
                     try
                     {
-                        process.StartInfo.FileName = result.Attribute("URL").Value;
+                        process.StartInfo.FileName = package.ReleaseNotesUrl;
                         process.StartInfo.UseShellExecute = true;
                         process.Start();
                     }
-                    catch (Win32Exception ex)
-                    {
-                        ExceptionUtilities.TraceException((Exception)ex);
-                    }
+                    catch (Win32Exception) { }
                     finally
                     {
                         process?.Dispose();

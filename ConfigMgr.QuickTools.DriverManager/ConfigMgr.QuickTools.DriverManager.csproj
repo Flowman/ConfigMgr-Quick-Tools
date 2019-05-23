@@ -108,6 +108,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DellDriverPackage.cs" />
     <Compile Include="DellDriverPackCatalogPage.cs">
       <SubType>UserControl</SubType>
     </Compile>

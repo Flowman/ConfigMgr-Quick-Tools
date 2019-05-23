@@ -96,27 +96,46 @@ namespace ConfigMgr.QuickTools.DriverManager
                 comboBoxOS.Enabled = true;
             }
             // check if we already have the file and its not older than 1 hour
-            else
+            else if (!string.IsNullOrEmpty(registry.ReadString("HPCatalogDownloadTime")))
             {
                 flag = false;
                 comboBoxOS.Enabled = true;
 
                 string cabFile = Path.Combine(Path.GetTempPath(), "HPClientDriverPackCatalog.cab");
 
-                if (File.Exists(cabFile))
+                DateTime date1 = DateTime.Now;
+                DateTime date2 = DateTime.Parse(registry.ReadString("HPCatalogDownloadTime")).AddHours(1);
+                int result = DateTime.Compare(date1, date2);
+
+                if (File.Exists(cabFile) && result < 0)
                 {
+                    downloadedCatalog = true;
+                    if (processedCatalog = ProcessCatalog())
+                    {
+                        flag = true;
+                    }
+                }
+                else if (File.Exists(cabFile))
+                { 
                     long fileSize = new FileInfo(cabFile).Length;
                     long webSize = Utility.GetFileSize(registry.ReadString("HPCatalogURI"));
 
                     if (fileSize == webSize)
                     {
                         downloadedCatalog = true;
+                        registry.Write("HPCatalogDownloadTime", DateTime.Now.ToString());
+
                         if (processedCatalog = ProcessCatalog())
                         {
                             flag = true;
                         }
                     }
                 }
+            }
+            else
+            {
+                flag = false;
+                comboBoxOS.Enabled = true;
             }
 
             if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
@@ -201,6 +220,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
 
                 downloadedCatalog = true;
+
+                registry.Write("HPCatalogDownloadTime", DateTime.Now.ToString());
             }
 
             progressWorker.ReportProgress(100, "Done");
