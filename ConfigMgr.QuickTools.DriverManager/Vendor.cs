@@ -10,7 +10,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         #region Private
         private static readonly ModifyRegistry registry = new ModifyRegistry();
         private readonly ConnectionManagerBase connectionManager;
-        private BackgroundWorker backgroundWorker;
+        private readonly BackgroundWorker backgroundWorker;
         #endregion
 
         #region State

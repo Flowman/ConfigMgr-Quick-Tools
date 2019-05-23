@@ -146,6 +146,7 @@
     <Compile Include="DriverPackageImportPage.Designer.cs">
       <DependentUpon>DriverPackageImportPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="HPDriverPackage.cs" />
     <Compile Include="HPDriverPackCatalogPage.cs">
       <SubType>UserControl</SubType>
     </Compile>

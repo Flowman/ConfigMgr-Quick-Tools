@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -79,38 +80,25 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.OnActivated();
 
-            ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
-
+            bool flag;
             StringBuilder sb = new StringBuilder();
-
-            if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
-            {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
-                sb.AppendLine("No driver source structure specified!");
-            }
-
-            if (string.IsNullOrEmpty(registry.ReadString("TempDownloadPath")))
-            {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
-                sb.AppendLine("No temporary download folder specified!");
-            }
 
             if (string.IsNullOrEmpty(registry.ReadString("HPCatalogURI")))
             {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
+                flag = false;
                 comboBoxOS.Enabled = false;
                 sb.AppendLine("No HP Catalog URL specified!");
             }
             // check if we already process the catalog xml, then enabled the wizard
             else if (processedCatalog)
             {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
+                flag = true;
                 comboBoxOS.Enabled = true;
             }
             // check if we already have the file and its not older than 1 hour
             else
             {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
+                flag = false;
                 comboBoxOS.Enabled = true;
 
                 string cabFile = Path.Combine(Path.GetTempPath(), "HPClientDriverPackCatalog.cab");
@@ -125,12 +113,31 @@ namespace ConfigMgr.QuickTools.DriverManager
                         downloadedCatalog = true;
                         if (processedCatalog = ProcessCatalog())
                         {
-                            ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
+                            flag = true;
                         }
                     }
                 }
             }
 
+            if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
+            {
+                flag = false;
+                sb.AppendLine("No driver source structure specified!");
+            }
+            else if (!Utility.CheckFolderPermissions(registry.ReadString("DriverSourceFolder"), FileSystemRights.Modify))
+            {
+                flag = false;
+                sb.AppendLine("Access denied to source folder");
+            }
+
+            if (string.IsNullOrEmpty(registry.ReadString("TempDownloadPath")))
+            {
+                flag = false;
+                sb.AppendLine("No temporary download folder specified!");
+            }
+
+            // enabled disable wizard next button
+            ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, flag);
             labelOptions.Text = sb.ToString();
         }
 

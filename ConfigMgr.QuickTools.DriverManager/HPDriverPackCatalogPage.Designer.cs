@@ -31,14 +31,15 @@
             this.components = new System.ComponentModel.Container();
             this.labelDescription = new System.Windows.Forms.Label();
             this.dataGridViewDriverPackages = new System.Windows.Forms.DataGridView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.releaseNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonDeselectAll = new System.Windows.Forms.Button();
             this.columnImport = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnPack = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.releaseNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonDeselectAll = new System.Windows.Forms.Button();
+            this.checkBoxOverwrite = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDriverPackages)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -81,32 +82,6 @@
             this.dataGridViewDriverPackages.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewDriverPackages_CurrentCellDirtyStateChanged);
             this.dataGridViewDriverPackages.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DataGridViewDriverPackages_RowsAdded);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.releaseNotesToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(148, 26);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
-            // 
-            // releaseNotesToolStripMenuItem
-            // 
-            this.releaseNotesToolStripMenuItem.Name = "releaseNotesToolStripMenuItem";
-            this.releaseNotesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.releaseNotesToolStripMenuItem.Text = "Release Notes";
-            this.releaseNotesToolStripMenuItem.Click += new System.EventHandler(this.ReleaseNotesToolStripMenuItem_Click);
-            // 
-            // buttonDeselectAll
-            // 
-            this.buttonDeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDeselectAll.Location = new System.Drawing.Point(370, 323);
-            this.buttonDeselectAll.Name = "buttonDeselectAll";
-            this.buttonDeselectAll.Size = new System.Drawing.Size(91, 23);
-            this.buttonDeselectAll.TabIndex = 19;
-            this.buttonDeselectAll.Text = "Deselect All";
-            this.buttonDeselectAll.UseVisualStyleBackColor = true;
-            this.buttonDeselectAll.Click += new System.EventHandler(this.ButtonDeselectAll_Click);
-            // 
             // columnImport
             // 
             this.columnImport.HeaderText = "Import";
@@ -140,10 +115,48 @@
             this.columnStatus.Name = "columnStatus";
             this.columnStatus.ReadOnly = true;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.releaseNotesToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(148, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
+            // 
+            // releaseNotesToolStripMenuItem
+            // 
+            this.releaseNotesToolStripMenuItem.Name = "releaseNotesToolStripMenuItem";
+            this.releaseNotesToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.releaseNotesToolStripMenuItem.Text = "Release Notes";
+            this.releaseNotesToolStripMenuItem.Click += new System.EventHandler(this.ReleaseNotesToolStripMenuItem_Click);
+            // 
+            // buttonDeselectAll
+            // 
+            this.buttonDeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDeselectAll.Location = new System.Drawing.Point(370, 323);
+            this.buttonDeselectAll.Name = "buttonDeselectAll";
+            this.buttonDeselectAll.Size = new System.Drawing.Size(91, 23);
+            this.buttonDeselectAll.TabIndex = 19;
+            this.buttonDeselectAll.Text = "Deselect All";
+            this.buttonDeselectAll.UseVisualStyleBackColor = true;
+            this.buttonDeselectAll.Click += new System.EventHandler(this.ButtonDeselectAll_Click);
+            // 
+            // checkBoxOverwrite
+            // 
+            this.checkBoxOverwrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxOverwrite.AutoSize = true;
+            this.checkBoxOverwrite.Location = new System.Drawing.Point(6, 327);
+            this.checkBoxOverwrite.Name = "checkBoxOverwrite";
+            this.checkBoxOverwrite.Size = new System.Drawing.Size(248, 17);
+            this.checkBoxOverwrite.TabIndex = 22;
+            this.checkBoxOverwrite.Text = "Delete and overwrite previous download packs";
+            this.checkBoxOverwrite.UseVisualStyleBackColor = true;
+            // 
             // HPDriverPackCatalogPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.checkBoxOverwrite);
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.dataGridViewDriverPackages);
             this.Controls.Add(this.buttonDeselectAll);
@@ -168,5 +181,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnVersion;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSize;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnStatus;
+        private System.Windows.Forms.CheckBox checkBoxOverwrite;
     }
 }

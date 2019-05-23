@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
 
@@ -107,28 +108,35 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.OnActivated();
 
-            ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, true);
+            bool flag = true;
 
             StringBuilder sb = new StringBuilder();
 
+            if (string.IsNullOrEmpty(registry.ReadString("DellCatalogURI")))
+            {
+                flag = false;
+                sb.AppendLine("No Dell Catalog URL specified!");
+            }
+
             if (string.IsNullOrEmpty(registry.ReadString("DriverSourceFolder")))
             {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
+                flag = false;
                 sb.AppendLine("No driver source structure specified!");
+            }
+            else if (!Utility.CheckFolderPermissions(registry.ReadString("DriverSourceFolder"), FileSystemRights.Modify))
+            {
+                flag = false;
+                sb.AppendLine("Access denied to source folder");
             }
 
             if (string.IsNullOrEmpty(registry.ReadString("TempDownloadPath")))
             {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
+                flag = false;
                 sb.AppendLine("No temporary download folder specified!");
             }
 
-            if (string.IsNullOrEmpty(registry.ReadString("DellCatalogURI")))
-            {
-                ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, false);
-                sb.AppendLine("No Dell Catalog URL specified!");
-            }
-
+            // enabled disable wizard next button
+            ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, flag);
             labelOptions.Text = sb.ToString();
         }
 

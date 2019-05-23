@@ -11,7 +11,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     internal class DriverPackage
     {
         #region Private
-        private ConnectionManagerBase connectionManager;
+        private readonly ConnectionManagerBase connectionManager;
         private IResultObject packageObject;
         private IResultObject categoryObject;
         #endregion
