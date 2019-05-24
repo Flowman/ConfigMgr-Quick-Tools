@@ -50,6 +50,9 @@
       <ComponentRef Id="comp_A8780BC4_3FC5_408D_B6B1_B2A8B87E5547" />
       <ComponentRef Id="comp_88130D29_81FB_48B1_A7DE_103B60EBB5B6" />
       <ComponentRef Id="comp_DF195432_6C40_450B_A0C5_0A9D925E4B67" />
+      <ComponentRef Id="comp_70B71A98_CEE2_40E9_BD17_358A59DB51FC" />
+      <ComponentRef Id="comp_6A5B36D7_4085_43D3_B2C5_269846912027" />
+      <ComponentRef Id="comp_300ED341_2383_436D_9168_80F22AF79249" />
       <Feature Id="DellTools" Title="Dell Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support Dell devices.">
         <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
         <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
@@ -181,7 +184,7 @@
             <Directory Id="dir_72D51B7E_C47E_4784_A03F_D0E78766D32D" Name="172d85e7-bb7a-4479-a6a2-768f175b75cb">
               <Component Id="comp_EDE12ECA_CF61_41CE_8FD6_F02A0A337006" Guid="62F42131-C7F5-41C6-8D59-5E1018ED5D51" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_0D1A00E0_EC9F_4BD5_A6F1_B96016472830" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsTSDeploymentMsg.xml" Source="..\Extensions\Actions\172d85e7-bb7a-4479-a6a2-768f175b75cb\QuickToolsTSDeploymentMsg.xml" KeyPath="yes" />
-                <util:XmlFile Id="UpdateConfigMgrPath" SelectionLanguage="XPath" File="[#_0D1A00E0_EC9F_4BD5_A6F1_B96016472830]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
+                <util:XmlFile Id="UpdateConfigMgrPath1" SelectionLanguage="XPath" File="[#_0D1A00E0_EC9F_4BD5_A6F1_B96016472830]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
               </Component>
             </Directory>
             <Directory Id="dir_A3C70C31_6860_4254_B258_A5B82A86C304" Name="a92615d6-9df3-49ba-a8c9-6ecb0e8b956b">
@@ -195,6 +198,18 @@
             <Directory Id="dir_F38866B9_B604_4B38_A00A_B35A637DC7B3" Name="d2e2cba7-98f5-4d3b-bc2f-b670f0621207">
               <Component Id="comp_D61E8ECB_2ED0_4252_838A_929C4B54D1F3" Guid="5BDA144E-87EA-4494-BE4D-4D99B9CB11BD" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_743943ED_DE24_46A5_9AD1_9F086F6DA964" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsRemoveRetiredContentAction.xml" Source="..\Extensions\Actions\d2e2cba7-98f5-4d3b-bc2f-b670f0621207\QuickToolsRemoveRetiredContentAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_FC9876B3_22AB_4D94_9185_C536A11DB303" Name="adab1364-cf7d-4b07-8863-e9252e506e62">
+              <Component Id="comp_6A5B36D7_4085_43D3_B2C5_269846912027" Guid="3F405A5A-7B4E-4BEF-B0DA-D1227763AC34" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_0F960154_BFF7_47B7_9C94_34A34319C25F" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsPKDeploymentMsg.xml" Source="..\Extensions\Actions\adab1364-cf7d-4b07-8863-e9252e506e62\QuickToolsPKDeploymentMsg.xml" KeyPath="yes" />
+                <util:XmlFile Id="UpdateConfigMgrPath2" SelectionLanguage="XPath" File="[#_0F960154_BFF7_47B7_9C94_34A34319C25F]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_CCCB178C_784E_42E1_8E0C_33B453EA662B" Name="9a0e2197-51a4-439d-99ea-67edc451a51e">
+              <Component Id="comp_300ED341_2383_436D_9168_80F22AF79249" Guid="1141D64C-545D-425A-8A3B-95D538CD4B45" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_38AC459A_5D24_4A02_ABA8_F3CABE7C8985" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsAppDeploymentMsg.xml" Source="..\Extensions\Actions\9a0e2197-51a4-439d-99ea-67edc451a51e\QuickToolsAppDeploymentMsg.xml" KeyPath="yes" />
+                <util:XmlFile Id="UpdateConfigMgrPath3" SelectionLanguage="XPath" File="[#_38AC459A_5D24_4A02_ABA8_F3CABE7C8985]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
               </Component>
             </Directory>
             <Directory Id="dir_49C8A308_540E_4FE0_B660_2D80B1C8168F" Name="ed9dee86-eadd-4ac8-82a1-7234a4646e62">
@@ -212,6 +227,10 @@
               </Component>
               <Component Id="comp_A8780BC4_3FC5_408D_B6B1_B2A8B87E5547" Guid="CA6277D5-F6E2-4442-A753-82FDD4119959" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_94B7A8E2_EF6C_4628_A06C_3FC2FAF7876F" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDevicesCollections.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDevicesCollections.xml" KeyPath="yes" />
+              </Component>
+              <Component Id="comp_70B71A98_CEE2_40E9_BD17_358A59DB51FC" Guid="0CB4F27C-27B9-4504-9C69-323D1BD76C54" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_FCCEEF70_5617_400C_A120_585307F30A79" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDeviceMsg.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDeviceMsg.xml" KeyPath="yes" />
+                <util:XmlFile Id="UpdateConfigMgrPath4" SelectionLanguage="XPath" File="[#_FCCEEF70_5617_400C_A120_585307F30A79]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
               </Component>
             </Directory>
           </Directory>
