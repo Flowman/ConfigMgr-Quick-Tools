@@ -82,7 +82,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             Dirty = true;
         }
 
-        private void CheckBoxLegacyFolder_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
         {
             Dirty = true;
         }

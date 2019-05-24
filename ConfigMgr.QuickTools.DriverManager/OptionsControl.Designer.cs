@@ -82,7 +82,7 @@
             this.checkBoxLegacyFolder.TabIndex = 19;
             this.checkBoxLegacyFolder.Text = "Legacy Folder Structure";
             this.checkBoxLegacyFolder.UseVisualStyleBackColor = true;
-            this.checkBoxLegacyFolder.CheckedChanged += new System.EventHandler(this.CheckBoxLegacyFolder_CheckedChanged);
+            this.checkBoxLegacyFolder.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // browseFolderControlPackage
             // 
@@ -212,6 +212,7 @@
             this.checkBoxZipContent.TabIndex = 0;
             this.checkBoxZipContent.Text = "Zip content";
             this.checkBoxZipContent.UseVisualStyleBackColor = true;
+            this.checkBoxZipContent.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
             // 
             // OptionsControl
             // 

@@ -1,17 +1,19 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
 using System;
+using System.IO.Compression;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Collections.Generic;
-
+using System.IO;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class LegacyPackageImportPage : SmsPageControl
     {
         #region Private
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private int importProgresPercent;
         #endregion
 
@@ -61,9 +63,21 @@ namespace ConfigMgr.QuickTools.DriverManager
                     if (package.Create())
                     {
                         importProgresPercent = 100 / stepCount / totalPackages * 1;
-                        worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Copying driver source for: {0}", package.Name));
 
-                        Utility.Copy(package.Source, package.Target, true);
+                        if (registry.ReadBool("LegacyPackageZipContent"))
+                        {
+                            worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Zipping driver source for: {0}", package.Name));
+
+                            string zipPath = Path.Combine(package.Target, "package.zip");
+
+                            ZipFile.CreateFromDirectory(package.Source, zipPath);
+                        }
+                        else
+                        {
+                            worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Copying driver source for: {0}", package.Name));
+
+                            Utility.Copy(package.Source, package.Target, true);
+                        }
 
                         // I still hate calculating progress bars
                         importProgresPercent = 100 / stepCount / totalPackages * 2;
