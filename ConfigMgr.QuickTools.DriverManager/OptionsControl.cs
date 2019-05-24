@@ -27,6 +27,9 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             checkBoxLegacyFolder.Checked = registry.ReadBool("LegacyFolderStructure");
 
+            browseFolderControlLegacyPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("LegacyPackageFolder");
+            checkBoxZipContent.Checked = registry.ReadBool("LegacyPackageZipContent");
+
             ControlsInspector = new ControlsInspector();
             controlsValidator = new ControlsValidator(ControlsInspector);
 
@@ -51,6 +54,9 @@ namespace ConfigMgr.QuickTools.DriverManager
             registry.Write("DriverPackageFolder", browseFolderControlPackage.FolderPath);
             registry.Write("LegacyFolderStructure", checkBoxLegacyFolder.Checked);
 
+            registry.Write("LegacyPackageFolder", browseFolderControlLegacyPackage.FolderPath);
+            registry.Write("LegacyPackageZipContent", checkBoxZipContent.Checked);
+            
             Dirty = false;
 
             return base.ApplyChanges(out errorControl, out showError);

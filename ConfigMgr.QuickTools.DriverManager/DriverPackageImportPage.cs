@@ -362,8 +362,6 @@ namespace ConfigMgr.QuickTools.DriverManager
         public override void OnActivated()
         {
             base.OnActivated();
-
-            Utility.UpdateDataGridViewColumnsSize(dataGridViewDriverPackages, columnPackage);
         }
 
         public override bool OnDeactivate()
@@ -389,6 +387,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 dataGridViewRow.Tag = package;
                 dataGridViewDriverPackages.Rows.Add(dataGridViewRow);
             }
+
+            Utility.UpdateDataGridViewColumnsSize(dataGridViewDriverPackages, columnPackage);
 
             Initialized = true;
         }

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="Group" GroupAsRegion="true" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools Root" Description="A collection of tools to enhance ConfigMgr.">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <ActionGroups>
+    <ActionDescription Class="Group" SelectionMode="Both" DisplayName="Quick Tools" MnemonicDisplayName="Quick Tools" Description="A collection of tools to enhance ConfigMgr.">
+      <ShowOn>
+        <string>DefaultHomeTab</string>
+        <string>ContextMenu</string>
+      </ShowOn>
+      <ImagesDescription>
+        <ResourceAssembly>
+          <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+          <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+        </ResourceAssembly>
+        <ImageResourceName>tools</ImageResourceName>
+      </ImagesDescription>
+      <ActionGroups>
+        <ActionDescription NamespaceGuid="FA91FFF6-2552-41C6-8204-2D692E76077F" Class="ShowDialog" DisplayName="Driver Legacy Package Importer" MnemonicDisplayName="Driver Legacy Package Importer" Description="Import drivers and create an package">
+          <ShowOn>
+            <string>DefaultHomeTab</string>
+            <string>ContextMenu</string>
+          </ShowOn>
+          <DialogId>QuickToolsDriverLegacyPackageImportWizard</DialogId>
+        </ActionDescription>
+        <ActionDescription NamespaceGuid="B8A8447A-7F86-4107-A11D-0DEB471190B8" Class="None" />
+      </ActionGroups>
+    </ActionDescription>
+  </ActionGroups>
+</ActionDescription>
+

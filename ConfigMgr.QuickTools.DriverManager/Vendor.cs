@@ -15,7 +15,8 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         #region State
         public string Name { get; private set; }
-        public List<DriverPackage> Packages { get; private set; } = new List<DriverPackage>();
+        public List<DriverPackage> DriverPackages { get; private set; } = new List<DriverPackage>();
+        public List<LegacyPackage> LegacyPackages { get; private set; } = new List<LegacyPackage>();
         public string PackageLocation { get; private set; } = registry.ReadString("DriverPackageFolder");
         public string SourceLocation { get; private set; }
         public int ProgressStart { get; set; } = 0;
@@ -56,7 +57,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                         Vendor = Name
                     };
 
-                    Packages.Add(package);
+                    DriverPackages.Add(package);
                 }
                 ++num;
 
@@ -64,7 +65,43 @@ namespace ConfigMgr.QuickTools.DriverManager
                     return false;
             }
 
-            return Packages.Count > 0 ? true : false;
+            return DriverPackages.Count > 0 ? true : false;
+        }
+
+        public bool GetLegacyPackages(ProgressInformationDialog progressInformationDialog)
+        {
+            string[] modelEntries = Directory.GetDirectories(SourceLocation, "*", SearchOption.TopDirectoryOnly);
+
+            int num = 0;
+
+            foreach (string modelDirectory in modelEntries)
+            {
+                string modelName = new DirectoryInfo(modelDirectory).Name;
+                int percent = num * 100 / modelEntries.Length;
+                backgroundWorker.ReportProgress(ProgressStart + (percent / TotalVendors), string.Format("Processing Driver Source for Vendor: {0}\n\n Model: {1}", Name, modelName));
+
+                string[] architectureEntries = Directory.GetDirectories(modelDirectory, "*", SearchOption.TopDirectoryOnly);
+                foreach (string sourceDirectory in architectureEntries)
+                {
+                    string architectureName = new DirectoryInfo(sourceDirectory).Name;
+                    string driverPackageName = string.Join("-", Name, modelName, architectureName);
+                    string packageName = string.Join("-", Name, modelName, architectureName);
+                    string targetDirectory = Path.Combine(PackageLocation, Name, packageName);
+
+                    LegacyPackage package = new LegacyPackage(connectionManager, driverPackageName, sourceDirectory, targetDirectory)
+                    {
+                        Vendor = Name
+                    };
+
+                    LegacyPackages.Add(package);
+                }
+                ++num;
+
+                if (progressInformationDialog.ReceivedRequestToClose)
+                    return false;
+            }
+
+            return LegacyPackages.Count > 0 ? true : false;
         }
     }
 }

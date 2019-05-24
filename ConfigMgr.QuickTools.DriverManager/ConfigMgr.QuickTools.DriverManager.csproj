@@ -160,6 +160,19 @@
     <Compile Include="HPDriverPackGeneralPage.Designer.cs">
       <DependentUpon>HPDriverPackGeneralPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="LegacyPackage.cs" />
+    <Compile Include="LegacyPackageGeneralPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LegacyPackageGeneralPage.Designer.cs">
+      <DependentUpon>LegacyPackageGeneralPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LegacyPackageImportPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LegacyPackageImportPage.Designer.cs">
+      <DependentUpon>LegacyPackageImportPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="OptionsCatalogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -215,6 +228,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HPDriverPackGeneralPage.resx">
       <DependentUpon>HPDriverPackGeneralPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LegacyPackageGeneralPage.resx">
+      <DependentUpon>LegacyPackageGeneralPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LegacyPackageImportPage.resx">
+      <DependentUpon>LegacyPackageImportPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionsCatalogControl.resx">
       <DependentUpon>OptionsCatalogControl.cs</DependentUpon>

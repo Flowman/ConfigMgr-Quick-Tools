@@ -10,19 +10,20 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
 
+
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    public partial class DriverPackageGeneralPage : SmsPageControl
+    public partial class LegacyPackageGeneralPage : SmsPageControl
     {
         private BackgroundWorker progressWorker;
         private ProgressInformationDialog progressInformationDialog;
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private bool valiadated = false;
 
-        public DriverPackageGeneralPage(SmsPageData pageData)
+        public LegacyPackageGeneralPage(SmsPageData pageData)
             : base(pageData)
         {
-            FormTitle = "Driver Package Manager";
+            FormTitle = "Driver Legacy Package Manager";
             Title = "General";
             Headline = "Information";
 
@@ -37,7 +38,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.InitializePageControl();
 
-            labelInformation.Text = string.Format("Welcome to the Driver Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your driver packages as no ConfigMgr skill are required. Just create your driver structure and manage all drivers and packages on a storage level.\r\n\r\nThe tool will import your driver packages from {0}.", registry.ReadString("DriverSourceFolder"));
+            labelInformation.Text = string.Format("Welcome to the Driver Legacy Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your drivers as no ConfigMgr skill are required. Just create your driver structure and manage all drivers on a storage level.\r\n\r\nThe tool will import your drivers and create packages from {0}.", registry.ReadString("DriverSourceFolder"));
 
             Initialized = true;
 
@@ -68,7 +69,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             progressInformationDialog = new ProgressInformationDialog
             {
-                Title = "Processing Driver Packages",
+                Title = "Processing Driver Source Folder",
                 Height = 130,
                 ProgressBarStyle = ProgressBarStyle.Continuous
             };
@@ -106,15 +107,15 @@ namespace ConfigMgr.QuickTools.DriverManager
                 sb.AppendLine("Access denied to driver source folder");
             }
 
-            if (string.IsNullOrEmpty(registry.ReadString("DriverPackageFolder")))
+            if (string.IsNullOrEmpty(registry.ReadString("LegacyPackageFolder")))
             {
                 flag = false;
-                sb.AppendLine("No driver package path specified!");
+                sb.AppendLine("No legacy package path specified!");
             }
-            else if (!Utility.CheckFolderPermissions(registry.ReadString("DriverPackageFolder"), FileSystemRights.Modify))
+            else if (!Utility.CheckFolderPermissions(registry.ReadString("LegacyPackageFolder"), FileSystemRights.Modify))
             {
                 flag = false;
-                sb.AppendLine("Access denied to driver package folder");
+                sb.AppendLine("Access denied to legacy package folder");
             }
 
             ((SmsWizardPage)Parent).WizardForm.EnableButton(ButtonType.Next, flag);
@@ -165,11 +166,11 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             bool flag;
 
-            List<DriverPackage> driverPackages = new List<DriverPackage>();
+            List<LegacyPackage> legacyPackages = new List<LegacyPackage>();
 
             string sourceDirectory = registry.ReadString("DriverSourceFolder");
             UserData["sourceDirectory"] = sourceDirectory;
-            string packageDirectory = registry.ReadString("DriverPackageFolder");
+            string legacyDirectory = registry.ReadString("LegacyPackageFolder");
 
             progressWorker.ReportProgress(0, "Validating source folder");
 
@@ -182,7 +183,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 {
                     string name = new DirectoryInfo(vendorDirectory).Name;
                     int start = 100 / totalVendors * num;
-                    progressWorker.ReportProgress(start, string.Format("Processing Driver Packages for Vendor: {0}", name));
+                    progressWorker.ReportProgress(start, string.Format("Processing Driver Source for Vendor: {0}", name));
                     // create vendor object
                     Vendor vendor = new Vendor(progressWorker, ConnectionManager, vendorDirectory)
                     {
@@ -190,11 +191,11 @@ namespace ConfigMgr.QuickTools.DriverManager
                         TotalVendors = totalVendors
                     };
                     // get driver packages for vendor
-                    if (vendor.GetDriverPackages(progressInformationDialog))
+                    if (vendor.GetLegacyPackages(progressInformationDialog))
                     {
-                        foreach (DriverPackage package in vendor.DriverPackages)
+                        foreach (LegacyPackage package in vendor.LegacyPackages)
                         {
-                            driverPackages.Add(package);
+                            legacyPackages.Add(package);
                         }
                     }
                     ++num;
@@ -208,24 +209,23 @@ namespace ConfigMgr.QuickTools.DriverManager
             else
             {
                 string[] subdirectoryEntries = Directory.GetDirectories(sourceDirectory, "*", SearchOption.TopDirectoryOnly);
-                int totalDriverPackges = subdirectoryEntries.Length;
+                int totalPackges = subdirectoryEntries.Length;
                 int num = 0;
-                foreach (string driverPackageDirectory in subdirectoryEntries)
+                foreach (string packageDirectory in subdirectoryEntries)
                 {
-                    string driverPackageName = new DirectoryInfo(driverPackageDirectory).Name;
-                    int start = 100 / totalDriverPackges * num;
-                    progressWorker.ReportProgress(start, string.Format("Processing Driver Packages: {0}", driverPackageName));
+                    string packageName = new DirectoryInfo(packageDirectory).Name;
+                    int start = 100 / totalPackges * num;
+                    progressWorker.ReportProgress(start, string.Format("Processing Driver Source: {0}", packageName));
                     // create vendor object
+                    string vendor = packageName.Split(new[] { '-' }, 2)[0];
+                    string targetDirectory = Path.Combine(legacyDirectory, packageName);
 
-                    string vendor = driverPackageName.Split(new[] { '-' }, 2)[0];
-                    string targetDirectory = Path.Combine(packageDirectory, driverPackageName);
-
-                    DriverPackage package = new DriverPackage(ConnectionManager, driverPackageName, driverPackageDirectory, targetDirectory)
+                    LegacyPackage package = new LegacyPackage(ConnectionManager, packageName, packageDirectory, targetDirectory)
                     {
                         Vendor = vendor
                     };
 
-                    driverPackages.Add(package);
+                    legacyPackages.Add(package);
 
                     ++num;
 
@@ -235,7 +235,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 flag = true;
             }
 
-            UserData["DriverPackages"] = driverPackages;
+            UserData["LegacyPackages"] = legacyPackages;
 
             progressWorker.ReportProgress(100, "Done");
 

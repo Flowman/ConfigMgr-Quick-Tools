@@ -91,7 +91,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
                 catch (SmsQueryException ex)
                 {
-                    string str = null;
+                    string str;
                     switch (ex.ExtendStatusErrorCode)
                     {
                         case 4:
@@ -105,6 +105,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                             break;
                     }
                     Exception.Add(new SystemException(str));
+
                     return false;
                 }
 
