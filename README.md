@@ -16,9 +16,7 @@ Improvement to the console:
 
 ## Install Quick Tools
 
-Download the latest release, Unzip and run the "Install-QuickTools.ps1" with admin rights.
-
-I will recreate the MSI installer one day when I figure out how to create one.
+Download the latest release, run the MSI installer and read the [Wiki](https://github.com/Flowman/ConfigMgr-Quick-Tools/wiki) for documentation.
 
 ## How to build
 
