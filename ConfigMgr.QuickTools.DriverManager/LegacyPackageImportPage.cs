@@ -64,14 +64,17 @@ namespace ConfigMgr.QuickTools.DriverManager
                     {
                         importProgresPercent = 100 / stepCount / totalPackages * 1;
 
+                        if (Directory.Exists(package.Target))
+                        {
+                            Directory.Delete(package.Target, true);
+                        }
+
                         if (registry.ReadBool("LegacyPackageZipContent"))
                         {
                             worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Zipping driver source for: {0}", package.Name));
 
+                            Directory.CreateDirectory(package.Target);
                             string zipPath = Path.Combine(package.Target, string.Format("{0}.zip", package.Name.Replace(' ', '_')));
-
-                            if (File.Exists(zipPath))
-                                File.Delete(zipPath);
 
                             ZipFile.CreateFromDirectory(package.Source, zipPath);
                         }
@@ -88,6 +91,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                         package.Package.ExecuteMethod("RefreshPkgSource", null);
 
                         package.CreateHashFile();
+                        package.UpdatePackageVersion();
                     }
                     ++num;
                 }

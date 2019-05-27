@@ -9,14 +9,12 @@ namespace ConfigMgr.QuickTools.DriverManager
         private IResultObject packageObject;
         private readonly ModifyRegistry registry = new ModifyRegistry();
 
-        public string PackageVersion { get; protected set; }
-
         public IResultObject Package
         {
             get
             {
                 if (packageObject == null)
-                    CreateLegacyPackge();
+                    CreatePackge();
                 return packageObject;
             }
         }
@@ -36,10 +34,10 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         public bool Create()
         {
-            return !CreateLegacyPackge() ? false : true;
+            return !CreatePackge() ? false : true;
         }
 
-        private bool CreateLegacyPackge()
+        private bool CreatePackge()
         {
             string query = string.Format("SELECT * FROM SMS_Package WHERE NAME = '{0}'", Name);
             packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
@@ -79,7 +77,34 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private bool CheckVersion()
         {
-            return GetPackageVersion() && PackageVersion != FileVersion ? true : false;
+            return GetPackageVersion() && Version != FileVersion ? true : false;
+        }
+
+        public bool UpdatePackageVersion()
+        {
+            string query = string.Format("SELECT * FROM SMS_Package WHERE NAME = '{0}'", Name);
+            packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
+
+            if (packageObject != null)
+            {
+                packageObject["Version"].StringValue = FileVersion;
+
+                try
+                {
+                    packageObject.Put();
+                    packageObject.Get();
+
+                    return true;
+                }
+                catch (SmsQueryException ex)
+                {
+                    Exception.Add(ex);
+
+                    return false;
+                }
+            }
+
+            return false;
         }
 
         private bool GetPackageVersion()
@@ -89,10 +114,10 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             if (packageObject != null)
             {
-                PackageVersion = packageObject["Version"].StringValue;
+                Version = packageObject["Version"].StringValue;
             }
 
-            return string.IsNullOrEmpty(PackageVersion) ? false : true;
+            return string.IsNullOrEmpty(Version) ? false : true;
         }
     }
 }
