@@ -34,6 +34,10 @@
             this.browseFolderControlDownload = new Microsoft.ConfigurationManagement.AdminConsole.OsdCommon.BrowseFolderControl();
             this.textBoxHPCatalogUri = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.textBoxDellPrefix = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxHPPrefix = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxDellCatalogUri
@@ -85,7 +89,7 @@
             // 
             this.textBoxHPCatalogUri.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxHPCatalogUri.Location = new System.Drawing.Point(10, 86);
+            this.textBoxHPCatalogUri.Location = new System.Drawing.Point(10, 143);
             this.textBoxHPCatalogUri.Name = "textBoxHPCatalogUri";
             this.textBoxHPCatalogUri.Size = new System.Drawing.Size(360, 20);
             this.textBoxHPCatalogUri.TabIndex = 21;
@@ -94,16 +98,58 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 70);
+            this.label3.Location = new System.Drawing.Point(7, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(193, 13);
             this.label3.TabIndex = 20;
             this.label3.Text = "HP HPClientDriverPackCatalog.cab url:";
             // 
+            // textBoxDellPrefix
+            // 
+            this.textBoxDellPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDellPrefix.Location = new System.Drawing.Point(10, 83);
+            this.textBoxDellPrefix.Name = "textBoxDellPrefix";
+            this.textBoxDellPrefix.Size = new System.Drawing.Size(152, 20);
+            this.textBoxDellPrefix.TabIndex = 23;
+            this.textBoxDellPrefix.TextChanged += new System.EventHandler(this.Control_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 67);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(85, 13);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "Dell folder prefix:";
+            // 
+            // textBoxHPPrefix
+            // 
+            this.textBoxHPPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxHPPrefix.Location = new System.Drawing.Point(10, 184);
+            this.textBoxHPPrefix.Name = "textBoxHPPrefix";
+            this.textBoxHPPrefix.Size = new System.Drawing.Size(152, 20);
+            this.textBoxHPPrefix.TabIndex = 25;
+            this.textBoxHPPrefix.TextChanged += new System.EventHandler(this.Control_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 168);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(82, 13);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "HP folder prefix:";
+            // 
             // OptionsCatalogControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.textBoxHPPrefix);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.textBoxDellPrefix);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxHPCatalogUri);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.browseFolderControlDownload);
@@ -124,5 +170,9 @@
         private Microsoft.ConfigurationManagement.AdminConsole.OsdCommon.BrowseFolderControl browseFolderControlDownload;
         private System.Windows.Forms.TextBox textBoxHPCatalogUri;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxDellPrefix;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textBoxHPPrefix;
+        private System.Windows.Forms.Label label5;
     }
 }

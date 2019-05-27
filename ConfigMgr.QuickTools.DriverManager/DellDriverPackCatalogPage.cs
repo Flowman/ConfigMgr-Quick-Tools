@@ -202,6 +202,8 @@ namespace ConfigMgr.QuickTools.DriverManager
             dataGridViewDriverPackages.Rows.Clear();
 
             bool known = false;
+            string prefix = string.IsNullOrEmpty(registry.ReadString("DellFolderPrefix")) ? "Dell" : registry.ReadString("DellFolderPrefix");
+
             string tempFile = Path.Combine(Path.GetTempPath(), "DriverPackCatalog.cab");
             using (FileStream innerCab = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
             {
@@ -221,7 +223,10 @@ namespace ConfigMgr.QuickTools.DriverManager
                             );
                         foreach (XElement node in nodeList)
                         {
-                            DellDriverPackage package = new DellDriverPackage(node);
+                            DellDriverPackage package = new DellDriverPackage(node)
+                            {
+                                Vendor = prefix
+                            };
                             package.GenerateModelFolderName(os, structure);
 
                             DataGridViewRow dataGridViewRow = new DataGridViewRow();

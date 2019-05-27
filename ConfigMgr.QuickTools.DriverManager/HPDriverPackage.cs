@@ -4,15 +4,11 @@ using System.Xml.Linq;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    internal class HPDriverPackage
+    internal class HPDriverPackage : Package
     {
         private readonly XElement packageObject;
-        public string Name { get; private set; }
-        public string Model { get; private set; }
-        public string Version { get; private set; }
+
         public string VersionShort { get; private set; }
-        public string VersionFile { get; private set; }   
-        public string FolderName { get; private set; }
         public string Url { get; private set; }
         public string ReleaseNotesUrl { get; private set; }
         public ByteSize Size { get; private set; }
@@ -34,13 +30,6 @@ namespace ConfigMgr.QuickTools.DriverManager
             VersionFile = Version + ".version";
             Url = SoftPaq.Element("Url").Value;
             ReleaseNotesUrl = SoftPaq.Element("ReleaseNotesUrl").Value;
-        }
-
-        public string GenerateModelFolderName(string os, string structure)
-        {
-            return FolderName = (string.IsNullOrEmpty(structure) ? false : Convert.ToBoolean(structure))
-                ? string.Format(@"{0}\{1}\{2}", "HP", Model, os)
-                : string.Format(@"{0}-{1}-{2}", "HP", Model, os);
         }
     }
 }

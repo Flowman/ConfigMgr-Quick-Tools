@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    internal class DriverPackage
+    internal class DriverPackage : Package
     {
         #region Private
         private readonly ConnectionManagerBase connectionManager;
@@ -17,20 +17,12 @@ namespace ConfigMgr.QuickTools.DriverManager
         #endregion
 
         #region State
-        public string Name { get; private set; }
-        public string Vendor { get; set; }
-        public string Source { get; private set; }
-        public string Target { get; private set; }
-        public string Hash { get; private set; }
         public string[] Infs { get; private set; }
-        public bool Import { get; private set; }
         public Dictionary<string, Driver> Drivers { get; private set; } = new Dictionary<string, Driver>();
         public Dictionary<string, string> ImportError { get; private set; } = new Dictionary<string, string>();
         public Dictionary<string, string> ImportWarning { get; private set; } = new Dictionary<string, string>();
-        public List<Exception> Exception { get; private set; } = new List<Exception>();
         public bool HasDriverError { get { return ImportError.Count > 0 ? true : false; } }
         public bool HasDriverWarning { get { return ImportWarning.Count > 0 ? true : false; } }
-        public bool HasException { get { return Exception.Count > 0 ? true : false; } }
 
         public IResultObject Category
         {
@@ -115,23 +107,6 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
 
             return true;
-        }
-
-        public void CreateHashFile()
-        {
-            try
-            {
-                string[] fileList = Directory.GetFiles(Source, "*.hash");
-                foreach (string file in fileList)
-                {
-                    File.Delete(file);
-                }
-                File.Create(Path.Combine(Source, Hash + ".hash"));
-            }
-            catch
-            {
-                Exception.Add(new SystemException("Cannot create Hash file."));
-            }
         }
 
         #region Drivers
@@ -281,7 +256,6 @@ namespace ConfigMgr.QuickTools.DriverManager
             if (categoryObject != null)
             {
                 categoryObject.Get();
-                int integerValue = categoryObject["CategoryInstanceID"].IntegerValue;
                 if (categoryObject["LocalizedCategoryInstanceName"].StringValue == Name)
                     return categoryObject;
             }

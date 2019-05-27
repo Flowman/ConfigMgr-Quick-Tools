@@ -29,6 +29,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             browseFolderControlLegacyPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("LegacyPackageFolder");
             checkBoxZipContent.Checked = registry.ReadBool("LegacyPackageZipContent");
+            textBoxConsoleFolder.Text = registry.ReadString("LegacyConsoleFolder");
 
             ControlsInspector = new ControlsInspector();
             controlsValidator = new ControlsValidator(ControlsInspector);
@@ -56,7 +57,8 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             registry.Write("LegacyPackageFolder", browseFolderControlLegacyPackage.FolderPath);
             registry.Write("LegacyPackageZipContent", checkBoxZipContent.Checked);
-            
+            registry.Write("LegacyConsoleFolder", textBoxConsoleFolder.Text);
+
             Dirty = false;
 
             return base.ApplyChanges(out errorControl, out showError);
@@ -72,17 +74,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             return !OsdUtilities.CheckNetFolderPath(browseFolderControlPackage.FolderPath) ? ControlDataState.Invalid : ControlDataState.Valid;
         }
 
-        private void BrowseFolderControlSource_FolderTextChanged(object sender, EventArgs e)
-        {
-            Dirty = true;
-        }
-
-        private void BrowseFolderControlPackage_FolderTextChanged(object sender, EventArgs e)
-        {
-            Dirty = true;
-        }
-
-        private void CheckBox_CheckedChanged(object sender, EventArgs e)
+        private void Control_Changed(object sender, EventArgs e)
         {
             Dirty = true;
         }

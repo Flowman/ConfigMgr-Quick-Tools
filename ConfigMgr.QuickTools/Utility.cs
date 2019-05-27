@@ -131,7 +131,11 @@ namespace ConfigMgr.QuickTools
         public static string CreateHashForFolder(string path)
         {
             // assuming you want to include nested folders
-            List<string> files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).Where(name => !name.EndsWith(".hash")).OrderBy(p => p).ToList();
+            var exts = new[] { ".hash", ".version" };
+            List<string> files = Directory
+                .GetFiles(path, "*.*", SearchOption.AllDirectories)
+                .Where(file => !exts.Any(x => file.EndsWith(x, StringComparison.OrdinalIgnoreCase)))
+                .OrderBy(p => p).ToList();
             // create a temp file with all the files as content
             string tempHashFile = Path.Combine(Path.GetTempPath(), RandomString(16, false) + ".hash");
 

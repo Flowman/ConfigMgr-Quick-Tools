@@ -204,6 +204,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             dataGridViewDriverPackages.Rows.Clear();
 
             bool known = false;
+            string prefix = string.IsNullOrEmpty(registry.ReadString("HPFolderPrefix")) ? "HP" : registry.ReadString("HPFolderPrefix");
 
             string tempFile = Path.Combine(Path.GetTempPath(), "HPClientDriverPackCatalog.cab");
             using (FileStream innerCab = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
@@ -224,7 +225,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                             {
                                 SoftPaq = catalog.Element("HPClientDriverPackCatalog").Element("SoftPaqList").Elements("SoftPaq").Where(
                                 x => x.Element("Id").Value == node.Element("SoftPaqId").Value
-                                ).FirstOrDefault()
+                                ).FirstOrDefault(),
+                                Vendor = prefix 
                             };
                             package.ProcessSoftPaq();
                             package.GenerateModelFolderName(os, structure);

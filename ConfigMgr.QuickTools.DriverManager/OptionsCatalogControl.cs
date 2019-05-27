@@ -39,8 +39,21 @@ namespace ConfigMgr.QuickTools.DriverManager
                 registry.Write("TempDownloadPath", Path.GetTempPath());
             }
 
+            if (string.IsNullOrEmpty(registry.ReadString("DellFolderPrefix")))
+            {
+                registry.Write("DellFolderPrefix", "Dell");
+            }
+
+            if (string.IsNullOrEmpty(registry.ReadString("HPFolderPrefix")))
+            {
+                registry.Write("HPFolderPrefix", "HP");
+            }
+
             textBoxDellCatalogUri.Text = registry.ReadString("DellCatalogURI");
+            textBoxDellPrefix.Text = registry.ReadString("DellFolderPrefix");
+
             textBoxHPCatalogUri.Text = registry.ReadString("HPCatalogURI");
+            textBoxHPPrefix.Text = registry.ReadString("HPFolderPrefix");
 
             browseFolderControlDownload.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("TempDownloadPath");
 
@@ -61,8 +74,12 @@ namespace ConfigMgr.QuickTools.DriverManager
         protected override bool ApplyChanges(out Control errorControl, out bool showError)
         {
             registry.Write("TempDownloadPath", browseFolderControlDownload.FolderPath);
+
             registry.Write("DellCatalogURI", textBoxDellCatalogUri.Text);
+            registry.Write("DellFolderPrefix", textBoxDellPrefix.Text);
+
             registry.Write("HPCatalogURI", textBoxHPCatalogUri.Text);
+            registry.Write("HPFolderPrefix", textBoxHPPrefix.Text);
 
             Dirty = false;
 

@@ -68,7 +68,10 @@ namespace ConfigMgr.QuickTools.DriverManager
                         {
                             worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Zipping driver source for: {0}", package.Name));
 
-                            string zipPath = Path.Combine(package.Target, "package.zip");
+                            string zipPath = Path.Combine(package.Target, string.Format("{0}.zip", package.Name.Replace(' ', '_')));
+
+                            if (File.Exists(zipPath))
+                                File.Delete(zipPath);
 
                             ZipFile.CreateFromDirectory(package.Source, zipPath);
                         }
@@ -219,7 +222,8 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 dataGridViewRow.Cells[0].Value = package.Import ? true : false;
                 dataGridViewRow.Cells[1].Value = package.Name;
-                dataGridViewRow.Cells[2].Value = package.Import ? "New version" : "No change";
+                dataGridViewRow.Cells[2].Value = package.FileVersion;
+                dataGridViewRow.Cells[3].Value = package.Import ? "Source changed" : "No change";
 
                 dataGridViewRow.Tag = package;
                 dataGridViewDriverPackages.Rows.Add(dataGridViewRow);

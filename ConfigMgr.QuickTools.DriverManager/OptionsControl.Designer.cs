@@ -41,6 +41,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxConsoleFolder = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.checkBoxZipContent = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
@@ -49,7 +51,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 356);
+            this.label2.Location = new System.Drawing.Point(13, 389);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(310, 13);
             this.label2.TabIndex = 22;
@@ -58,7 +60,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 145);
+            this.label1.Location = new System.Drawing.Point(14, 141);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(206, 13);
             this.label1.TabIndex = 21;
@@ -67,7 +69,7 @@
             // labelExample
             // 
             this.labelExample.AutoSize = true;
-            this.labelExample.Location = new System.Drawing.Point(7, 76);
+            this.labelExample.Location = new System.Drawing.Point(13, 76);
             this.labelExample.Name = "labelExample";
             this.labelExample.Size = new System.Drawing.Size(192, 13);
             this.labelExample.TabIndex = 20;
@@ -76,13 +78,13 @@
             // checkBoxLegacyFolder
             // 
             this.checkBoxLegacyFolder.AutoSize = true;
-            this.checkBoxLegacyFolder.Location = new System.Drawing.Point(10, 336);
+            this.checkBoxLegacyFolder.Location = new System.Drawing.Point(10, 369);
             this.checkBoxLegacyFolder.Name = "checkBoxLegacyFolder";
             this.checkBoxLegacyFolder.Size = new System.Drawing.Size(139, 17);
             this.checkBoxLegacyFolder.TabIndex = 19;
             this.checkBoxLegacyFolder.Text = "Legacy Folder Structure";
             this.checkBoxLegacyFolder.UseVisualStyleBackColor = true;
-            this.checkBoxLegacyFolder.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            this.checkBoxLegacyFolder.CheckedChanged += new System.EventHandler(this.Control_Changed);
             // 
             // browseFolderControlPackage
             // 
@@ -94,12 +96,12 @@
             this.browseFolderControlPackage.FolderTextReadOnly = false;
             this.browseFolderControlPackage.IsLocalFolder = false;
             this.browseFolderControlPackage.LableDescriptionWidth = 0;
-            this.browseFolderControlPackage.Location = new System.Drawing.Point(10, 117);
+            this.browseFolderControlPackage.Location = new System.Drawing.Point(10, 113);
             this.browseFolderControlPackage.MinimumSize = new System.Drawing.Size(150, 25);
             this.browseFolderControlPackage.Name = "browseFolderControlPackage";
-            this.browseFolderControlPackage.Size = new System.Drawing.Size(360, 25);
+            this.browseFolderControlPackage.Size = new System.Drawing.Size(362, 25);
             this.browseFolderControlPackage.TabIndex = 18;
-            this.browseFolderControlPackage.FolderTextChanged += new System.EventHandler(this.BrowseFolderControlPackage_FolderTextChanged);
+            this.browseFolderControlPackage.FolderTextChanged += new System.EventHandler(this.Control_Changed);
             // 
             // browseFolderControlSource
             // 
@@ -114,14 +116,14 @@
             this.browseFolderControlSource.Location = new System.Drawing.Point(10, 48);
             this.browseFolderControlSource.MinimumSize = new System.Drawing.Size(150, 25);
             this.browseFolderControlSource.Name = "browseFolderControlSource";
-            this.browseFolderControlSource.Size = new System.Drawing.Size(360, 25);
+            this.browseFolderControlSource.Size = new System.Drawing.Size(362, 25);
             this.browseFolderControlSource.TabIndex = 17;
-            this.browseFolderControlSource.FolderTextChanged += new System.EventHandler(this.BrowseFolderControlSource_FolderTextChanged);
+            this.browseFolderControlSource.FolderTextChanged += new System.EventHandler(this.Control_Changed);
             // 
             // labelPackage
             // 
             this.labelPackage.AutoSize = true;
-            this.labelPackage.Location = new System.Drawing.Point(7, 101);
+            this.labelPackage.Location = new System.Drawing.Point(7, 97);
             this.labelPackage.Name = "labelPackage";
             this.labelPackage.Size = new System.Drawing.Size(268, 13);
             this.labelPackage.TabIndex = 16;
@@ -139,7 +141,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 247);
+            this.label3.Location = new System.Drawing.Point(13, 239);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(206, 13);
             this.label3.TabIndex = 25;
@@ -155,16 +157,16 @@
             this.browseFolderControlLegacyPackage.FolderTextReadOnly = false;
             this.browseFolderControlLegacyPackage.IsLocalFolder = false;
             this.browseFolderControlLegacyPackage.LableDescriptionWidth = 0;
-            this.browseFolderControlLegacyPackage.Location = new System.Drawing.Point(10, 219);
+            this.browseFolderControlLegacyPackage.Location = new System.Drawing.Point(10, 211);
             this.browseFolderControlLegacyPackage.MinimumSize = new System.Drawing.Size(150, 25);
             this.browseFolderControlLegacyPackage.Name = "browseFolderControlLegacyPackage";
-            this.browseFolderControlLegacyPackage.Size = new System.Drawing.Size(360, 25);
+            this.browseFolderControlLegacyPackage.Size = new System.Drawing.Size(362, 25);
             this.browseFolderControlLegacyPackage.TabIndex = 24;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 203);
+            this.label4.Location = new System.Drawing.Point(7, 195);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(273, 13);
             this.label4.TabIndex = 23;
@@ -176,7 +178,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Location = new System.Drawing.Point(3, 10);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(372, 161);
+            this.groupBox1.Size = new System.Drawing.Size(374, 154);
             this.groupBox1.TabIndex = 26;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Driver Package Manager";
@@ -185,34 +187,55 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.textBoxConsoleFolder);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.checkBoxZipContent);
-            this.groupBox2.Location = new System.Drawing.Point(3, 181);
+            this.groupBox2.Location = new System.Drawing.Point(3, 173);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(372, 131);
+            this.groupBox2.Size = new System.Drawing.Size(374, 179);
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Legacy Package Manager";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 87);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(204, 13);
+            this.label6.TabIndex = 25;
+            this.label6.Text = "Console Folder name to add packages to:";
+            // 
+            // textBoxConsoleFolder
+            // 
+            this.textBoxConsoleFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxConsoleFolder.Location = new System.Drawing.Point(6, 105);
+            this.textBoxConsoleFolder.Name = "textBoxConsoleFolder";
+            this.textBoxConsoleFolder.Size = new System.Drawing.Size(253, 20);
+            this.textBoxConsoleFolder.TabIndex = 24;
+            this.textBoxConsoleFolder.TextChanged += new System.EventHandler(this.Control_Changed);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 112);
+            this.label5.Location = new System.Drawing.Point(10, 153);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(174, 13);
+            this.label5.Size = new System.Drawing.Size(217, 13);
             this.label5.TabIndex = 23;
-            this.label5.Text = "Use this options better transfer size.";
+            this.label5.Text = "Use this option for better transfer size. LINK?";
             // 
             // checkBoxZipContent
             // 
             this.checkBoxZipContent.AutoSize = true;
-            this.checkBoxZipContent.Location = new System.Drawing.Point(7, 92);
+            this.checkBoxZipContent.Location = new System.Drawing.Point(7, 133);
             this.checkBoxZipContent.Name = "checkBoxZipContent";
             this.checkBoxZipContent.Size = new System.Drawing.Size(80, 17);
             this.checkBoxZipContent.TabIndex = 0;
             this.checkBoxZipContent.Text = "Zip content";
             this.checkBoxZipContent.UseVisualStyleBackColor = true;
-            this.checkBoxZipContent.CheckedChanged += new System.EventHandler(this.CheckBox_CheckedChanged);
+            this.checkBoxZipContent.CheckedChanged += new System.EventHandler(this.Control_Changed);
             // 
             // OptionsControl
             // 
@@ -232,7 +255,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.Name = "OptionsControl";
-            this.Size = new System.Drawing.Size(378, 402);
+            this.Size = new System.Drawing.Size(380, 420);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -257,5 +280,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox checkBoxZipContent;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxConsoleFolder;
     }
 }

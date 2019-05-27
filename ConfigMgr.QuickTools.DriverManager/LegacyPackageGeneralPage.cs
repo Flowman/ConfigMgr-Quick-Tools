@@ -38,7 +38,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             base.InitializePageControl();
 
-            labelInformation.Text = string.Format("Welcome to the Driver Legacy Package Manager Import tool.\r\n\r\nThis tool gives you a quick way to work with your drivers as no ConfigMgr skill are required. Just create your driver structure and manage all drivers on a storage level.\r\n\r\nThe tool will import your drivers and create packages from {0}.", registry.ReadString("DriverSourceFolder"));
+            labelInformation.Text = string.Format("Welcome to the Driver Legacy Package Import tool.\r\n\r\nThis tool gives you a quick way to work with your drivers as no ConfigMgr skill are required. Just create your driver structure and manage all drivers on a storage level.\r\n\r\nThe tool will import your drivers and create packages from {0}.", registry.ReadString("DriverSourceFolder"));
 
             Initialized = true;
 
@@ -166,7 +166,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             bool flag;
 
-            List<LegacyPackage> legacyPackages = new List<LegacyPackage>();
+            List<LegacyPackage> packages = new List<LegacyPackage>();
 
             string sourceDirectory = registry.ReadString("DriverSourceFolder");
             UserData["sourceDirectory"] = sourceDirectory;
@@ -195,7 +195,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     {
                         foreach (LegacyPackage package in vendor.LegacyPackages)
                         {
-                            legacyPackages.Add(package);
+                            packages.Add(package);
                         }
                     }
                     ++num;
@@ -225,7 +225,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                         Vendor = vendor
                     };
 
-                    legacyPackages.Add(package);
+                    packages.Add(package);
 
                     ++num;
 
@@ -235,7 +235,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 flag = true;
             }
 
-            UserData["LegacyPackages"] = legacyPackages;
+            UserData["LegacyPackages"] = packages;
 
             progressWorker.ReportProgress(100, "Done");
 

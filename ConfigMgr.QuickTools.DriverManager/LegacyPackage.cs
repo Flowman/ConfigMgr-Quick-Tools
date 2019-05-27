@@ -1,23 +1,16 @@
 ﻿using Microsoft.ConfigurationManagement.ManagementProvider;
-using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
-    internal class LegacyPackage
+    internal class LegacyPackage : Package
     {
         private readonly ConnectionManagerBase connectionManager;
         private IResultObject packageObject;
+        private readonly ModifyRegistry registry = new ModifyRegistry();
 
-        public string Name { get; private set; }
-        public string Vendor { get; set; }
-        public string Source { get; private set; }
-        public string Target { get; private set; }
-        public bool Import { get; private set; }
-        public string Hash { get; private set; }
-        public List<Exception> Exception { get; private set; } = new List<Exception>();
-        public bool HasException { get { return Exception.Count > 0 ? true : false; } }
+        public string PackageVersion { get; protected set; }
+
         public IResultObject Package
         {
             get
@@ -35,8 +28,10 @@ namespace ConfigMgr.QuickTools.DriverManager
             Source = source;
             Target = target;
 
+            GetVersionFromFile();
+
             Hash = Utility.CreateHashForFolder(Source);
-            Import = !File.Exists(Path.Combine(Source, Hash + ".hash"));
+            Import = !File.Exists(Path.Combine(Source, Hash + ".hash")) || CheckVersion();
         }
 
         public bool Create()
@@ -60,6 +55,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 instance["PkgSourceFlag"].IntegerValue = 2;
                 instance["PkgSourcePath"].StringValue = Target;
                 instance["PkgFlags"].IntegerValue |= 16777216;
+                instance["Manufacturer"].StringValue = Vendor;
+                instance["Version"].StringValue = FileVersion;
                 try
                 {
                     instance.Put();
@@ -72,8 +69,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     return false;
                 }
 
-                // TODO: add an option for folder location
-                //Utility.AddObjectToFolder(connectionManager, Vendor, instance["PackageID"].StringValue, 23);
+                Utility.AddObjectToFolder(connectionManager, registry.ReadString("LegacyConsoleFolder"), instance["PackageID"].StringValue, 2);
 
                 packageObject = instance;
             }
@@ -81,21 +77,22 @@ namespace ConfigMgr.QuickTools.DriverManager
             return true;
         }
 
-        public void CreateHashFile()
+        private bool CheckVersion()
         {
-            try
+            return GetPackageVersion() && PackageVersion != FileVersion ? true : false;
+        }
+
+        private bool GetPackageVersion()
+        {
+            string query = string.Format("SELECT * FROM SMS_Package WHERE NAME = '{0}'", Name);
+            packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
+
+            if (packageObject != null)
             {
-                string[] fileList = Directory.GetFiles(Source, "*.hash");
-                foreach (string file in fileList)
-                {
-                    File.Delete(file);
-                }
-                File.Create(Path.Combine(Source, Hash + ".hash"));
+                PackageVersion = packageObject["Version"].StringValue;
             }
-            catch
-            {
-                Exception.Add(new SystemException("Cannot create Hash file."));
-            }
+
+            return string.IsNullOrEmpty(PackageVersion) ? false : true;
         }
     }
 }

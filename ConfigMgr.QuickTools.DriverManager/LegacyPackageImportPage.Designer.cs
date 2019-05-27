@@ -31,10 +31,11 @@
             this.labelDescription = new System.Windows.Forms.Label();
             this.buttonSelectAll = new System.Windows.Forms.Button();
             this.dataGridViewDriverPackages = new System.Windows.Forms.DataGridView();
+            this.buttonDeselectAll = new System.Windows.Forms.Button();
             this.columnImport = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnPackage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buttonDeselectAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDriverPackages)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,6 +73,7 @@
             this.dataGridViewDriverPackages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnImport,
             this.columnPackage,
+            this.ColumnVersion,
             this.columnStatus});
             this.dataGridViewDriverPackages.Location = new System.Drawing.Point(6, 20);
             this.dataGridViewDriverPackages.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
@@ -82,6 +84,17 @@
             this.dataGridViewDriverPackages.TabIndex = 20;
             this.dataGridViewDriverPackages.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewDrivers_CellValueChanged);
             this.dataGridViewDriverPackages.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewDrivers_CurrentCellDirtyStateChanged);
+            // 
+            // buttonDeselectAll
+            // 
+            this.buttonDeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonDeselectAll.Location = new System.Drawing.Point(273, 323);
+            this.buttonDeselectAll.Name = "buttonDeselectAll";
+            this.buttonDeselectAll.Size = new System.Drawing.Size(91, 23);
+            this.buttonDeselectAll.TabIndex = 19;
+            this.buttonDeselectAll.Text = "Deselect All";
+            this.buttonDeselectAll.UseVisualStyleBackColor = true;
+            this.buttonDeselectAll.Click += new System.EventHandler(this.ButtonSelect_Click);
             // 
             // columnImport
             // 
@@ -96,7 +109,13 @@
             this.columnPackage.MinimumWidth = 50;
             this.columnPackage.Name = "columnPackage";
             this.columnPackage.ReadOnly = true;
-            this.columnPackage.Width = 250;
+            this.columnPackage.Width = 200;
+            // 
+            // ColumnVersion
+            // 
+            this.ColumnVersion.HeaderText = "Version";
+            this.ColumnVersion.Name = "ColumnVersion";
+            this.ColumnVersion.Width = 50;
             // 
             // columnStatus
             // 
@@ -104,17 +123,6 @@
             this.columnStatus.Name = "columnStatus";
             this.columnStatus.ReadOnly = true;
             this.columnStatus.Width = 120;
-            // 
-            // buttonDeselectAll
-            // 
-            this.buttonDeselectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonDeselectAll.Location = new System.Drawing.Point(273, 323);
-            this.buttonDeselectAll.Name = "buttonDeselectAll";
-            this.buttonDeselectAll.Size = new System.Drawing.Size(91, 23);
-            this.buttonDeselectAll.TabIndex = 19;
-            this.buttonDeselectAll.Text = "Deselect All";
-            this.buttonDeselectAll.UseVisualStyleBackColor = true;
-            this.buttonDeselectAll.Click += new System.EventHandler(this.ButtonSelect_Click);
             // 
             // LegacyPackageImportPage
             // 
@@ -137,9 +145,10 @@
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.Button buttonSelectAll;
         private System.Windows.Forms.DataGridView dataGridViewDriverPackages;
+        private System.Windows.Forms.Button buttonDeselectAll;
         private System.Windows.Forms.DataGridViewCheckBoxColumn columnImport;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnPackage;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnVersion;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnStatus;
-        private System.Windows.Forms.Button buttonDeselectAll;
     }
 }
