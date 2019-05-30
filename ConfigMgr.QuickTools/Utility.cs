@@ -475,7 +475,7 @@ namespace ConfigMgr.QuickTools
                 }
 
                 foreach (var directory in Directory.GetDirectories(sourceDir))
-                    Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
+                    Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)), overwrite);
             }
         }
 

@@ -44,9 +44,6 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             if (packageObject == null)
             {
-                if (!Directory.Exists(Target))
-                    Directory.CreateDirectory(Target);
-
                 IResultObject instance = connectionManager.CreateInstance("SMS_Package");
                 instance["Name"].StringValue = Name;
                 instance["Description"].StringValue = "";
@@ -72,21 +69,17 @@ namespace ConfigMgr.QuickTools.DriverManager
                 packageObject = instance;
             }
 
-            return true;
-        }
+            if (!Directory.Exists(Target))
+                Directory.CreateDirectory(Target);
 
-        private bool CheckVersion()
-        {
-            return GetPackageVersion() && Version != FileVersion ? true : false;
+            return true;
         }
 
         public bool UpdatePackageVersion()
         {
-            string query = string.Format("SELECT * FROM SMS_Package WHERE NAME = '{0}'", Name);
-            packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
-
             if (packageObject != null)
             {
+                packageObject["Manufacturer"].StringValue = Vendor;
                 packageObject["Version"].StringValue = FileVersion;
 
                 try
@@ -107,10 +100,15 @@ namespace ConfigMgr.QuickTools.DriverManager
             return false;
         }
 
+        private bool CheckVersion()
+        {
+            return GetPackageVersion() && Version != FileVersion ? true : false;
+        }
+
         private bool GetPackageVersion()
         {
             string query = string.Format("SELECT * FROM SMS_Package WHERE NAME = '{0}'", Name);
-            packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
+            IResultObject packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
 
             if (packageObject != null)
             {

@@ -34,6 +34,7 @@
             this.dataGridViewDriverPackages = new System.Windows.Forms.DataGridView();
             this.columnImport = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnPackage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDriverPackages)).BeginInit();
             this.SuspendLayout();
@@ -83,6 +84,7 @@
             this.dataGridViewDriverPackages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnImport,
             this.columnPackage,
+            this.ColumnVersion,
             this.columnStatus});
             this.dataGridViewDriverPackages.Location = new System.Drawing.Point(6, 20);
             this.dataGridViewDriverPackages.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
@@ -107,7 +109,13 @@
             this.columnPackage.MinimumWidth = 50;
             this.columnPackage.Name = "columnPackage";
             this.columnPackage.ReadOnly = true;
-            this.columnPackage.Width = 250;
+            this.columnPackage.Width = 200;
+            // 
+            // ColumnVersion
+            // 
+            this.ColumnVersion.HeaderText = "Version";
+            this.ColumnVersion.Name = "ColumnVersion";
+            this.ColumnVersion.Width = 50;
             // 
             // columnStatus
             // 
@@ -139,6 +147,7 @@
         private System.Windows.Forms.DataGridView dataGridViewDriverPackages;
         private System.Windows.Forms.DataGridViewCheckBoxColumn columnImport;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnPackage;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnVersion;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnStatus;
     }
 }

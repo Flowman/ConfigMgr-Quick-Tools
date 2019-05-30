@@ -60,20 +60,17 @@ namespace ConfigMgr.QuickTools.DriverManager
                     int startProgress = num * 100 / totalPackages;
                     worker.ReportProgress(startProgress, string.Format("Importing Package: {0}", package.Name));
 
+                    if (Directory.Exists(package.Target))
+                        Directory.Delete(package.Target, true);
+
                     if (package.Create())
                     {
                         importProgresPercent = 100 / stepCount / totalPackages * 1;
-
-                        if (Directory.Exists(package.Target))
-                        {
-                            Directory.Delete(package.Target, true);
-                        }
 
                         if (registry.ReadBool("LegacyPackageZipContent"))
                         {
                             worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Zipping driver source for: {0}", package.Name));
 
-                            Directory.CreateDirectory(package.Target);
                             string zipPath = Path.Combine(package.Target, string.Format("{0}.zip", package.Name.Replace(' ', '_')));
 
                             ZipFile.CreateFromDirectory(package.Source, zipPath);

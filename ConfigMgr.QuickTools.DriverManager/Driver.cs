@@ -13,7 +13,8 @@ namespace ConfigMgr.QuickTools.DriverManager
     internal class Driver
     {
         #region Private
-        private IniData data;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly IniData data;
         #endregion
 
         #region State
@@ -22,7 +23,6 @@ namespace ConfigMgr.QuickTools.DriverManager
         public string Model { get; private set; }
         public IResultObject Object { get; private set; }
         public string InfLocation { get; private set; }
-
         public Exception Exception { get; private set; }
         public bool HasException { get { return Exception == null ? false : true; } }
         public Exception Warning { get; private set; }
@@ -80,13 +80,16 @@ namespace ConfigMgr.QuickTools.DriverManager
                 { "INFFile", Path.GetFileName(InfLocation) }
             };
 
-            IResultObject instance = null;
+            IResultObject driverObject = null;
 
             try
             {
-                IResultObject resultObject = connectionManager.ExecuteMethod("SMS_Driver", "CreateFromINF", methodParameters);
-                instance = connectionManager.CreateInstance(resultObject["Driver"].ObjectValue);
-                resultObject.Dispose();
+                log.Debug("CreateFromINF: " + InfLocation);
+                using (IResultObject resultObject = connectionManager.ExecuteMethod("SMS_Driver", "CreateFromINF", methodParameters))
+                {
+                    log.Debug("CreateInstance: " + InfLocation);
+                    driverObject = connectionManager.CreateInstance(resultObject["Driver"].ObjectValue);
+                }
             }
             catch (SmsQueryException ex)
             {
@@ -99,16 +102,18 @@ namespace ConfigMgr.QuickTools.DriverManager
                         {
                             // update content source path if it dose not exist
                             string query = string.Format("SELECT * FROM SMS_Driver WHERE CI_UniqueID='{0}'", managementException.ErrorInformation["ObjectInfo"].ToString());
-                            instance = Utility.GetFirstWMIInstance(connectionManager, query);
+                            driverObject = Utility.GetFirstWMIInstance(connectionManager, query);
 
-                            if (!Directory.Exists(instance["ContentSourcePath"].StringValue))
+                            if (!Directory.Exists(driverObject["ContentSourcePath"].StringValue))
                             {
-                                instance["ContentSourcePath"].StringValue = Path.GetDirectoryName(InfLocation);
+                                driverObject["ContentSourcePath"].StringValue = Path.GetDirectoryName(InfLocation);
                             }
                         }
                         catch (SmsQueryException ex1)
                         {
                             Exception = ex1;
+                            log.Error(string.Format("ContentSourcePath: {0}, {1}, {2}", InfLocation, ex1.GetType().Name, ex1.Message));
+
                             return false;
                         }
                     }
@@ -120,28 +125,33 @@ namespace ConfigMgr.QuickTools.DriverManager
                 else if (ex.ExtendStatusErrorCode == 13L)
                 {
                     Exception = new SystemException("Invalid inf file.");
+                    log.Warn(string.Format("InvalidInf: {0}", InfLocation));
+
                     return false;
                 }
 
             }
-            if (instance == null)
+            if (driverObject == null)
             {
+                log.Debug("NoObject: " + InfLocation);
                 return false;
             }
 
-            instance["IsEnabled"].BooleanValue = true;
+            driverObject["IsEnabled"].BooleanValue = true;
             try
             {
-                instance.Put();
-                instance.Get();
+                driverObject.Put();
+                driverObject.Get();
             }
             catch (SmsQueryException ex)
             {
                 Exception = ex;
+                log.Error(string.Format("PutDriverObject: {0}, {1}, {2}", InfLocation, ex.GetType().Name, ex.Message));
+
                 return false;
             }
 
-            Object = instance;
+            Object = driverObject;
 
             return true;
         }

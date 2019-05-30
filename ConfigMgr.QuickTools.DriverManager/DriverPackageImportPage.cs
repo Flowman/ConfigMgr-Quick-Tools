@@ -7,14 +7,23 @@ using System.Windows.Forms;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
+using Amib.Threading;
 
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class DriverPackageImportPage : SmsPageControl
     {
         #region Private
-        private int importProgresStepPercent;
-        private int importProgresPercent;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private int progressStepPercent;
+        private int progresPercent;
+        private int progressTotal = 0;
+        private int progressCount = 0;
+        private int progressStart;
+        private int progressStepCount;
+        private int totalDriverPackages;
+        private bool refreshDP;
+        private bool refreshPackage;
         #endregion
 
         public DriverPackageImportPage(SmsPageData pageData)
@@ -50,23 +59,27 @@ namespace ConfigMgr.QuickTools.DriverManager
                 List<string> successful = new List<string>();
 
                 int num = 0;
-                int stepCount = 5;
+                progressStepCount = 5;
  
                 List<DriverPackage> driverPackages = (List<DriverPackage>)UserData["DriverPackageItems"];
-                int totalDriverPackages = driverPackages.Count;
+                totalDriverPackages = driverPackages.Count;
 
                 foreach (DriverPackage driverPackage in driverPackages)
                 {
-                    int startProgress = num * 100 / totalDriverPackages;
-                    worker.ReportProgress(startProgress, string.Format("Importing Driver Package: {0}", driverPackage.Name));
+                    progressStart = num * 100 / totalDriverPackages;
+                    worker.ReportProgress(progressStart, string.Format("Importing Driver Package: {0}", driverPackage.Name));
 
                     if (driverPackage.Create())
                     {
                         string objectPath = null;
-                        bool refreshDP = false;
+                        refreshPackage = false;
+                        refreshDP = false;
+                        progressTotal = 0;
+                        progressCount = 0;
 
                         try
                         {
+                            SmartThreadPool smartThreadPool = new SmartThreadPool();
                             // lock driver packge object
                             objectPath = driverPackage.Package["__RELPath"].StringValue;
                             Utility.RequestLock(ConnectionManager, objectPath);
@@ -77,9 +90,9 @@ namespace ConfigMgr.QuickTools.DriverManager
                             foreach (string inf in driverPackage.Infs)
                             {
                                 // I still hate calculating progress bars
-                                importProgresPercent = (num2 * 100 / totalInfs) / stepCount / totalDriverPackages;
+                                progresPercent = (num2 / totalInfs * 100) / progressStepCount / totalDriverPackages;
                                 worker.ReportProgress(
-                                    startProgress + (importProgresPercent), 
+                                    progressStart + (progresPercent), 
                                     string.Format("Importing Driver Package: {0}\n - processing inf '{1}'", driverPackage.Name, Path.GetFileName(inf))
                                     );
 
@@ -100,91 +113,40 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                                 num2++;
                             }
-                            importProgresStepPercent = importProgresPercent;
-
+                            // I still hate calculating progress bars
+                            progressStepPercent = progresPercent;
+                            progresPercent = 100 / progressStepCount / totalDriverPackages * 2;
                             // check if driver is in driver package and same version
                             foreach (IResultObject driverObject in driverPackage.GetDriversInPackge())
                             {
-                                // I still hate calculating progress bars
-                                importProgresPercent = 100 / stepCount / totalDriverPackages * 2;
-                                worker.ReportProgress(
-                                    startProgress + (importProgresPercent), 
-                                    string.Format("Importing Driver Package: {0}\n - retriving driver '{1} ({2})' from package", 
-                                        driverPackage.Name, driverObject["LocalizedDisplayName"].StringValue, 
-                                        driverObject["DriverVersion"].StringValue
-                                        )
-                                    );
-
-                                if (driverPackage.Drivers.TryGetValue(driverObject["DriverINFFile"].StringValue + driverObject["DriverVersion"].StringValue, out Driver driver))
-                                {
-                                    if (driver.Version == driverObject["DriverVersion"].StringValue)
-                                    {
-                                        driver.AddObject(driverObject);
-
-                                        if (driverPackage.DriverContentExists(driver))
-                                        {
-                                            driverPackage.AddDriverToCategory(driver);
-                                            driver.Import = false;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    worker.ReportProgress(
-                                        startProgress + (importProgresPercent),
-                                        string.Format("Importing Driver Package: {0}\n - removing driver: {1} ({2})", 
-                                            driverPackage.Name, driverObject["LocalizedDisplayName"].StringValue, 
-                                            driverObject["DriverVersion"].StringValue
-                                            )
-                                        );
-                                    // remove from driver package and category if source folder have been removed
-                                    driverPackage.RemoveDriverFromCategory(driverObject);
-                                    if (driverPackage.RemoveDriverFromDriverPack(driverObject))
-                                    {
-                                        refreshDP = true;
-                                    }
-                                }
+                                // thread this so it is faster
+                                smartThreadPool.QueueWorkItem(new Amib.Threading.Func<DriverPackage, IResultObject, BackgroundWorker, bool>(ProcessDrivers), driverPackage, driverObject, worker);
                             }
-                            importProgresStepPercent = importProgresPercent;
+                            // wait for thread pool to finish
+                            smartThreadPool.WaitForIdle();
+                            // I still hate calculating progress bars
+                            progressStepPercent = progresPercent;
+                            // tried to create threading for importing drivers but CreateFromINF go sad if it gets to many request, so will leave this code here for maybe one day I fix it
+                            IWorkItemsGroup workItemsGroup = smartThreadPool.CreateWorkItemsGroup(1);
 
-                            num2 = 1;
-                            int num3 = 1;
-                            int totalDrivers = driverPackage.Drivers.Count;
-                            bool refreshPackage = false;
                             foreach (KeyValuePair<string, Driver> driver in driverPackage.Drivers)
                             {
-                                // I still hate calculating progress bars
-                                importProgresPercent = importProgresStepPercent + ((num2 * 100 / totalInfs) / stepCount / totalDriverPackages * 3);
-
                                 if (driver.Value.Import)
                                 {
-                                    worker.ReportProgress(
-                                        startProgress + (importProgresPercent),
-                                        string.Format("Importing Driver Package: {0}\n - importing and adding driver to category ({1}/{2}): {3} ({4})", 
-                                            driverPackage.Name,
-                                            num3,
-                                            totalDrivers,
-                                            driver.Value.Model,
-                                            driver.Value.Version
-                                            )
-                                        );
-                                    if (driver.Value.CreateObjectFromInfFile(ConnectionManager))
-                                    {
-                                        // add category to driver object
-                                        driverPackage.AddDriverToCategory(driver.Value);
-                                    }
-                                    refreshPackage = true;
-                                    refreshDP = true;
+                                    ++progressTotal;
+                                    workItemsGroup.QueueWorkItem(new Amib.Threading.Func<DriverPackage, Driver, BackgroundWorker, bool>(ImportDrivers), driverPackage, driver.Value, worker);
                                 }
-                                num2++;
-                                num3++;
                             }
+                            // wait for thread pool to finish
+                            workItemsGroup.WaitForIdle();
+
+                            smartThreadPool.Shutdown();
 
                             if (refreshPackage)
                             {
                                 // I still hate calculating progress bars
-                                importProgresPercent = 100 / stepCount / totalDriverPackages * 4;
-                                worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Importing Driver Package: {0}\n - adding drivers to package", driverPackage.Name));
+                                progresPercent = 100 / progressStepCount / totalDriverPackages * 4;
+                                worker.ReportProgress(progressStart + (progresPercent), string.Format("Importing Driver Package: {0}\n - adding drivers to package", driverPackage.Name));
                                 // add all drivers in the drivers list to the driver package
                                 driverPackage.AddDriversToDriverPack();
                             }
@@ -192,12 +154,13 @@ namespace ConfigMgr.QuickTools.DriverManager
                             if (refreshDP)
                             {
                                 // I still hate calculating progress bars
-                                importProgresPercent = 100 / stepCount / totalDriverPackages * 5;
-                                worker.ReportProgress(startProgress + (importProgresPercent), string.Format("Importing Driver Package: {0}\n - updating distribution point", driverPackage.Name));
+                                progresPercent = 100 / progressStepCount / totalDriverPackages * 5;
+                                worker.ReportProgress(progressStart + (progresPercent), string.Format("Importing Driver Package: {0}\n - updating distribution point", driverPackage.Name));
                                 driverPackage.Package.ExecuteMethod("RefreshPkgSource", null);
                             }
 
                             driverPackage.CreateHashFile();
+                            driverPackage.UpdatePackageVersion();
                         }
                         finally
                         {
@@ -216,6 +179,79 @@ namespace ConfigMgr.QuickTools.DriverManager
                 AddRefreshResultObject(null, PropertyDataUpdateAction.RefreshAll);
                 PrepareError(ex.Message);
             }
+        }
+
+        private bool ImportDrivers(DriverPackage driverPackage, Driver driver, BackgroundWorker worker)
+        {
+            ++progressCount;
+
+            progresPercent = progressStepPercent + ((progressCount / progressTotal * 100) / progressStepCount / totalDriverPackages);
+
+            worker.ReportProgress(
+               progressStart + (progresPercent),
+               string.Format("Importing Driver Package: {0}\n - importing driver ({1}/{2}) '{3} ({4})'",
+                   driverPackage.Name,
+                   progressCount,
+                   progressTotal,
+                   driver.Model,
+                   driver.Version
+                   )
+               );
+
+            log.Debug("Importing driver: " + driver.Model);
+            if (driver.CreateObjectFromInfFile(ConnectionManager))
+            {
+                // add category to driver object
+                driverPackage.AddDriverToCategory(driver);
+            }
+            log.Debug("Done importing driver: " + driver.Model);
+
+            refreshPackage = true;
+            refreshDP = true;
+
+            return true;
+        }
+
+        private bool ProcessDrivers(DriverPackage driverPackage, IResultObject driverObject, BackgroundWorker worker)
+        {
+            worker.ReportProgress(
+                progressStart + (progresPercent),
+                string.Format("Importing Driver Package: {0}\n - retriving driver '{1} ({2})'",
+                    driverPackage.Name, driverObject["LocalizedDisplayName"].StringValue,
+                    driverObject["DriverVersion"].StringValue
+                    )
+                );
+
+            if (driverPackage.Drivers.TryGetValue(driverObject["DriverINFFile"].StringValue + driverObject["DriverVersion"].StringValue, out Driver driver))
+            {
+                if (driver.Version == driverObject["DriverVersion"].StringValue)
+                {
+                    driver.AddObject(driverObject);
+
+                    if (driverPackage.DriverContentExists(driver))
+                    {
+                        driverPackage.AddDriverToCategory(driver);
+                        driver.Import = false;
+                    }
+                }
+            }
+            else
+            {
+                worker.ReportProgress(
+                    progressStart + (progresPercent),
+                    string.Format("Importing Driver Package: {0}\n - removing driver: {1} ({2})",
+                        driverPackage.Name, driverObject["LocalizedDisplayName"].StringValue,
+                        driverObject["DriverVersion"].StringValue)
+                    );
+                // remove from driver package and category if source folder have been removed
+                driverPackage.RemoveDriverFromCategory(driverObject);
+                if (driverPackage.RemoveDriverFromDriverPack(driverObject))
+                {
+                    refreshDP = true;
+                }
+            }
+
+            return true;
         }
 
         public override void OnAddSummary(SummaryRequestHandler handler)
@@ -382,7 +418,8 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 dataGridViewRow.Cells[0].Value = package.Import ? true : false;
                 dataGridViewRow.Cells[1].Value = package.Name;
-                dataGridViewRow.Cells[2].Value = package.Import ? string.Format("Found {0} drivers", package.Infs.Length) : "No change";
+                dataGridViewRow.Cells[2].Value = package.FileVersion;
+                dataGridViewRow.Cells[3].Value = package.Import ? string.Format("Found {0} drivers", package.Infs.Length) : "No change";
 
                 dataGridViewRow.Tag = package;
                 dataGridViewDriverPackages.Rows.Add(dataGridViewRow);

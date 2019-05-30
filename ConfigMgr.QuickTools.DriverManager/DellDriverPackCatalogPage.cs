@@ -396,7 +396,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                 currentModel = package.Model;
 
                 // update my best friend the progress bar
-                backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((50 / totalPacks * extracted) * 0.5)), string.Format("Processing {0} : extracting to temp folder", currentModel));
+                backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((40 / totalPacks * extracted) * 0.5)), string.Format("Processing {0} : extracting to temp folder", currentModel));
                 // generate model folder name
 
                 // hp sp extract does not work directly to network share, put in temp folder first and than copy to share
@@ -409,7 +409,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     cab.Unpack(tempFolder);
 
                     // update my best friend the progress bar
-                    backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((100 / totalPacks * extracted) * 0.5) - 1), string.Format("Processing {0} : moving to destination folder", currentModel));
+                    backgroundWorker.ReportProgress(Convert.ToInt32(50 + ((80 / totalPacks * extracted) * 0.5)), string.Format("Processing {0} : moving to destination folder", currentModel));
 
                     if (!Directory.Exists(tempFolder))
                         throw new DirectoryNotFoundException("Temp folder not found " + tempFolder);

@@ -11,6 +11,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     internal class DriverPackage : Package
     {
         #region Private
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private readonly ConnectionManagerBase connectionManager;
         private IResultObject packageObject;
         private IResultObject categoryObject;
@@ -52,8 +53,11 @@ namespace ConfigMgr.QuickTools.DriverManager
             Source = source;
             Target = target;
 
+            GetVersionFromFile();
+
             Hash = Utility.CreateHashForFolder(Source);
-            Import = !File.Exists(Path.Combine(Source, Hash + ".hash"));
+            Import = !File.Exists(Path.Combine(Source, Hash + ".hash")) || CheckVersion();
+
             string[] infFiles = Directory.GetFiles(Source, "*.inf", SearchOption.AllDirectories);
             Infs = infFiles.Where(x => Path.GetFileName(x) != "autorun.inf").ToArray();
         }
@@ -76,6 +80,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 instance["PkgSourceFlag"].IntegerValue = 2;
                 instance["PkgSourcePath"].StringValue = Target;
                 instance["PkgFlags"].IntegerValue |= 16777216;
+                instance["DriverManufacturer"].StringValue = Vendor;
+                instance["Version"].StringValue = FileVersion;
                 try
                 {
                     instance.Put();
@@ -107,6 +113,53 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
 
             return true;
+        }
+
+
+        public bool UpdatePackageVersion()
+        {
+            string query = string.Format("SELECT * FROM SMS_DriverPackage WHERE NAME = '{0}'", Name);
+            packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
+
+            if (packageObject != null)
+            {
+                packageObject["DriverManufacturer"].StringValue = Vendor;
+                packageObject["Version"].StringValue = FileVersion;
+
+                try
+                {
+                    packageObject.Put();
+                    packageObject.Get();
+
+                    return true;
+                }
+                catch (SmsQueryException ex)
+                {
+                    Exception.Add(ex);
+
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private bool CheckVersion()
+        {
+            return GetPackageVersion() && Version != FileVersion ? true : false;
+        }
+
+        private bool GetPackageVersion()
+        {
+            string query = string.Format("SELECT * FROM SMS_Package WHERE NAME = '{0}'", Name);
+            IResultObject packageObject = Utility.GetFirstWMIInstance(connectionManager, query);
+
+            if (packageObject != null)
+            {
+                Version = packageObject["Version"].StringValue;
+            }
+
+            return string.IsNullOrEmpty(Version) ? false : true;
         }
 
         #region Drivers
@@ -186,7 +239,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             foreach (KeyValuePair<string, Driver> driver in Drivers)
             {
-                if (driver.Value.Import)
+                if (driver.Value.Import && driver.Value.Object != null)
                 {
                     string query = string.Format("SELECT * FROM SMS_CIToContent WHERE CI_ID='{0}'", driver.Value.Object["CI_ID"].IntegerValue);
 
