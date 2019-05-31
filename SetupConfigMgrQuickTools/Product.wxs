@@ -54,6 +54,7 @@
       <ComponentRef Id="comp_6A5B36D7_4085_43D3_B2C5_269846912027" />
       <ComponentRef Id="comp_300ED341_2383_436D_9168_80F22AF79249" />
       <ComponentRef Id="comp_4E8EA0C5_E242_4F07_A191_4C06D9370871" />
+      <ComponentRef Id="comp_1B4DC596_3998_4E85_B2A5_4069BCAB827E" />
       <Feature Id="DellTools" Title="Dell Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support Dell devices.">
         <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
         <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
@@ -255,6 +256,11 @@
               <Component Id="comp_70B71A98_CEE2_40E9_BD17_358A59DB51FC" Guid="0CB4F27C-27B9-4504-9C69-323D1BD76C54" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_FCCEEF70_5617_400C_A120_585307F30A79" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDeviceMsg.xml" Source="..\Extensions\Actions\ed9dee86-eadd-4ac8-82a1-7234a4646e62\QuickToolsDeviceMsg.xml" KeyPath="yes" />
                 <util:XmlFile Id="UpdateConfigMgrPath4" SelectionLanguage="XPath" File="[#_FCCEEF70_5617_400C_A120_585307F30A79]" ElementPath="//ActionDescription/Executable/FilePath" Action="setValue" Value="[TARGETDIR]bin\i386\statview.exe" Sequence="1" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_FE5191DA_11EA_4420_9141_BC5684B262D8" Name="f2c07bfb-d83d-4e0b-969b-5da6321c28c2">
+              <Component Id="comp_1B4DC596_3998_4E85_B2A5_4069BCAB827E" Guid="0F2B5484-4864-4A9E-93B3-8669F0FB26E1" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_93640931_9B25_4881_9B44_212F8066B15C" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsTaskSequenceAction.xml" Source="..\Extensions\Actions\f2c07bfb-d83d-4e0b-969b-5da6321c28c2\QuickToolsTaskSequenceAction.xml" KeyPath="yes" />
               </Component>
             </Directory>
           </Directory>

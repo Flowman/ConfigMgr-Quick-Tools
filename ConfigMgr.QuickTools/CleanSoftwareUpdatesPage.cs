@@ -174,9 +174,11 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
 
                         worker.ReportProgress(66, string.Format("Removing content from deployment package: {0}", package["Name"].StringValue));
 
-                        Dictionary<string, object> methodParameters = new Dictionary<string, object>();
-                        methodParameters.Add("bRefreshDPs", true);
-                        methodParameters.Add("ContentIDs", item.Value.ToArray());
+                        Dictionary<string, object> methodParameters = new Dictionary<string, object>
+                        {
+                            { "bRefreshDPs", true },
+                            { "ContentIDs", item.Value.ToArray() }
+                        };
 
                         bool er = false;
 

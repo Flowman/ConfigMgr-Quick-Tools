@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription NamespaceGuid="D11D5942-AF19-4F6F-A197-9CE45DD7BF36" Class="AssemblyType" SelectionMode="Both" RibbonDisplayType="TextAndSmallImage" DisplayName="Export to XML" MnemonicDisplayName="Export to XML" Description="Export task sequence to XML file" InsertBefore="20902d7c-523d-432a-b454-1f586ce66772">
+  <ShowOn>
+    <string>DefaultHomeTab</string>
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <ActionAssembly>
+    <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+    <Type>ConfigMgr.QuickTools.TaskSequenceImportExport</Type>
+    <Method>RunTaskSequenceExport</Method>
+  </ActionAssembly>
+</ActionDescription>
+
