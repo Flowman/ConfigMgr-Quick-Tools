@@ -87,7 +87,7 @@ namespace ConfigMgr.QuickTools
                     if (endTime.CompareTo(startTime) > 0)
                     {
                         // get collection count
-                        regex = new Regex(@"PF: Found\s(\d.)\scandidate collections for incremental evaluation.*(\d.-\d.-\d{4}\s\d.:\d.:\d.)", RegexOptions.RightToLeft);
+                        regex = new Regex(@"PF: Found\s(\d.*)\scandidate collections for incremental evaluation.*(\d.-\d.-\d{4}\s\d.:\d.:\d.)", RegexOptions.RightToLeft);
                         Match match = regex.Match(input);                      
 
                         int collectionCount = match.Success ? Convert.ToInt32(match.Groups[1].Value) : 0;
