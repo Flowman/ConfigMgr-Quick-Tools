@@ -129,6 +129,7 @@
             this.dataGridViewDrivers.TabIndex = 7;
             this.dataGridViewDrivers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewDrivers_CellValueChanged);
             this.dataGridViewDrivers.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewDrivers_CurrentCellDirtyStateChanged);
+            this.dataGridViewDrivers.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DataGridViewDrivers_KeyUp);
             // 
             // columnCapture
             // 

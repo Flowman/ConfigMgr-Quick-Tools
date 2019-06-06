@@ -35,6 +35,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             base.InitializePageControl();
 
             dataGridViewCollections.Rows.Clear();
+            dataGridViewCollections.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             ControlsInspector.AddControl(dataGridViewCollections, new ControlDataStateEvaluator(ValidateSelectedCollections), "Select collections to disable");
 
@@ -65,7 +66,22 @@ namespace ConfigMgr.QuickTools.CollectionManagment
 
                 dataGridViewRow.Cells[0].Value = false;
                 dataGridViewRow.Cells[1].Value = resultObject["Name"].StringValue;
-                dataGridViewRow.Cells[2].Value = resultObject["CollectionID"].StringValue;
+                dataGridViewRow.Cells[3].Value = resultObject["CollectionID"].StringValue;
+
+                // get the rules from CollectionRules which is a lazy property  
+                resultObject.Get();
+
+                List<IResultObject> rulesList = resultObject.GetArrayItems("CollectionRules");
+                if (rulesList != null && rulesList.Count > 0)
+                {
+                    foreach (IResultObject rule in rulesList)
+                    {
+                        if (rule.Properties["__CLASS"].StringValue.Equals("SMS_CollectionRuleQuery", StringComparison.OrdinalIgnoreCase))
+                        {
+                            dataGridViewRow.Cells[2].Value = "Yes";
+                        }
+                    }
+                }
 
                 dataGridViewRow.Tag = resultObject;
                 dataGridViewCollections.Rows.Add(dataGridViewRow);
@@ -96,6 +112,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                     backgroundWorker = null;
                     dataGridViewCollections.Sort(columnCollection, ListSortDirection.Ascending);
                     UseWaitCursor = false;
+                    labelCount.Text = dataGridViewCollections.Rows.Count.ToString();
                 }
             }
         }
@@ -233,7 +250,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             return ControlDataState.Invalid;
         }
 
-        private void dataGridViewCollections_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        private void DataGridViewCollections_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (!dataGridViewCollections.IsCurrentCellDirty)
                 return;
@@ -265,6 +282,21 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             finally
             {
                 process?.Dispose();
+            }
+        }
+
+        private void DataGridViewCollections_KeyUp(object sender, KeyEventArgs e)
+        {
+            int selectedRowCount = dataGridViewCollections.Rows.GetRowCount(DataGridViewElementStates.Selected);
+ 
+            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
+            {
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    dataGridViewCollections.SelectedRows[i].Cells[columnDisable.Name].Value = !(bool)dataGridViewCollections.SelectedRows[i].Cells[columnDisable.Name].Value;
+                }
+
+                e.Handled = true; 
             }
         }
     }

@@ -56,6 +56,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             base.InitializePageControl();
 
             ControlsInspector.AddControl(dataGridViewDriverPackages, new ControlDataStateEvaluator(ValidateSelectedPack), "Select driver pack to download");
+            dataGridViewDriverPackages.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             Initialized = false;
         }
@@ -495,6 +496,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private void ButtonDeselectAll_Click(object sender, EventArgs e)
         {
+            dataGridViewDriverPackages.Focus();
             dataGridViewDriverPackages.BeginEdit(true);
             bool flag = sender == buttonDeselectAll;
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
@@ -514,6 +516,20 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 dataGridViewDriverPackages.ClearSelection();
                 dataGridViewDriverPackages.Rows[e.RowIndex].Selected = true;
+            }
+        }
+        private void DataGridViewDriverPackages_KeyUp(object sender, KeyEventArgs e)
+        {
+            int selectedRowCount = dataGridViewDriverPackages.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
+            {
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    dataGridViewDriverPackages.SelectedRows[i].Cells[columnImport.Name].Value = !(bool)dataGridViewDriverPackages.SelectedRows[i].Cells[columnImport.Name].Value;
+                }
+
+                e.Handled = true;
             }
         }
 

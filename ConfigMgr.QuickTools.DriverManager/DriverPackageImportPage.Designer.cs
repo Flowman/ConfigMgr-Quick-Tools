@@ -95,6 +95,7 @@
             this.dataGridViewDriverPackages.TabIndex = 7;
             this.dataGridViewDriverPackages.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewDrivers_CellValueChanged);
             this.dataGridViewDriverPackages.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewDrivers_CurrentCellDirtyStateChanged);
+            this.dataGridViewDriverPackages.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DataGridViewDrivers_KeyUp);
             // 
             // columnImport
             // 

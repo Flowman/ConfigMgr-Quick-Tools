@@ -36,6 +36,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             labelDestination.Text = registry.ReadString("DriverSourceFolder");
 
             ControlsInspector.AddControl(dataGridViewDrivers, new ControlDataStateEvaluator(ValidateSelectedDrivers), "Select drivers to capture");
+            dataGridViewDrivers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             Initialized = false;
 
@@ -386,6 +387,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private void ButtonSelect_Click(object sender, EventArgs e)
         {
+            dataGridViewDrivers.Focus();
             if (dataGridViewDrivers.Rows.Count > 0)
             {
                 dataGridViewDrivers.BeginEdit(true);
@@ -407,6 +409,21 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             ControlsInspector.InspectAll();
             Dirty = !ReadOnly;
+        }
+
+        private void DataGridViewDrivers_KeyUp(object sender, KeyEventArgs e)
+        {
+            int selectedRowCount = dataGridViewDrivers.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
+            {
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    dataGridViewDrivers.SelectedRows[i].Cells[columnCapture.Name].Value = !(bool)dataGridViewDrivers.SelectedRows[i].Cells[columnCapture.Name].Value;
+                }
+
+                e.Handled = true;
+            }
         }
     }
 }

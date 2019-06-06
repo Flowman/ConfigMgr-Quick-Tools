@@ -81,6 +81,7 @@
             this.dataGridViewDriverPackages.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewDriverPackages_CellValueChanged);
             this.dataGridViewDriverPackages.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewDriverPackages_CurrentCellDirtyStateChanged);
             this.dataGridViewDriverPackages.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DataGridViewDriverPackages_RowsAdded);
+            this.dataGridViewDriverPackages.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DataGridViewDriverPackages_KeyUp);
             // 
             // columnImport
             // 

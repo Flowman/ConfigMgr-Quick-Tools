@@ -34,6 +34,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             base.InitializePageControl();
 
             dataGridViewUpdates.Rows.Clear();
+            dataGridViewUpdates.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             ControlsInspector.AddControl(dataGridViewUpdates, new ControlDataStateEvaluator(ValidateSelectedUpdatesPackages), "Select updates to remove");
 
@@ -312,6 +313,21 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
         {
             ControlsInspector.InspectAll();
             Dirty = !ReadOnly;
+        }
+
+        private void DataGridViewUpdates_KeyUp(object sender, KeyEventArgs e)
+        {
+            int selectedRowCount = dataGridViewUpdates.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
+            {
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    dataGridViewUpdates.SelectedRows[i].Cells[columnRemove.Name].Value = !(bool)dataGridViewUpdates.SelectedRows[i].Cells[columnRemove.Name].Value;
+                }
+
+                e.Handled = true;
+            }
         }
 
         private void ButtonDeselectAll_Click(object sender, EventArgs e)

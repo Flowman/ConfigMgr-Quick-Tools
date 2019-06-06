@@ -33,8 +33,11 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.labelDescription = new System.Windows.Forms.Label();
             this.dataGridViewCollections = new System.Windows.Forms.DataGridView();
+            this.labelCount = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.columnDisable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnCollection = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnQuery = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnCollectionID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCollections)).BeginInit();
             this.SuspendLayout();
@@ -80,17 +83,36 @@
             this.dataGridViewCollections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDisable,
             this.columnCollection,
+            this.ColumnQuery,
             this.columnCollectionID});
             this.dataGridViewCollections.Location = new System.Drawing.Point(6, 16);
             this.dataGridViewCollections.Margin = new System.Windows.Forms.Padding(0, 3, 3, 0);
             this.dataGridViewCollections.Name = "dataGridViewCollections";
             this.dataGridViewCollections.RowHeadersVisible = false;
-            this.dataGridViewCollections.Size = new System.Drawing.Size(470, 266);
+            this.dataGridViewCollections.Size = new System.Drawing.Size(470, 253);
             this.dataGridViewCollections.StandardTab = true;
             this.dataGridViewCollections.TabIndex = 15;
             this.dataGridViewCollections.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridViewCollections_CellValueChanged);
-            this.dataGridViewCollections.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewCollections_CurrentCellDirtyStateChanged);
+            this.dataGridViewCollections.CurrentCellDirtyStateChanged += new System.EventHandler(this.DataGridViewCollections_CurrentCellDirtyStateChanged);
             this.dataGridViewCollections.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DataGridViewCollections_RowsAdded);
+            this.dataGridViewCollections.KeyUp += new System.Windows.Forms.KeyEventHandler(this.DataGridViewCollections_KeyUp);
+            // 
+            // labelCount
+            // 
+            this.labelCount.AutoSize = true;
+            this.labelCount.Location = new System.Drawing.Point(40, 273);
+            this.labelCount.Name = "labelCount";
+            this.labelCount.Size = new System.Drawing.Size(0, 13);
+            this.labelCount.TabIndex = 16;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 273);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(34, 13);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Total:";
             // 
             // columnDisable
             // 
@@ -105,7 +127,16 @@
             this.columnCollection.MinimumWidth = 50;
             this.columnCollection.Name = "columnCollection";
             this.columnCollection.ReadOnly = true;
-            this.columnCollection.Width = 305;
+            this.columnCollection.Width = 255;
+            // 
+            // ColumnQuery
+            // 
+            this.ColumnQuery.HeaderText = "Query";
+            this.ColumnQuery.Name = "ColumnQuery";
+            this.ColumnQuery.ReadOnly = true;
+            this.ColumnQuery.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnQuery.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.ColumnQuery.Width = 50;
             // 
             // columnCollectionID
             // 
@@ -118,6 +149,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelCount);
             this.Controls.Add(this.dataGridViewCollections);
             this.Controls.Add(this.labelDescription);
             this.Controls.Add(this.linkLabel1);
@@ -136,8 +169,11 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label labelDescription;
         private System.Windows.Forms.DataGridView dataGridViewCollections;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCollectionID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCollection;
+        private System.Windows.Forms.Label labelCount;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridViewCheckBoxColumn columnDisable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn columnCollection;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnQuery;
+        private System.Windows.Forms.DataGridViewTextBoxColumn columnCollectionID;
     }
 }
