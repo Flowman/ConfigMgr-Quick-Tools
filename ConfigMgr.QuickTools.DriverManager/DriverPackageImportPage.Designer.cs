@@ -101,7 +101,7 @@
             // 
             this.columnSelected.HeaderText = "Import";
             this.columnSelected.MinimumWidth = 20;
-            this.columnSelected.Name = "columnImport";
+            this.columnSelected.Name = "columnSelected";
             this.columnSelected.Width = 42;
             // 
             // columnPackage

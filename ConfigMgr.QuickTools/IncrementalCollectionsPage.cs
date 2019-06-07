@@ -16,7 +16,8 @@ namespace ConfigMgr.QuickTools.CollectionManagment
 {
     public partial class IncrementalCollectionsPage : SmsPageControl
     {
-        private SmsBackgroundWorker backgroundWorker;
+        private SmsBackgroundWorker smsBackgroundWorker;
+        private BackgroundWorker backgroundWorker;
 
         public IncrementalCollectionsPage(SmsPageData pageData)
             : base(pageData)
@@ -41,11 +42,11 @@ namespace ConfigMgr.QuickTools.CollectionManagment
 
             string query = string.Format("SELECT * FROM SMS_Collection WHERE RefreshType IN (4,6) AND CollectionType = 2 AND CollectionID NOT LIKE 'SMS%'");
 
-            backgroundWorker = new SmsBackgroundWorker();
-            backgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(BackgroundWorker_RunWorkerCompleted);
-            backgroundWorker.QueryProcessorObjectsReady += new EventHandler<QueryProcessorObjectsEventArgs>(BackgroundWorker_QueryProcessorObjectsReady);
+            smsBackgroundWorker = new SmsBackgroundWorker();
+            smsBackgroundWorker.QueryProcessorCompleted += new EventHandler<RunWorkerCompletedEventArgs>(BackgroundWorker_RunWorkerCompleted);
+            smsBackgroundWorker.QueryProcessorObjectsReady += new EventHandler<QueryProcessorObjectsEventArgs>(BackgroundWorker_QueryProcessorObjectsReady);
             UseWaitCursor = true;
-            QueryProcessor.ProcessQuery(backgroundWorker, query);
+            QueryProcessor.ProcessQuery(smsBackgroundWorker, query);
         }
 
         public override bool OnDeactivate()
@@ -68,21 +69,6 @@ namespace ConfigMgr.QuickTools.CollectionManagment
                 dataGridViewRow.Cells[1].Value = resultObject["Name"].StringValue;
                 dataGridViewRow.Cells[3].Value = resultObject["CollectionID"].StringValue;
 
-                // get the rules from CollectionRules which is a lazy property  
-                resultObject.Get();
-
-                List<IResultObject> rulesList = resultObject.GetArrayItems("CollectionRules");
-                if (rulesList != null && rulesList.Count > 0)
-                {
-                    foreach (IResultObject rule in rulesList)
-                    {
-                        if (rule.Properties["__CLASS"].StringValue.Equals("SMS_CollectionRuleQuery", StringComparison.OrdinalIgnoreCase))
-                        {
-                            dataGridViewRow.Cells[2].Value = "Yes";
-                        }
-                    }
-                }
-
                 dataGridViewRow.Tag = resultObject;
                 dataGridViewCollections.Rows.Add(dataGridViewRow);
             }
@@ -93,23 +79,16 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             try
             {
                 if (e.Error != null)
-                {
-                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
-                    {
-                        sccmExceptionDialog.ShowDialog();
-                    }
-                }
-                else if (e.Cancelled)
-                    ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "User canceled");
+                    SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
                 else
                     Initialized = true;
             }
             finally
             {
-                if (sender as SmsBackgroundWorker == backgroundWorker)
+                if (sender as SmsBackgroundWorker == smsBackgroundWorker)
                 {
-                    backgroundWorker.Dispose();
-                    backgroundWorker = null;
+                    smsBackgroundWorker.Dispose();
+                    smsBackgroundWorker = null;
                     dataGridViewCollections.Sort(columnCollection, ListSortDirection.Ascending);
                     UseWaitCursor = false;
                     labelCount.Text = dataGridViewCollections.Rows.Count.ToString();
@@ -288,6 +267,69 @@ namespace ConfigMgr.QuickTools.CollectionManagment
         private void DataGridViewCollections_KeyUp(object sender, KeyEventArgs e)
         {
             Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnSelected);
+        }
+
+        private void ButtonQuery_Click(object sender, EventArgs e)
+        {
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += new DoWorkEventHandler(InfoWorker_DoWork);
+            backgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(InfoWorker_RunWorkerCompleted);
+            backgroundWorker.WorkerSupportsCancellation = false;
+            backgroundWorker.WorkerReportsProgress = false;
+            UseWaitCursor = true;
+            backgroundWorker.RunWorkerAsync();
+        }
+
+        private void InfoWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                foreach (DataGridViewRow dataGridViewRow in dataGridViewCollections.Rows)
+                {
+                    if (dataGridViewRow.Tag is IResultObject collection)
+                    {
+                        // get the rules from CollectionRules which is a lazy property  
+                        collection.Get();
+
+                        List<IResultObject> rulesList = collection.GetArrayItems("CollectionRules");
+                        if (rulesList != null && rulesList.Count > 0)
+                        {
+                            foreach (IResultObject rule in rulesList)
+                            {
+                                if (rule.Properties["__CLASS"].StringValue.Equals("SMS_CollectionRuleQuery", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    BeginInvoke((MethodInvoker)delegate ()
+                                    {
+                                        dataGridViewRow.Cells[2].Value = "Yes";
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(string.Format("{0}: {1}", ex.GetType().Name, ex.Message));
+            }
+        }
+
+        private void InfoWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Error != null)
+                    SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
+            }
+            finally
+            {
+                if (sender as BackgroundWorker == backgroundWorker)
+                {
+                    backgroundWorker.Dispose();
+                    backgroundWorker = null;
+                    UseWaitCursor = false;
+                }
+            }
         }
     }
 }

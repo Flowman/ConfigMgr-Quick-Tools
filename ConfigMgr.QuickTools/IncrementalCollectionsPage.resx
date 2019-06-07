@@ -120,9 +120,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Configuration Manager best practice states that no more than 200 collections in a Configuration Manager environment should have the Incremental Update checkbox ticked, as this will cause unstable and slow environment.</value>
   </data>
-  <metadata name="columnDisable.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="columnCollection.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

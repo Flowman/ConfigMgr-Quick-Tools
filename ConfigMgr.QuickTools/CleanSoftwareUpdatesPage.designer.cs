@@ -30,7 +30,7 @@
         {
             this.dataGridViewUpdates = new System.Windows.Forms.DataGridView();
             this.ColumnIcon = new System.Windows.Forms.DataGridViewImageColumn();
-            this.columnRemove = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.columnSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnTitle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnArticleID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.labelDescription = new System.Windows.Forms.Label();
@@ -52,7 +52,7 @@
             this.dataGridViewUpdates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewUpdates.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIcon,
-            this.columnRemove,
+            this.columnSelected,
             this.columnTitle,
             this.columnArticleID});
             this.dataGridViewUpdates.Location = new System.Drawing.Point(6, 16);
@@ -73,10 +73,10 @@
             // 
             // columnRemove
             // 
-            this.columnRemove.HeaderText = "Remove";
-            this.columnRemove.MinimumWidth = 20;
-            this.columnRemove.Name = "columnRemove";
-            this.columnRemove.Width = 55;
+            this.columnSelected.HeaderText = "Remove";
+            this.columnSelected.MinimumWidth = 20;
+            this.columnSelected.Name = "columnSelected";
+            this.columnSelected.Width = 55;
             // 
             // columnTitle
             // 
@@ -173,7 +173,7 @@
         private System.Windows.Forms.CheckBox checkBoxRemoveContent;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnArticleID;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnTitle;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn columnRemove;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn columnSelected;
         private System.Windows.Forms.DataGridViewImageColumn ColumnIcon;
     }
 }

@@ -135,7 +135,7 @@
             // 
             this.columnSelected.HeaderText = "";
             this.columnSelected.MinimumWidth = 20;
-            this.columnSelected.Name = "columnCapture";
+            this.columnSelected.Name = "columnSelected";
             this.columnSelected.Width = 25;
             // 
             // columnProvider

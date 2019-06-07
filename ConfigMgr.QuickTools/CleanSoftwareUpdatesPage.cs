@@ -232,7 +232,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             List<IResultObject> list = new List<IResultObject>();
             foreach (DataGridViewRow dataGridViewRow in dataGridViewUpdates.Rows)
             {
-                if (Convert.ToBoolean(dataGridViewRow.Cells[columnRemove.Name].Value) == true)
+                if (Convert.ToBoolean(dataGridViewRow.Cells[columnSelected.Name].Value) == true)
                 {
                     if (dataGridViewRow.Tag is IResultObject update)
                     {
@@ -317,7 +317,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
 
         private void DataGridViewUpdates_KeyUp(object sender, KeyEventArgs e)
         {
-            Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnRemove);
+            Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnSelected);
         }
 
         private void ButtonDeselectAll_Click(object sender, EventArgs e)
