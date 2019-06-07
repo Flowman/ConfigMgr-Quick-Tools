@@ -9,7 +9,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
-using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -31,7 +30,7 @@ namespace ConfigMgr.QuickTools
 
             connectionManager = Microsoft.ConfigurationManagement.AdminConsole.UtilityClass.ConnectionManagerFromScope(scopeNode, "WQL");
 
-            progressBar1.Style = ProgressBarStyle.Marquee;
+            progressBar.Style = ProgressBarStyle.Marquee;
 
             listViewListCollections.UpdateColumnWidth(columnHeaderName);
             listViewListCollections.Items.Clear();
@@ -143,12 +142,7 @@ namespace ConfigMgr.QuickTools
             try
             {
                 if (e.Error != null)
-                {
-                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
-                    {
-                        sccmExceptionDialog.ShowDialog();
-                    }
-                }
+                    SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
             }
             finally
             {
@@ -157,7 +151,7 @@ namespace ConfigMgr.QuickTools
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    progressBar1.Visible = false;
+                    progressBar.Visible = false;
                     listViewListCollections.IsLoading = false;
                     listViewListCollections.UpdateColumnWidth(columnHeaderName);
                 }
@@ -180,20 +174,9 @@ namespace ConfigMgr.QuickTools
             Close();
         }
 
-        private void ListViewListCollections_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListCollections.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
     }
 }

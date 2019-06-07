@@ -197,6 +197,12 @@
     <Compile Include="ProgressInformationDialog.Designer.cs">
       <DependentUpon>ProgressInformationDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResultDriverComplianceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ResultDriverComplianceControl.Designer.cs">
+      <DependentUpon>ResultDriverComplianceControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Vendor.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressInformationDialog.resx">
       <DependentUpon>ProgressInformationDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultDriverComplianceControl.resx">
+      <DependentUpon>ResultDriverComplianceControl.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

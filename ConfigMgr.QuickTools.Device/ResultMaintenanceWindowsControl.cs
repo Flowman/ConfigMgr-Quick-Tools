@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
@@ -19,15 +20,20 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
         {
             InitializeComponent();
 
-            Title = "Maintenance Windows";
+            buttonRefresh.Image = new Icon(Properties.Resources.reload, new Size(16, 16)).ToBitmap();
 
-            Updater.CheckUpdates();
+            Title = "Maintenance Windows";
         }
 
         public override void InitializePageControl()
         {
             base.InitializePageControl();
 
+            Initialized = true;
+        }
+
+        private void ButtonSURefresh_Click(object sender, EventArgs e)
+        {
             listViewWindows.UpdateColumnWidth(columnHeaderWindows);
             listViewWindows.Items.Clear();
             listViewWindows.IsLoading = true;
@@ -174,10 +180,6 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             {
                 if (e.Error != null)
                     SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
-                else if (e.Cancelled)
-                    ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "User canceled");
-                else
-                    Initialized = true;
             }
             finally
             {

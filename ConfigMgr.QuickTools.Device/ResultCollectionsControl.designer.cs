@@ -1,6 +1,4 @@
-﻿using Microsoft.ConfigurationManagement.AdminConsole.Common;
-
-namespace ConfigMgr.QuickTools.Device.PropertiesDialog
+﻿namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
     partial class ResultCollectionsControl
     {
@@ -106,7 +104,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
         #endregion
 
-        private SmsSearchableListView listViewCollections;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewCollections;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ColumnHeader columnHeaderCollection;
         private System.Windows.Forms.ColumnHeader columnHeaderCollectionID;

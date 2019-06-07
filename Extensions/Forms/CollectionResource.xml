@@ -11,6 +11,7 @@
       <Page VendorId="Otherland" Id="{C8838A1C-211F-4FEB-B25E-2EC197771D14}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultSoftwareUpdatesControl" ReadOnly="false" MultiSelection="false" Visible="false" />
       <Page VendorId="Otherland" Id="{A93AD205-2EA1-4596-9EA6-921DEBB5C7DD}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultSUComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false" />
       <Page VendorId="Otherland" Id="{7139BB0A-D9BF-4925-9ACA-3E03C8C33375}" Assembly="ConfigMgr.QuickTools.Device" Namespace="ConfigMgr.QuickTools.Device.PropertiesDialog" Type="ResultClientHealthControl" ReadOnly="false" MultiSelection="false" Visible="false" />
+      <Page VendorId="Otherland" Id="{6168E295-0F68-4239-9CFF-68E06F738351}" Assembly="ConfigMgr.QuickTools.DriverManager" Namespace="ConfigMgr.QuickTools.DriverManager.PropertiesDialog" Type="ResultDriverComplianceControl" ReadOnly="false" MultiSelection="false" Visible="false" />         
     </Pages>
   </Form>
 </SmsFormData>

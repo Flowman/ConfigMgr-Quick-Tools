@@ -101,10 +101,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             {
                 if (e.Error != null)
                 {
-                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
-                    {
-                        int num = (int)sccmExceptionDialog.ShowDialog();
-                    }
+                    SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
                 }
                 else if (e.Cancelled)
                 {

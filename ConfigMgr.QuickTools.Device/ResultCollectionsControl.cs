@@ -64,8 +64,6 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             {
                 if (e.Error != null)
                     SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
-                else if (e.Cancelled)
-                    ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "User canceled");
                 else
                     Initialized = true;
             }

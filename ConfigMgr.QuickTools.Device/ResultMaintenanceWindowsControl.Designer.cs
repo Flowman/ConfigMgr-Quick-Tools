@@ -36,18 +36,19 @@
             this.listViewUpcomingWindows = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderUpcomingTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderUpcomingName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonRefresh = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 13);
+            this.label1.Location = new System.Drawing.Point(10, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(197, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Maintenance Windows for this resource:";
             // 
-            // listViewListWindows
+            // listViewWindows
             // 
             this.listViewWindows.Activation = System.Windows.Forms.ItemActivation.Standard;
             this.listViewWindows.Alignment = System.Windows.Forms.ListViewAlignment.Top;
@@ -64,9 +65,9 @@
             this.listViewWindows.HideSelection = false;
             this.listViewWindows.IsLoading = false;
             this.listViewWindows.LargeImageList = null;
-            this.listViewWindows.Location = new System.Drawing.Point(15, 37);
+            this.listViewWindows.Location = new System.Drawing.Point(14, 34);
             this.listViewWindows.MultiSelect = true;
-            this.listViewWindows.Name = "listViewListWindows";
+            this.listViewWindows.Name = "listViewWindows";
             this.listViewWindows.ShowSearchBar = true;
             this.listViewWindows.Size = new System.Drawing.Size(354, 162);
             this.listViewWindows.SmallImageList = null;
@@ -91,13 +92,13 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 213);
+            this.label2.Location = new System.Drawing.Point(10, 205);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(248, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Upcoming Maintenance Windows for this resource:";
             // 
-            // listViewListUpcomingWindows
+            // listViewUpcomingWindows
             // 
             this.listViewUpcomingWindows.Activation = System.Windows.Forms.ItemActivation.Standard;
             this.listViewUpcomingWindows.Alignment = System.Windows.Forms.ListViewAlignment.Top;
@@ -115,11 +116,11 @@
             this.listViewUpcomingWindows.HideSelection = false;
             this.listViewUpcomingWindows.IsLoading = false;
             this.listViewUpcomingWindows.LargeImageList = null;
-            this.listViewUpcomingWindows.Location = new System.Drawing.Point(13, 237);
+            this.listViewUpcomingWindows.Location = new System.Drawing.Point(13, 230);
             this.listViewUpcomingWindows.MultiSelect = true;
-            this.listViewUpcomingWindows.Name = "listViewListUpcomingWindows";
+            this.listViewUpcomingWindows.Name = "listViewUpcomingWindows";
             this.listViewUpcomingWindows.ShowSearchBar = true;
-            this.listViewUpcomingWindows.Size = new System.Drawing.Size(354, 104);
+            this.listViewUpcomingWindows.Size = new System.Drawing.Size(354, 111);
             this.listViewUpcomingWindows.SmallImageList = null;
             this.listViewUpcomingWindows.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewUpcomingWindows.StateImageList = null;
@@ -139,10 +140,21 @@
             this.columnHeaderUpcomingName.Text = "Name";
             this.columnHeaderUpcomingName.Width = 250;
             // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRefresh.Location = new System.Drawing.Point(344, 4);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(24, 24);
+            this.buttonRefresh.TabIndex = 9;
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.ButtonSURefresh_Click);
+            // 
             // ResultMaintenanceWindowsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.listViewUpcomingWindows);
             this.Controls.Add(this.label1);
@@ -163,5 +175,6 @@
         private System.Windows.Forms.ColumnHeader columnHeaderCollection;
         private System.Windows.Forms.ColumnHeader columnHeaderUpcomingTime;
         private System.Windows.Forms.ColumnHeader columnHeaderUpcomingName;
+        private System.Windows.Forms.Button buttonRefresh;
     }
 }

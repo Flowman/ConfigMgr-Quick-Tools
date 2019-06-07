@@ -184,6 +184,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConfigMgr.QuickTools.DriverManager\ConfigMgr.QuickTools.DriverManager.csproj">
+      <Project>{51f57a27-809b-43bb-92ff-fe39f9ad87f6}</Project>
+      <Name>ConfigMgr.QuickTools.DriverManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConfigMgr.QuickTools\ConfigMgr.QuickTools.csproj">
       <Project>{86a66d04-06eb-41b0-a6bf-3a1aff79ca8d}</Project>
       <Name>ConfigMgr.QuickTools</Name>

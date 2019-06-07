@@ -192,7 +192,6 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             progressWorker.ReportProgress(50, "Validating connection to ADMIN$ share");
 
-            //FileSystemRights.Modify
             if (Utility.CheckFolderPermissions(string.Format(@"\\{0}\admin$", PropertyManager["Name"].StringValue), FileSystemRights.ReadData))
             {
                 checkBoxShare.Checked = true;

@@ -55,7 +55,7 @@
             this.buttonSURefresh.UseVisualStyleBackColor = true;
             this.buttonSURefresh.Click += new System.EventHandler(this.buttonSURefresh_Click);
             // 
-            // listViewListSoftwareUpdates
+            // listViewSoftwareUpdates
             // 
             this.listViewSoftwareUpdates.Activation = System.Windows.Forms.ItemActivation.Standard;
             this.listViewSoftwareUpdates.Alignment = System.Windows.Forms.ListViewAlignment.Top;
@@ -76,7 +76,7 @@
             this.listViewSoftwareUpdates.LargeImageList = null;
             this.listViewSoftwareUpdates.Location = new System.Drawing.Point(14, 34);
             this.listViewSoftwareUpdates.MultiSelect = true;
-            this.listViewSoftwareUpdates.Name = "listViewListSoftwareUpdates";
+            this.listViewSoftwareUpdates.Name = "listViewSoftwareUpdates";
             this.listViewSoftwareUpdates.ShowSearchBar = true;
             this.listViewSoftwareUpdates.Size = new System.Drawing.Size(354, 305);
             this.listViewSoftwareUpdates.SmallImageList = null;
@@ -96,7 +96,7 @@
             // columnHeaderTitle
             // 
             this.columnHeaderTitle.Text = "Title";
-            this.columnHeaderTitle.Width = 260;
+            this.columnHeaderTitle.Width = 200;
             // 
             // columnHeaderStatus
             // 

@@ -42,7 +42,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.listViewListCollections = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderTimeToEvaluate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -179,12 +179,12 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(0, 0);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(449, 5);
-            this.progressBar1.TabIndex = 12;
+            this.progressBar.Location = new System.Drawing.Point(0, 0);
+            this.progressBar.Name = "progressBar1";
+            this.progressBar.Size = new System.Drawing.Size(449, 5);
+            this.progressBar.TabIndex = 12;
             // 
             // listViewListCollections
             // 
@@ -217,7 +217,7 @@
             this.listViewListCollections.TileSize = new System.Drawing.Size(0, 0);
             this.listViewListCollections.UseCompatibleStateImageBehavior = false;
             this.listViewListCollections.View = System.Windows.Forms.View.Details;
-            this.listViewListCollections.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListCollections_CopyKeyEvent);
+            this.listViewListCollections.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListView_CopyKeyEvent);
             // 
             // columnHeaderName
             // 
@@ -367,7 +367,7 @@
             this.Controls.Add(this.label12);
             this.Controls.Add(this.buttonOK);
             this.Controls.Add(this.listViewListCollections);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -403,7 +403,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressBar;
         private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListCollections;
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.ColumnHeader columnHeaderName;
