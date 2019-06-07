@@ -39,7 +39,7 @@ namespace ConfigMgr.QuickTools.Device
             backgroundWorker.WorkerSupportsCancellation = false;
             backgroundWorker.WorkerReportsProgress = false;
             UseWaitCursor = true;
-            listViewListContent.IsLoading = true;
+            listViewContent.IsLoading = true;
             backgroundWorker.RunWorkerAsync();
 
             Dirty = false;
@@ -104,9 +104,9 @@ namespace ConfigMgr.QuickTools.Device
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListContent.IsLoading = false;
-                    listViewListContent.UpdateColumnWidth(columnHeaderLocation);
-                    listViewListContent.Sorting = SortOrder.Ascending;
+                    listViewContent.IsLoading = false;
+                    listViewContent.UpdateColumnWidth(columnHeaderLocation);
+                    listViewContent.Sorting = SortOrder.Ascending;
                     Initialized = true;
                 }
             }
@@ -139,14 +139,14 @@ namespace ConfigMgr.QuickTools.Device
 
         private void UpdateContentListView(List<ManagementObject> items)
         {
-            listViewListContent.Items.Clear();
+            listViewContent.Items.Clear();
 
             foreach (ManagementObject item in items)
             {
                 ByteSize size = ByteSize.FromKiloBytes(double.Parse(item["ContentSize"].ToString()));
                 DateTime date = ManagementDateTimeConverter.ToDateTime(item["LastReferenced"].ToString());
 
-                listViewListContent.Items.Add(new ListViewItem()
+                listViewContent.Items.Add(new ListViewItem()
                 {
                     Text = item["Location"].ToString(),
                     SubItems = {
@@ -204,13 +204,13 @@ namespace ConfigMgr.QuickTools.Device
 
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
-            if (listViewListContent.SelectedItems.Count == 0)
+            if (listViewContent.SelectedItems.Count == 0)
                 e.Cancel = true;
         }
 
         private void ToolStripMenuItemDelete_Click(object sender, EventArgs e)
         {
-            ListView.SelectedListViewItemCollection items = listViewListContent.SelectedItems;
+            ListView.SelectedListViewItemCollection items = listViewContent.SelectedItems;
 
             MessageBoxResult result = System.Windows.MessageBox.Show(string.Format("Do you really want to remove {0} items from the cache?", items.Count), "Configuration Manager", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
 
@@ -242,8 +242,8 @@ namespace ConfigMgr.QuickTools.Device
 
         private void ButtonClearCache_Click(object sender, EventArgs e)
         {
-            listViewListContent.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
-            ListView.SelectedListViewItemCollection items = listViewListContent.SelectedItems;
+            listViewContent.Items.OfType<ListViewItem>().ToList().ForEach(item => item.Checked = true);
+            ListView.SelectedListViewItemCollection items = listViewContent.SelectedItems;
 
             MessageBoxResult result = System.Windows.MessageBox.Show("Are you sure you want to clear the cache?", "Configuration Manager", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
 

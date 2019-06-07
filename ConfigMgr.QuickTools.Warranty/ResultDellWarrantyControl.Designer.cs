@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listViewListWarranty = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.listViewWarranty = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderStartDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -47,37 +47,37 @@
             // 
             // listViewListWarranty
             // 
-            this.listViewListWarranty.Activation = System.Windows.Forms.ItemActivation.Standard;
-            this.listViewListWarranty.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListWarranty.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewWarranty.Activation = System.Windows.Forms.ItemActivation.Standard;
+            this.listViewWarranty.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewWarranty.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewListWarranty.AutoSort = true;
-            this.listViewListWarranty.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.listViewListWarranty.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewWarranty.AutoSort = true;
+            this.listViewWarranty.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewWarranty.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderDescription,
             this.columnHeaderType,
             this.columnHeaderStartDate,
             this.columnHeaderEndDate});
-            this.listViewListWarranty.CustomNoResultsText = null;
-            this.listViewListWarranty.FullRowSelect = true;
-            this.listViewListWarranty.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.listViewListWarranty.HideSelection = false;
-            this.listViewListWarranty.IsLoading = false;
-            this.listViewListWarranty.LargeImageList = null;
-            this.listViewListWarranty.Location = new System.Drawing.Point(14, 34);
-            this.listViewListWarranty.MultiSelect = true;
-            this.listViewListWarranty.Name = "listViewListWarranty";
-            this.listViewListWarranty.ShowSearchBar = true;
-            this.listViewListWarranty.Size = new System.Drawing.Size(354, 237);
-            this.listViewListWarranty.SmallImageList = null;
-            this.listViewListWarranty.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listViewListWarranty.StateImageList = null;
-            this.listViewListWarranty.TabIndex = 7;
-            this.listViewListWarranty.TileSize = new System.Drawing.Size(0, 0);
-            this.listViewListWarranty.UseCompatibleStateImageBehavior = false;
-            this.listViewListWarranty.View = System.Windows.Forms.View.Details;
-            this.listViewListWarranty.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListSoftwareUpdates_CopyKeyEvent);
+            this.listViewWarranty.CustomNoResultsText = null;
+            this.listViewWarranty.FullRowSelect = true;
+            this.listViewWarranty.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.listViewWarranty.HideSelection = false;
+            this.listViewWarranty.IsLoading = false;
+            this.listViewWarranty.LargeImageList = null;
+            this.listViewWarranty.Location = new System.Drawing.Point(14, 34);
+            this.listViewWarranty.MultiSelect = true;
+            this.listViewWarranty.Name = "listViewListWarranty";
+            this.listViewWarranty.ShowSearchBar = true;
+            this.listViewWarranty.Size = new System.Drawing.Size(354, 237);
+            this.listViewWarranty.SmallImageList = null;
+            this.listViewWarranty.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewWarranty.StateImageList = null;
+            this.listViewWarranty.TabIndex = 7;
+            this.listViewWarranty.TileSize = new System.Drawing.Size(0, 0);
+            this.listViewWarranty.UseCompatibleStateImageBehavior = false;
+            this.listViewWarranty.View = System.Windows.Forms.View.Details;
+            this.listViewWarranty.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListView_CopyKeyEvent);
             // 
             // columnHeaderDescription
             // 
@@ -207,7 +207,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.labelServiceTag);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.listViewListWarranty);
+            this.Controls.Add(this.listViewWarranty);
             this.Controls.Add(this.buttonSURefresh);
             this.Name = "ResultDellWarrantyControl";
             this.ResumeLayout(false);
@@ -217,7 +217,7 @@
 
         #endregion
 
-        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListWarranty;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewWarranty;
         private System.Windows.Forms.Button buttonSURefresh;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelServiceTag;

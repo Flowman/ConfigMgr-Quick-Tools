@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Management;
-using System.Text;
 
 namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
@@ -40,9 +39,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
         private void ButtonSURefresh_Click(object sender, EventArgs e)
         {
-            listViewListSoftwareUpdates.IsLoading = true;
-            listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
-            listViewListSoftwareUpdates.Items.Clear();
+            listViewSoftwareUpdates.IsLoading = true;
+            listViewSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
+            listViewSoftwareUpdates.Items.Clear();
 
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += new DoWorkEventHandler(InfoWorker_DoWork);
@@ -75,7 +74,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                         var updateGroup = updateGroups.Where(x => x.Properties["CI_ID"].IntegerValue.Equals(assignment.Properties["AssignedUpdateGroup"].IntegerValue)).FirstOrDefault();
                         if (updateGroup != null)
                         {
-                            listViewListSoftwareUpdates.Items.Add(new ListViewItem()
+                            listViewSoftwareUpdates.Items.Add(new ListViewItem()
                             {
                                 Text = updateGroup["LocalizedDisplayName"].StringValue,
                                 SubItems = {
@@ -129,27 +128,16 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListSoftwareUpdates.IsLoading = false;
-                    listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
+                    listViewSoftwareUpdates.IsLoading = false;
+                    listViewSoftwareUpdates.UpdateColumnWidth(columnHeaderAssignment);
                     buttonSURefresh.Enabled = true;
                 }
             }
         }
 
-        private void ListViewListSoftwareUpdates_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListSoftwareUpdates.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
     }
 }

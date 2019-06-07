@@ -1,12 +1,10 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
-using Microsoft.ConfigurationManagement.AdminConsole.Common;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using Microsoft.ConfigurationManagement.ManagementProvider;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Text;
 
 namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
@@ -28,9 +26,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
         {
             base.InitializePageControl();
 
-            listViewListCollections.UpdateColumnWidth(columnHeaderCollection);
-            listViewListCollections.Items.Clear();
-            listViewListCollections.IsLoading = true;
+            listViewCollections.UpdateColumnWidth(columnHeaderCollection);
+            listViewCollections.Items.Clear();
+            listViewCollections.IsLoading = true;
 
             string query = string.Format("SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where ResourceID = '{0}' and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID", PropertyManager["ResourceID"].IntegerValue);
 
@@ -49,7 +47,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
             foreach (IResultObject resultObject in e.ResultObjects)
             {
-                listViewListCollections.Items.Add(new ListViewItem()
+                listViewCollections.Items.Add(new ListViewItem()
                 {
                     Text = resultObject["Name"].StringValue,
                     SubItems = {
@@ -78,26 +76,15 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListCollections.IsLoading = false;
-                    listViewListCollections.UpdateColumnWidth(columnHeaderCollection);
+                    listViewCollections.IsLoading = false;
+                    listViewCollections.UpdateColumnWidth(columnHeaderCollection);
                 }
             }
         }
 
-        private void ListViewListCollections_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListCollections.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
     }
 }

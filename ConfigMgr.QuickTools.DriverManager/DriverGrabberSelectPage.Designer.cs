@@ -35,7 +35,7 @@
             this.labelDescription = new System.Windows.Forms.Label();
             this.labelDestination = new System.Windows.Forms.Label();
             this.dataGridViewDrivers = new System.Windows.Forms.DataGridView();
-            this.columnCapture = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.columnSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnProvider = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnDesc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -115,7 +115,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewDrivers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDrivers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.columnCapture,
+            this.columnSelected,
             this.columnProvider,
             this.columnDesc,
             this.columnVersion,
@@ -133,10 +133,10 @@
             // 
             // columnCapture
             // 
-            this.columnCapture.HeaderText = "";
-            this.columnCapture.MinimumWidth = 20;
-            this.columnCapture.Name = "columnCapture";
-            this.columnCapture.Width = 25;
+            this.columnSelected.HeaderText = "";
+            this.columnSelected.MinimumWidth = 20;
+            this.columnSelected.Name = "columnCapture";
+            this.columnSelected.Width = 25;
             // 
             // columnProvider
             // 
@@ -193,7 +193,7 @@
         private System.Windows.Forms.DataGridView dataGridViewDrivers;
         private System.Windows.Forms.Label labelDestination;
         private System.Windows.Forms.Label labelDescription;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn columnCapture;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn columnSelected;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnProvider;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDesc;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnVersion;

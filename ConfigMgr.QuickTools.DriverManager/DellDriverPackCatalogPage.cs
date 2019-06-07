@@ -118,7 +118,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             List<DellDriverPackage> list = new List<DellDriverPackage>();
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
             {
-                if (Convert.ToBoolean(dataGridViewRow.Cells[columnImport.Name].Value) == true)
+                if (Convert.ToBoolean(dataGridViewRow.Cells[columnSelected.Name].Value) == true)
                 {
                     if (dataGridViewRow.Tag is DellDriverPackage pack)
                     {
@@ -520,17 +520,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         }
         private void DataGridViewDriverPackages_KeyUp(object sender, KeyEventArgs e)
         {
-            int selectedRowCount = dataGridViewDriverPackages.Rows.GetRowCount(DataGridViewElementStates.Selected);
-
-            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
-            {
-                for (int i = 0; i < selectedRowCount; i++)
-                {
-                    dataGridViewDriverPackages.SelectedRows[i].Cells[columnImport.Name].Value = !(bool)dataGridViewDriverPackages.SelectedRows[i].Cells[columnImport.Name].Value;
-                }
-
-                e.Handled = true;
-            }
+            Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnSelected);
         }
 
         private void ReleaseNotesToolStripMenuItem_Click(object sender, EventArgs e)

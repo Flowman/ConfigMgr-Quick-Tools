@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.buttonSURefresh = new System.Windows.Forms.Button();
-            this.listViewListSoftwareUpdates = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.listViewSoftwareUpdates = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderKB = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -57,36 +57,36 @@
             // 
             // listViewListSoftwareUpdates
             // 
-            this.listViewListSoftwareUpdates.Activation = System.Windows.Forms.ItemActivation.Standard;
-            this.listViewListSoftwareUpdates.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListSoftwareUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewSoftwareUpdates.Activation = System.Windows.Forms.ItemActivation.Standard;
+            this.listViewSoftwareUpdates.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewSoftwareUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewListSoftwareUpdates.AutoSort = true;
-            this.listViewListSoftwareUpdates.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.listViewListSoftwareUpdates.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewSoftwareUpdates.AutoSort = true;
+            this.listViewSoftwareUpdates.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewSoftwareUpdates.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderKB,
             this.columnHeaderTitle,
             this.columnHeaderStatus});
-            this.listViewListSoftwareUpdates.CustomNoResultsText = null;
-            this.listViewListSoftwareUpdates.FullRowSelect = true;
-            this.listViewListSoftwareUpdates.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.listViewListSoftwareUpdates.HideSelection = false;
-            this.listViewListSoftwareUpdates.IsLoading = false;
-            this.listViewListSoftwareUpdates.LargeImageList = null;
-            this.listViewListSoftwareUpdates.Location = new System.Drawing.Point(14, 34);
-            this.listViewListSoftwareUpdates.MultiSelect = true;
-            this.listViewListSoftwareUpdates.Name = "listViewListSoftwareUpdates";
-            this.listViewListSoftwareUpdates.ShowSearchBar = true;
-            this.listViewListSoftwareUpdates.Size = new System.Drawing.Size(354, 305);
-            this.listViewListSoftwareUpdates.SmallImageList = null;
-            this.listViewListSoftwareUpdates.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listViewListSoftwareUpdates.StateImageList = null;
-            this.listViewListSoftwareUpdates.TabIndex = 4;
-            this.listViewListSoftwareUpdates.TileSize = new System.Drawing.Size(0, 0);
-            this.listViewListSoftwareUpdates.UseCompatibleStateImageBehavior = false;
-            this.listViewListSoftwareUpdates.View = System.Windows.Forms.View.Details;
-            this.listViewListSoftwareUpdates.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListSoftwareUpdates_CopyKeyEvent);
+            this.listViewSoftwareUpdates.CustomNoResultsText = null;
+            this.listViewSoftwareUpdates.FullRowSelect = true;
+            this.listViewSoftwareUpdates.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.listViewSoftwareUpdates.HideSelection = false;
+            this.listViewSoftwareUpdates.IsLoading = false;
+            this.listViewSoftwareUpdates.LargeImageList = null;
+            this.listViewSoftwareUpdates.Location = new System.Drawing.Point(14, 34);
+            this.listViewSoftwareUpdates.MultiSelect = true;
+            this.listViewSoftwareUpdates.Name = "listViewListSoftwareUpdates";
+            this.listViewSoftwareUpdates.ShowSearchBar = true;
+            this.listViewSoftwareUpdates.Size = new System.Drawing.Size(354, 305);
+            this.listViewSoftwareUpdates.SmallImageList = null;
+            this.listViewSoftwareUpdates.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewSoftwareUpdates.StateImageList = null;
+            this.listViewSoftwareUpdates.TabIndex = 4;
+            this.listViewSoftwareUpdates.TileSize = new System.Drawing.Size(0, 0);
+            this.listViewSoftwareUpdates.UseCompatibleStateImageBehavior = false;
+            this.listViewSoftwareUpdates.View = System.Windows.Forms.View.Details;
+            this.listViewSoftwareUpdates.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListView_CopyKeyEvent);
             // 
             // columnHeaderKB
             // 
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.listViewListSoftwareUpdates);
+            this.Controls.Add(this.listViewSoftwareUpdates);
             this.Controls.Add(this.buttonSURefresh);
             this.Controls.Add(this.label1);
             this.Name = "ResultSoftwareUpdatesControl";
@@ -119,7 +119,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSURefresh;
-        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListSoftwareUpdates;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewSoftwareUpdates;
         private System.Windows.Forms.ColumnHeader columnHeaderKB;
         private System.Windows.Forms.ColumnHeader columnHeaderTitle;
         private System.Windows.Forms.ColumnHeader columnHeaderStatus;

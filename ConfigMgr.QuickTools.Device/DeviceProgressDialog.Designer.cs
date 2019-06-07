@@ -40,7 +40,7 @@
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonOK = new System.Windows.Forms.Button();
-            this.clientActionProgressBar1 = new ConfigMgr.QuickTools.Device.ClientActionProgressBar();
+            this.clientActionProgressBar = new ConfigMgr.QuickTools.Device.ClientActionProgressBar();
             this.SuspendLayout();
             // 
             // buttonCancel
@@ -166,15 +166,15 @@
             // 
             // clientActionProgressBar1
             // 
-            this.clientActionProgressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.clientActionProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.clientActionProgressBar1.Complete = 0;
-            this.clientActionProgressBar1.Failed = 0;
-            this.clientActionProgressBar1.Location = new System.Drawing.Point(12, 274);
-            this.clientActionProgressBar1.Name = "clientActionProgressBar1";
-            this.clientActionProgressBar1.Offline = 0;
-            this.clientActionProgressBar1.Size = new System.Drawing.Size(310, 23);
-            this.clientActionProgressBar1.TabIndex = 10;
+            this.clientActionProgressBar.Complete = 0;
+            this.clientActionProgressBar.Failed = 0;
+            this.clientActionProgressBar.Location = new System.Drawing.Point(12, 274);
+            this.clientActionProgressBar.Name = "clientActionProgressBar1";
+            this.clientActionProgressBar.Offline = 0;
+            this.clientActionProgressBar.Size = new System.Drawing.Size(310, 23);
+            this.clientActionProgressBar.TabIndex = 10;
             // 
             // DeviceProgressDialog
             // 
@@ -190,7 +190,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listViewHosts);
             this.Controls.Add(this.buttonOK);
-            this.Controls.Add(this.clientActionProgressBar1);
+            this.Controls.Add(this.clientActionProgressBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(310, 350);
@@ -213,7 +213,7 @@
         private System.Windows.Forms.Label label1;
         private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewHosts;
         private System.Windows.Forms.Button buttonOK;
-        private ClientActionProgressBar clientActionProgressBar1;
+        private ClientActionProgressBar clientActionProgressBar;
         private System.Windows.Forms.ColumnHeader columnHeaderName;
         private System.Windows.Forms.ColumnHeader columnHeaderStatus;
     }

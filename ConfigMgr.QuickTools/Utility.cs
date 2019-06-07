@@ -411,6 +411,37 @@ namespace ConfigMgr.QuickTools
             targetColumn.Width = num;
         }
 
+        public static void SelectDataGridViewWithSpace(KeyEventArgs e, DataGridView dataGridView, DataGridViewColumn targetColumn)
+        {
+            int selectedRowCount = dataGridView.Rows.GetRowCount(DataGridViewElementStates.Selected);
+
+            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
+            {
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    dataGridView.SelectedRows[i].Cells[targetColumn.Name].Value = !(bool)dataGridView.SelectedRows[i].Cells[targetColumn.Name].Value;
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        public static void CopyToClipboard(ListView listView)
+        {
+            StringBuilder buffer = new StringBuilder();
+            foreach (ListViewItem item in listView.SelectedItems)
+            {
+                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
+                {
+                    buffer.Append(subitem.Text);
+                    buffer.Append("\t");
+                }
+                buffer.AppendLine();
+            }
+            buffer.Remove(buffer.Length - 1, 1);
+            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+        }
+
         public static string RandomString(int size, bool lowerCase)
         {
             StringBuilder builder = new StringBuilder();

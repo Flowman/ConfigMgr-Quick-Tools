@@ -15,9 +15,9 @@ namespace ConfigMgr.QuickTools.Device
         internal CancellationTokenSource CancellationTokenSource { get; set; } = new CancellationTokenSource();
         internal bool IsLoading { get { return listViewHosts.IsLoading; } set { listViewHosts.IsLoading = value; } }
         internal int Total {
-            get { return clientActionProgressBar1.Maximum; }
+            get { return clientActionProgressBar.Maximum; }
             set {
-                clientActionProgressBar1.Maximum = value;
+                clientActionProgressBar.Maximum = value;
                 labelTotal.Text = value.ToString();
             }
         }
@@ -36,11 +36,11 @@ namespace ConfigMgr.QuickTools.Device
             IsLoading = true;
             listViewHosts.Items.Clear();
 
-            clientActionProgressBar1.Minimum = 0;
-            clientActionProgressBar1.Offline = 0;
-            clientActionProgressBar1.Complete = 0;
-            clientActionProgressBar1.Failed = 0;
-            clientActionProgressBar1.Style = ProgressBarStyle.Blocks;
+            clientActionProgressBar.Minimum = 0;
+            clientActionProgressBar.Offline = 0;
+            clientActionProgressBar.Complete = 0;
+            clientActionProgressBar.Failed = 0;
+            clientActionProgressBar.Style = ProgressBarStyle.Blocks;
 
             UpdateProgress();
 
@@ -120,11 +120,11 @@ namespace ConfigMgr.QuickTools.Device
 
         internal void UpdateProgress()
         {
-            clientActionProgressBar1.UpdateValues(completed, offline, failed);
+            clientActionProgressBar.UpdateValues(completed, offline, failed);
             labelCompleted.Text = completed.ToString();
             labelOther.Text = other.ToString();
 
-            if (clientActionProgressBar1.Value == clientActionProgressBar1.Maximum)
+            if (clientActionProgressBar.Value == clientActionProgressBar.Maximum)
             {
                 IsLoading = false;
                 buttonOK.Enabled = true;

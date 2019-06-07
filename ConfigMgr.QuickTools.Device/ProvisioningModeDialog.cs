@@ -11,11 +11,11 @@ namespace ConfigMgr.QuickTools.Device
 {
     public partial class ProvisioningModeDialog : SmsCustomDialog
     {
-        private IResultObject resultObjects;
+        private readonly IResultObject resultObjects;
         private int completed;
         private int other;
         private int total;
-        private bool mode;
+        private readonly bool mode;
    
         public delegate void BarDelegate();
 

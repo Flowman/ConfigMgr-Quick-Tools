@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.listViewListClientHealth = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.listViewClientHealth = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonRefresh = new System.Windows.Forms.Button();
@@ -49,35 +49,35 @@
             // 
             // listViewListClientHealth
             // 
-            this.listViewListClientHealth.Activation = System.Windows.Forms.ItemActivation.Standard;
-            this.listViewListClientHealth.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListClientHealth.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewClientHealth.Activation = System.Windows.Forms.ItemActivation.Standard;
+            this.listViewClientHealth.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewClientHealth.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewListClientHealth.AutoSort = true;
-            this.listViewListClientHealth.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.listViewListClientHealth.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewClientHealth.AutoSort = true;
+            this.listViewClientHealth.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewClientHealth.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderDescription,
             this.columnHeaderStatus});
-            this.listViewListClientHealth.CustomNoResultsText = null;
-            this.listViewListClientHealth.FullRowSelect = true;
-            this.listViewListClientHealth.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.listViewListClientHealth.HideSelection = false;
-            this.listViewListClientHealth.IsLoading = false;
-            this.listViewListClientHealth.LargeImageList = null;
-            this.listViewListClientHealth.Location = new System.Drawing.Point(14, 34);
-            this.listViewListClientHealth.MultiSelect = true;
-            this.listViewListClientHealth.Name = "listViewListClientHealth";
-            this.listViewListClientHealth.ShowSearchBar = true;
-            this.listViewListClientHealth.Size = new System.Drawing.Size(354, 271);
-            this.listViewListClientHealth.SmallImageList = null;
-            this.listViewListClientHealth.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listViewListClientHealth.StateImageList = null;
-            this.listViewListClientHealth.TabIndex = 9;
-            this.listViewListClientHealth.TileSize = new System.Drawing.Size(0, 0);
-            this.listViewListClientHealth.UseCompatibleStateImageBehavior = false;
-            this.listViewListClientHealth.View = System.Windows.Forms.View.Details;
-            this.listViewListClientHealth.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListClientHealth_CopyKeyEvent);
+            this.listViewClientHealth.CustomNoResultsText = null;
+            this.listViewClientHealth.FullRowSelect = true;
+            this.listViewClientHealth.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.listViewClientHealth.HideSelection = false;
+            this.listViewClientHealth.IsLoading = false;
+            this.listViewClientHealth.LargeImageList = null;
+            this.listViewClientHealth.Location = new System.Drawing.Point(14, 34);
+            this.listViewClientHealth.MultiSelect = true;
+            this.listViewClientHealth.Name = "listViewListClientHealth";
+            this.listViewClientHealth.ShowSearchBar = true;
+            this.listViewClientHealth.Size = new System.Drawing.Size(354, 271);
+            this.listViewClientHealth.SmallImageList = null;
+            this.listViewClientHealth.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewClientHealth.StateImageList = null;
+            this.listViewClientHealth.TabIndex = 9;
+            this.listViewClientHealth.TileSize = new System.Drawing.Size(0, 0);
+            this.listViewClientHealth.UseCompatibleStateImageBehavior = false;
+            this.listViewClientHealth.View = System.Windows.Forms.View.Details;
+            this.listViewClientHealth.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListView_CopyKeyEvent);
             // 
             // columnHeaderDescription
             // 
@@ -135,7 +135,7 @@
             this.Controls.Add(this.buttonEval);
             this.Controls.Add(this.labelLastScan);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.listViewListClientHealth);
+            this.Controls.Add(this.listViewClientHealth);
             this.Controls.Add(this.buttonRefresh);
             this.Controls.Add(this.label1);
             this.Name = "ResultClientHealthControl";
@@ -147,7 +147,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListClientHealth;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewClientHealth;
         private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.ColumnHeader columnHeaderStatus;
         private System.Windows.Forms.ColumnHeader columnHeaderDescription;

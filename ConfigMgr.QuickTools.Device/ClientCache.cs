@@ -3,7 +3,6 @@ using Microsoft.ConfigurationManagement.ManagementProvider;
 using Microsoft.ConfigurationManagement.AdminConsole.Schema;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
-using System.Reflection;
 using System.Windows;
 
 namespace ConfigMgr.QuickTools.Device

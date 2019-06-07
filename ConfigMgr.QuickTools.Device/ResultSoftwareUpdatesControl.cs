@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Management;
-using System.Text;
 
 namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
@@ -39,9 +38,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
         private void buttonSURefresh_Click(object sender, EventArgs e)
         {
-            listViewListSoftwareUpdates.IsLoading = true;
-            listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderTitle);
-            listViewListSoftwareUpdates.Items.Clear();
+            listViewSoftwareUpdates.IsLoading = true;
+            listViewSoftwareUpdates.UpdateColumnWidth(columnHeaderTitle);
+            listViewSoftwareUpdates.Items.Clear();
 
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += new DoWorkEventHandler(InfoWorker_DoWork);
@@ -64,7 +63,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
                 foreach (IGrouping<string, ManagementObject> update in updates)
                 {
-                    listViewListSoftwareUpdates.Items.Add(new ListViewItem()
+                    listViewSoftwareUpdates.Items.Add(new ListViewItem()
                     {
                         Text = (string)update.First().Properties["Article"].Value,
                         SubItems = {
@@ -99,27 +98,16 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListSoftwareUpdates.IsLoading = false;
-                    listViewListSoftwareUpdates.UpdateColumnWidth(columnHeaderTitle);
+                    listViewSoftwareUpdates.IsLoading = false;
+                    listViewSoftwareUpdates.UpdateColumnWidth(columnHeaderTitle);
                     buttonSURefresh.Enabled = true;
                 }
             }
         }
 
-        private void ListViewListSoftwareUpdates_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListSoftwareUpdates.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
     }
 }

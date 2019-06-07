@@ -185,7 +185,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
             List<IResultObject> list = new List<IResultObject>();
             foreach (DataGridViewRow dataGridViewRow in dataGridViewCollections.Rows)
             {
-                if (Convert.ToBoolean(dataGridViewRow.Cells[columnDisable.Name].Value) == true)
+                if (Convert.ToBoolean(dataGridViewRow.Cells[columnSelected.Name].Value) == true)
                 {
                     if (dataGridViewRow.Tag is IResultObject collection)
                     {
@@ -287,17 +287,7 @@ namespace ConfigMgr.QuickTools.CollectionManagment
 
         private void DataGridViewCollections_KeyUp(object sender, KeyEventArgs e)
         {
-            int selectedRowCount = dataGridViewCollections.Rows.GetRowCount(DataGridViewElementStates.Selected);
- 
-            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
-            {
-                for (int i = 0; i < selectedRowCount; i++)
-                {
-                    dataGridViewCollections.SelectedRows[i].Cells[columnDisable.Name].Value = !(bool)dataGridViewCollections.SelectedRows[i].Cells[columnDisable.Name].Value;
-                }
-
-                e.Handled = true; 
-            }
+            Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnSelected);
         }
     }
 }

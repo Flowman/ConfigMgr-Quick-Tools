@@ -1,6 +1,5 @@
 ﻿using Microsoft.ConfigurationManagement.AdminConsole;
 using Microsoft.ConfigurationManagement.ManagementProvider;
-using Microsoft.ConfigurationManagement.AdminConsole.Common;
 using Microsoft.ConfigurationManagement.AdminConsole.DialogFramework;
 using System;
 using System.Collections.Generic;

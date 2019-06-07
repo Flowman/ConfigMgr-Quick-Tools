@@ -6,9 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Text;
 using System.Collections.Generic;
-using Microsoft.ConfigurationManagement.AdminConsole.CollectionProperty;
 
 namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
@@ -30,12 +28,12 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
         {
             base.InitializePageControl();
 
-            listViewListWindows.UpdateColumnWidth(columnHeaderWindows);
-            listViewListWindows.Items.Clear();
-            listViewListWindows.IsLoading = true;
-            listViewListUpcomingWindows.UpdateColumnWidth(columnHeaderUpcomingTime);
-            listViewListUpcomingWindows.Items.Clear();
-            listViewListUpcomingWindows.IsLoading = true;
+            listViewWindows.UpdateColumnWidth(columnHeaderWindows);
+            listViewWindows.Items.Clear();
+            listViewWindows.IsLoading = true;
+            listViewUpcomingWindows.UpdateColumnWidth(columnHeaderUpcomingTime);
+            listViewUpcomingWindows.Items.Clear();
+            listViewUpcomingWindows.IsLoading = true;
 
             string query = string.Format("SELECT SMS_Collection.* FROM SMS_FullCollectionMembership, SMS_Collection where ResourceID = '{0}' and ServiceWindowsCount > 0 and SMS_FullCollectionMembership.CollectionID = SMS_Collection.CollectionID", PropertyManager["ResourceID"].IntegerValue);
 
@@ -61,7 +59,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                 {
                     if (arrayItem["IsEnabled"].BooleanValue)
                     {
-                        listViewListWindows.Items.Add(new ListViewItem()
+                        listViewWindows.Items.Add(new ListViewItem()
                         {
                             Text = arrayItem["Name"].StringValue,
                             SubItems = {
@@ -157,7 +155,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                                 break;
                         }
 
-                        listViewListUpcomingWindows.Items.Add(new ListViewItem()
+                        listViewUpcomingWindows.Items.Add(new ListViewItem()
                         {
                             Text = date,
                             SubItems = {
@@ -188,44 +186,17 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListWindows.IsLoading = false;
-                    listViewListUpcomingWindows.IsLoading = false;
-                    listViewListWindows.UpdateColumnWidth(columnHeaderWindows);
-                    listViewListUpcomingWindows.UpdateColumnWidth(columnHeaderUpcomingTime);
+                    listViewWindows.IsLoading = false;
+                    listViewUpcomingWindows.IsLoading = false;
+                    listViewWindows.UpdateColumnWidth(columnHeaderWindows);
+                    listViewUpcomingWindows.UpdateColumnWidth(columnHeaderUpcomingTime);
                 }
             }
         }
 
-        private void ListViewListWindows_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListWindows.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
-        }
-
-        private void ListViewListUpcomingWindows_CopyKeyEvent(object sender, EventArgs e)
-        {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListUpcomingWindows.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
 
         private static string GetServiceWindowType(ServiceWindowTypesControl.ServiceWindowTypes serviceWindowTypeValue)

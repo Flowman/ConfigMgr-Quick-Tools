@@ -35,7 +35,7 @@
             this.dataGridViewCollections = new System.Windows.Forms.DataGridView();
             this.labelCount = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.columnDisable = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.columnSelected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.columnCollection = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnQuery = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnCollectionID = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,7 +81,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewCollections.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCollections.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.columnDisable,
+            this.columnSelected,
             this.columnCollection,
             this.ColumnQuery,
             this.columnCollectionID});
@@ -116,10 +116,10 @@
             // 
             // columnDisable
             // 
-            this.columnDisable.HeaderText = "Disable";
-            this.columnDisable.MinimumWidth = 20;
-            this.columnDisable.Name = "columnDisable";
-            this.columnDisable.Width = 50;
+            this.columnSelected.HeaderText = "Disable";
+            this.columnSelected.MinimumWidth = 20;
+            this.columnSelected.Name = "columnDisable";
+            this.columnSelected.Width = 50;
             // 
             // columnCollection
             // 
@@ -171,7 +171,7 @@
         private System.Windows.Forms.DataGridView dataGridViewCollections;
         private System.Windows.Forms.Label labelCount;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn columnDisable;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn columnSelected;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnCollection;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnQuery;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnCollectionID;

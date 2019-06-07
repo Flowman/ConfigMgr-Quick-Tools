@@ -38,7 +38,7 @@
             this.labelSpaceToUse = new System.Windows.Forms.Label();
             this.labelUsedSize = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.listViewListContent = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.listViewContent = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderLastUsed = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -134,37 +134,37 @@
             // 
             // listViewListContent
             // 
-            this.listViewListContent.Activation = System.Windows.Forms.ItemActivation.Standard;
-            this.listViewListContent.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewContent.Activation = System.Windows.Forms.ItemActivation.Standard;
+            this.listViewContent.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewListContent.AutoSort = true;
-            this.listViewListContent.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.listViewListContent.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewContent.AutoSort = true;
+            this.listViewContent.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewContent.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderLocation,
             this.columnHeaderSize,
             this.columnHeaderLastUsed,
             this.columnHeaderID});
-            this.listViewListContent.ContextMenuStrip = this.contextMenuStrip1;
-            this.listViewListContent.CustomNoResultsText = null;
-            this.listViewListContent.FullRowSelect = true;
-            this.listViewListContent.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.listViewListContent.HideSelection = false;
-            this.listViewListContent.IsLoading = false;
-            this.listViewListContent.LargeImageList = null;
-            this.listViewListContent.Location = new System.Drawing.Point(10, 119);
-            this.listViewListContent.MultiSelect = true;
-            this.listViewListContent.Name = "listViewListContent";
-            this.listViewListContent.ShowSearchBar = true;
-            this.listViewListContent.Size = new System.Drawing.Size(360, 203);
-            this.listViewListContent.SmallImageList = null;
-            this.listViewListContent.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listViewListContent.StateImageList = null;
-            this.listViewListContent.TabIndex = 11;
-            this.listViewListContent.TileSize = new System.Drawing.Size(0, 0);
-            this.listViewListContent.UseCompatibleStateImageBehavior = false;
-            this.listViewListContent.View = System.Windows.Forms.View.Details;
+            this.listViewContent.ContextMenuStrip = this.contextMenuStrip1;
+            this.listViewContent.CustomNoResultsText = null;
+            this.listViewContent.FullRowSelect = true;
+            this.listViewContent.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.listViewContent.HideSelection = false;
+            this.listViewContent.IsLoading = false;
+            this.listViewContent.LargeImageList = null;
+            this.listViewContent.Location = new System.Drawing.Point(10, 119);
+            this.listViewContent.MultiSelect = true;
+            this.listViewContent.Name = "listViewListContent";
+            this.listViewContent.ShowSearchBar = true;
+            this.listViewContent.Size = new System.Drawing.Size(360, 203);
+            this.listViewContent.SmallImageList = null;
+            this.listViewContent.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewContent.StateImageList = null;
+            this.listViewContent.TabIndex = 11;
+            this.listViewContent.TileSize = new System.Drawing.Size(0, 0);
+            this.listViewContent.UseCompatibleStateImageBehavior = false;
+            this.listViewContent.View = System.Windows.Forms.View.Details;
             // 
             // columnHeaderID
             // 
@@ -228,7 +228,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.buttonClearCache);
-            this.Controls.Add(this.listViewListContent);
+            this.Controls.Add(this.listViewContent);
             this.Controls.Add(this.labelUsedSize);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.labelSpaceToUse);
@@ -259,7 +259,7 @@
         private System.Windows.Forms.Label labelSpaceToUse;
         private System.Windows.Forms.Label labelUsedSize;
         private System.Windows.Forms.Label label5;
-        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListContent;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewContent;
         private System.Windows.Forms.Button buttonClearCache;
         private System.Windows.Forms.ColumnHeader columnHeaderID;
         private System.Windows.Forms.ColumnHeader columnHeaderSize;

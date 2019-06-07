@@ -16,7 +16,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     {
         private BackgroundWorker progressWorker;
         private ProgressInformationDialog progressInformationDialog;
-        private ModifyRegistry registry = new ModifyRegistry();
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private bool valiadated = false;
 
         public DriverPackageGeneralPage(SmsPageData pageData)

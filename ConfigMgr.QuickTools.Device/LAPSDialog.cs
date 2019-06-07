@@ -11,7 +11,7 @@ namespace ConfigMgr.QuickTools.Device
     public partial class LAPSDialog : SmsCustomDialog
     {
         const AuthenticationTypes authenticationTypes = AuthenticationTypes.Secure | AuthenticationTypes.Sealing;
-        private IResultObject resultObjects;
+        private readonly IResultObject resultObjects;
 
         public LAPSDialog(IResultObject selectedResultObjects, ActionDescription action)
         {

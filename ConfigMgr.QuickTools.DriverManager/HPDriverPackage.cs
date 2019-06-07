@@ -1,5 +1,4 @@
 ﻿using ByteSizeLib;
-using System;
 using System.Xml.Linq;
 
 namespace ConfigMgr.QuickTools.DriverManager

@@ -176,7 +176,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             List<ManagementObject> list = new List<ManagementObject>();
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDrivers.Rows)
             {
-                if (Convert.ToBoolean(dataGridViewRow.Cells[columnCapture.Name].Value) == true)
+                if (Convert.ToBoolean(dataGridViewRow.Cells[columnSelected.Name].Value) == true)
                 {
                     if (dataGridViewRow.Tag is ManagementObject driver)
                     {
@@ -413,17 +413,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private void DataGridViewDrivers_KeyUp(object sender, KeyEventArgs e)
         {
-            int selectedRowCount = dataGridViewDrivers.Rows.GetRowCount(DataGridViewElementStates.Selected);
-
-            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
-            {
-                for (int i = 0; i < selectedRowCount; i++)
-                {
-                    dataGridViewDrivers.SelectedRows[i].Cells[columnCapture.Name].Value = !(bool)dataGridViewDrivers.SelectedRows[i].Cells[columnCapture.Name].Value;
-                }
-
-                e.Handled = true;
-            }
+            Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnSelected);
         }
     }
 }

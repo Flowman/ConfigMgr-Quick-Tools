@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.listViewListWindows = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.listViewWindows = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderWindows = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderCollection = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
-            this.listViewListUpcomingWindows = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
+            this.listViewUpcomingWindows = new Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView();
             this.columnHeaderUpcomingTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderUpcomingName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -49,34 +49,34 @@
             // 
             // listViewListWindows
             // 
-            this.listViewListWindows.Activation = System.Windows.Forms.ItemActivation.Standard;
-            this.listViewListWindows.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListWindows.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.listViewWindows.Activation = System.Windows.Forms.ItemActivation.Standard;
+            this.listViewWindows.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewWindows.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewListWindows.AutoSort = true;
-            this.listViewListWindows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.listViewListWindows.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewWindows.AutoSort = true;
+            this.listViewWindows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewWindows.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderWindows,
             this.columnHeaderCollection});
-            this.listViewListWindows.CustomNoResultsText = null;
-            this.listViewListWindows.FullRowSelect = true;
-            this.listViewListWindows.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.listViewListWindows.HideSelection = false;
-            this.listViewListWindows.IsLoading = false;
-            this.listViewListWindows.LargeImageList = null;
-            this.listViewListWindows.Location = new System.Drawing.Point(15, 37);
-            this.listViewListWindows.MultiSelect = true;
-            this.listViewListWindows.Name = "listViewListWindows";
-            this.listViewListWindows.ShowSearchBar = true;
-            this.listViewListWindows.Size = new System.Drawing.Size(354, 162);
-            this.listViewListWindows.SmallImageList = null;
-            this.listViewListWindows.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listViewListWindows.StateImageList = null;
-            this.listViewListWindows.TabIndex = 2;
-            this.listViewListWindows.TileSize = new System.Drawing.Size(0, 0);
-            this.listViewListWindows.UseCompatibleStateImageBehavior = false;
-            this.listViewListWindows.View = System.Windows.Forms.View.Details;
-            this.listViewListWindows.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListWindows_CopyKeyEvent);
+            this.listViewWindows.CustomNoResultsText = null;
+            this.listViewWindows.FullRowSelect = true;
+            this.listViewWindows.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.listViewWindows.HideSelection = false;
+            this.listViewWindows.IsLoading = false;
+            this.listViewWindows.LargeImageList = null;
+            this.listViewWindows.Location = new System.Drawing.Point(15, 37);
+            this.listViewWindows.MultiSelect = true;
+            this.listViewWindows.Name = "listViewListWindows";
+            this.listViewWindows.ShowSearchBar = true;
+            this.listViewWindows.Size = new System.Drawing.Size(354, 162);
+            this.listViewWindows.SmallImageList = null;
+            this.listViewWindows.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewWindows.StateImageList = null;
+            this.listViewWindows.TabIndex = 2;
+            this.listViewWindows.TileSize = new System.Drawing.Size(0, 0);
+            this.listViewWindows.UseCompatibleStateImageBehavior = false;
+            this.listViewWindows.View = System.Windows.Forms.View.Details;
+            this.listViewWindows.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListView_CopyKeyEvent);
             // 
             // columnHeaderWindows
             // 
@@ -99,35 +99,35 @@
             // 
             // listViewListUpcomingWindows
             // 
-            this.listViewListUpcomingWindows.Activation = System.Windows.Forms.ItemActivation.Standard;
-            this.listViewListUpcomingWindows.Alignment = System.Windows.Forms.ListViewAlignment.Top;
-            this.listViewListUpcomingWindows.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewUpcomingWindows.Activation = System.Windows.Forms.ItemActivation.Standard;
+            this.listViewUpcomingWindows.Alignment = System.Windows.Forms.ListViewAlignment.Top;
+            this.listViewUpcomingWindows.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listViewListUpcomingWindows.AutoSort = true;
-            this.listViewListUpcomingWindows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.listViewListUpcomingWindows.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewUpcomingWindows.AutoSort = true;
+            this.listViewUpcomingWindows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.listViewUpcomingWindows.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderUpcomingTime,
             this.columnHeaderUpcomingName});
-            this.listViewListUpcomingWindows.CustomNoResultsText = null;
-            this.listViewListUpcomingWindows.FullRowSelect = true;
-            this.listViewListUpcomingWindows.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
-            this.listViewListUpcomingWindows.HideSelection = false;
-            this.listViewListUpcomingWindows.IsLoading = false;
-            this.listViewListUpcomingWindows.LargeImageList = null;
-            this.listViewListUpcomingWindows.Location = new System.Drawing.Point(13, 237);
-            this.listViewListUpcomingWindows.MultiSelect = true;
-            this.listViewListUpcomingWindows.Name = "listViewListUpcomingWindows";
-            this.listViewListUpcomingWindows.ShowSearchBar = true;
-            this.listViewListUpcomingWindows.Size = new System.Drawing.Size(354, 104);
-            this.listViewListUpcomingWindows.SmallImageList = null;
-            this.listViewListUpcomingWindows.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listViewListUpcomingWindows.StateImageList = null;
-            this.listViewListUpcomingWindows.TabIndex = 4;
-            this.listViewListUpcomingWindows.TileSize = new System.Drawing.Size(0, 0);
-            this.listViewListUpcomingWindows.UseCompatibleStateImageBehavior = false;
-            this.listViewListUpcomingWindows.View = System.Windows.Forms.View.Details;
-            this.listViewListUpcomingWindows.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListViewListUpcomingWindows_CopyKeyEvent);
+            this.listViewUpcomingWindows.CustomNoResultsText = null;
+            this.listViewUpcomingWindows.FullRowSelect = true;
+            this.listViewUpcomingWindows.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Clickable;
+            this.listViewUpcomingWindows.HideSelection = false;
+            this.listViewUpcomingWindows.IsLoading = false;
+            this.listViewUpcomingWindows.LargeImageList = null;
+            this.listViewUpcomingWindows.Location = new System.Drawing.Point(13, 237);
+            this.listViewUpcomingWindows.MultiSelect = true;
+            this.listViewUpcomingWindows.Name = "listViewListUpcomingWindows";
+            this.listViewUpcomingWindows.ShowSearchBar = true;
+            this.listViewUpcomingWindows.Size = new System.Drawing.Size(354, 104);
+            this.listViewUpcomingWindows.SmallImageList = null;
+            this.listViewUpcomingWindows.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.listViewUpcomingWindows.StateImageList = null;
+            this.listViewUpcomingWindows.TabIndex = 4;
+            this.listViewUpcomingWindows.TileSize = new System.Drawing.Size(0, 0);
+            this.listViewUpcomingWindows.UseCompatibleStateImageBehavior = false;
+            this.listViewUpcomingWindows.View = System.Windows.Forms.View.Details;
+            this.listViewUpcomingWindows.CopyKeyEvent += new System.EventHandler<System.EventArgs>(this.ListView_CopyKeyEvent);
             // 
             // columnHeaderUpcomingTime
             // 
@@ -144,9 +144,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.listViewListUpcomingWindows);
+            this.Controls.Add(this.listViewUpcomingWindows);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.listViewListWindows);
+            this.Controls.Add(this.listViewWindows);
             this.Name = "ResultMaintenanceWindowsControl";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -156,9 +156,9 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListWindows;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewWindows;
         private System.Windows.Forms.Label label2;
-        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewListUpcomingWindows;
+        private Microsoft.ConfigurationManagement.AdminConsole.Common.SmsSearchableListView listViewUpcomingWindows;
         private System.Windows.Forms.ColumnHeader columnHeaderWindows;
         private System.Windows.Forms.ColumnHeader columnHeaderCollection;
         private System.Windows.Forms.ColumnHeader columnHeaderUpcomingTime;

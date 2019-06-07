@@ -5,7 +5,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Text;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
@@ -58,9 +57,9 @@ namespace ConfigMgr.QuickTools.Warranty
 
         private void ButtonSURefresh_Click(object sender, EventArgs e)
         {
-            listViewListWarranty.IsLoading = true;
-            listViewListWarranty.UpdateColumnWidth(columnHeaderDescription);
-            listViewListWarranty.Items.Clear();
+            listViewWarranty.IsLoading = true;
+            listViewWarranty.UpdateColumnWidth(columnHeaderDescription);
+            listViewWarranty.Items.Clear();
 
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += new DoWorkEventHandler(InfoWorker_DoWorkAsync);
@@ -148,7 +147,7 @@ namespace ConfigMgr.QuickTools.Warranty
                                     if (serviceLevelDescription != "")
                                     {
                                         string type = entitlement.Element(ns + "EntitlementType").Value;
-                                        listViewListWarranty.Items.Add(new ListViewItem()
+                                        listViewWarranty.Items.Add(new ListViewItem()
                                         {
                                             Text = serviceLevelDescription,
                                             SubItems = {
@@ -216,28 +215,17 @@ namespace ConfigMgr.QuickTools.Warranty
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListWarranty.IsLoading = false;
-                    listViewListWarranty.UpdateColumnWidth(columnHeaderDescription);
-                    listViewListWarranty.Sorting = SortOrder.Ascending;
+                    listViewWarranty.IsLoading = false;
+                    listViewWarranty.UpdateColumnWidth(columnHeaderDescription);
+                    listViewWarranty.Sorting = SortOrder.Ascending;
                     buttonSURefresh.Enabled = true;
                 }
             }
         }
 
-        private void ListViewListSoftwareUpdates_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListWarranty.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
     }
 }

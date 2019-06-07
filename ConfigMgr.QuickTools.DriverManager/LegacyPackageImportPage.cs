@@ -111,7 +111,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             List<LegacyPackage> list = new List<LegacyPackage>();
             foreach (DataGridViewRow dataGridViewRow in dataGridViewDriverPackages.Rows)
             {
-                if (Convert.ToBoolean(dataGridViewRow.Cells[columnImport.Name].Value) == true)
+                if (Convert.ToBoolean(dataGridViewRow.Cells[columnSelected.Name].Value) == true)
                 {
                     if (dataGridViewRow.Tag is LegacyPackage package)
                     {
@@ -273,17 +273,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         private void DataGridViewDrivers_KeyUp(object sender, KeyEventArgs e)
         {
-            int selectedRowCount = dataGridViewDriverPackages.Rows.GetRowCount(DataGridViewElementStates.Selected);
-
-            if (selectedRowCount > 0 && e.KeyCode == Keys.Space)
-            {
-                for (int i = 0; i < selectedRowCount; i++)
-                {
-                    dataGridViewDriverPackages.SelectedRows[i].Cells[columnImport.Name].Value = !(bool)dataGridViewDriverPackages.SelectedRows[i].Cells[columnImport.Name].Value;
-                }
-
-                e.Handled = true;
-            }
+            Utility.SelectDataGridViewWithSpace(e, (DataGridView)sender, columnSelected);
         }
     }
 }

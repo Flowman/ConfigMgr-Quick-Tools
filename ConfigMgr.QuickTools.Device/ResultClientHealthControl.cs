@@ -10,7 +10,6 @@ using System.IO;
 using System.Xml.Linq;
 using System.Linq;
 using System.Globalization;
-using System.Text;
 
 namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 {
@@ -43,9 +42,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
         private void ButtonSURefresh_Click(object sender, EventArgs e)
         {
-            listViewListClientHealth.IsLoading = true;
-            listViewListClientHealth.UpdateColumnWidth(columnHeaderDescription);
-            listViewListClientHealth.Items.Clear();
+            listViewClientHealth.IsLoading = true;
+            listViewClientHealth.UpdateColumnWidth(columnHeaderDescription);
+            listViewClientHealth.Items.Clear();
             
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += new DoWorkEventHandler(InfoWorker_DoWork);
@@ -74,7 +73,7 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
 
                     foreach (XElement node in clientHealth.Descendants(ns + "HealthCheck"))
                     {
-                        listViewListClientHealth.Items.Add(new ListViewItem()
+                        listViewClientHealth.Items.Add(new ListViewItem()
                         {
                             Text = node.Attribute("Description").Value,
                             SubItems = { node.Value }
@@ -123,8 +122,8 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
                     backgroundWorker.Dispose();
                     backgroundWorker = null;
                     UseWaitCursor = false;
-                    listViewListClientHealth.IsLoading = false;
-                    listViewListClientHealth.UpdateColumnWidth(columnHeaderDescription);
+                    listViewClientHealth.IsLoading = false;
+                    listViewClientHealth.UpdateColumnWidth(columnHeaderDescription);
                     buttonRefresh.Enabled = true;
                 }
             }
@@ -150,20 +149,9 @@ namespace ConfigMgr.QuickTools.Device.PropertiesDialog
             }
         }
 
-        private void ListViewListClientHealth_CopyKeyEvent(object sender, EventArgs e)
+        private void ListView_CopyKeyEvent(object sender, EventArgs e)
         {
-            StringBuilder buffer = new StringBuilder();
-            foreach (ListViewItem item in listViewListClientHealth.SelectedItems)
-            {
-                foreach (ListViewItem.ListViewSubItem subitem in item.SubItems)
-                {
-                    buffer.Append(subitem.Text);
-                    buffer.Append("\t");
-                }
-                buffer.AppendLine();
-            }
-            buffer.Remove(buffer.Length - 1, 1);
-            Clipboard.SetData(DataFormats.Text, buffer.ToString());
+            Utility.CopyToClipboard((ListView)sender);
         }
     }
 }
