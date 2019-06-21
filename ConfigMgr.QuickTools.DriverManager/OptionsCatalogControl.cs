@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-
 namespace ConfigMgr.QuickTools.DriverManager
 {
     public partial class OptionsCatalogControl : SmsPageControl

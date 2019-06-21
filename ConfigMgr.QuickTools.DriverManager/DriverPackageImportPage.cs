@@ -15,6 +15,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     {
         #region Private
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private int progressStepPercent;
         private int progresPercent;
         private int progressTotal = 0;
@@ -88,6 +89,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                             int totalInfs = driverPackage.Infs.Length;
                             int num2 = 1;
                             // parse ini files and create a dictinonary with the results
+                            log.Debug("ProcessingINFs ---- ");
                             foreach (string inf in driverPackage.Infs)
                             {
                                 // I still hate calculating progress bars
@@ -97,6 +99,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                                     string.Format("Importing Driver Package: {0}\n - processing inf '{1}'", driverPackage.Name, Path.GetFileName(inf))
                                     );
 
+                                log.Debug("ProcessingINF: " + inf);
                                 Driver driver = new Driver(inf);
                                 if (driver.HasWarning)
                                 {
@@ -117,6 +120,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                             // I still hate calculating progress bars
                             progressStepPercent = progresPercent;
                             progresPercent = 100 / progressStepCount / totalDriverPackages * 2;
+                            log.Debug("ProcessingDrivers ---- ");
                             // check if driver is in driver package and same version
                             foreach (IResultObject driverObject in driverPackage.GetDriversInPackge())
                             {
@@ -127,9 +131,11 @@ namespace ConfigMgr.QuickTools.DriverManager
                             smartThreadPool.WaitForIdle();
                             // I still hate calculating progress bars
                             progressStepPercent = progresPercent;
+                            log.Debug("ImportingDrivers ---- ");
+
                             // tried to create threading for importing drivers but CreateFromINF go sad if it gets to many request, so will leave this code here for maybe one day I fix it
                             IWorkItemsGroup workItemsGroup = smartThreadPool.CreateWorkItemsGroup(1);
-
+      
                             foreach (KeyValuePair<string, Driver> driver in driverPackage.Drivers)
                             {
                                 if (driver.Value.Import)
@@ -145,6 +151,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                             if (refreshPackage)
                             {
+                                log.Debug("RefreshPackage ---- ");
                                 // I still hate calculating progress bars
                                 progresPercent = 100 / progressStepCount / totalDriverPackages * 4;
                                 worker.ReportProgress(progressStart + (progresPercent), string.Format("Importing Driver Package: {0}\n - adding drivers to package", driverPackage.Name));
@@ -154,13 +161,16 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                             if (refreshDP)
                             {
+                                log.Debug("RefreshDP ---- ");
                                 // I still hate calculating progress bars
                                 progresPercent = 100 / progressStepCount / totalDriverPackages * 5;
                                 worker.ReportProgress(progressStart + (progresPercent), string.Format("Importing Driver Package: {0}\n - updating distribution point", driverPackage.Name));
                                 driverPackage.Package.ExecuteMethod("RefreshPkgSource", null);
                             }
 
+                            log.Debug("CreateHashFile ---- ");
                             driverPackage.CreateHashFile();
+                            log.Debug("UpdatePackageVersion ---- ");
                             driverPackage.UpdatePackageVersion();
                         }
                         finally
@@ -200,8 +210,14 @@ namespace ConfigMgr.QuickTools.DriverManager
                );
 
             log.Debug("Importing driver: " + driver.Model);
-            if (driver.CreateObjectFromInfFile(ConnectionManager))
+            if (driver.CheckIfExists(ConnectionManager) && registry.ReadBool("DriverPackageQuickMerge"))
             {
+                log.Debug("QuickMergeCheckIfExists: " + driver.Model);
+                driverPackage.AddDriverToCategory(driver);
+            }
+            else if (driver.CreateObjectFromInfFile(ConnectionManager))
+            {
+                log.Debug("CreateObjectFromInfFile: " + driver.Model);
                 // add category to driver object
                 driverPackage.AddDriverToCategory(driver);
             }

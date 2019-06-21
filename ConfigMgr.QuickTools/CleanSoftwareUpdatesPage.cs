@@ -20,11 +20,11 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
         public CleanSoftwareUpdatesPage(SmsPageData pageData)
             : base(pageData)
         {
-            InitializeComponent();
-
             FormTitle = "Clean Up Software Updates";
             Title = "Select Updates";
             Headline = "Clean up selected software updates from groups";
+
+            InitializeComponent();
 
             Updater.CheckUpdates();
         }
@@ -80,14 +80,7 @@ namespace ConfigMgr.QuickTools.SoftwareUpdates
             try
             {
                 if (e.Error != null)
-                {
-                    using (SccmExceptionDialog sccmExceptionDialog = new SccmExceptionDialog(e.Error))
-                    {
-                        sccmExceptionDialog.ShowDialog();
-                    }
-                }
-                else if (e.Cancelled)
-                    ConnectionManagerBase.SmsTraceSource.TraceEvent(TraceEventType.Information, 1, "User canceled");
+                    SccmExceptionDialog.ShowDialog(this, e.Error, "Error");
                 else
                     Initialized = true;
             }

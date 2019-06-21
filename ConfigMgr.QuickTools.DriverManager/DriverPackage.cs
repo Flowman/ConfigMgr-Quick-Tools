@@ -12,6 +12,7 @@ namespace ConfigMgr.QuickTools.DriverManager
     {
         #region Private
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly ModifyRegistry registry = new ModifyRegistry();
         private readonly ConnectionManagerBase connectionManager;
         private IResultObject packageObject;
         private IResultObject categoryObject;
@@ -80,7 +81,9 @@ namespace ConfigMgr.QuickTools.DriverManager
                 instance["PkgSourceFlag"].IntegerValue = 2;
                 instance["PkgSourcePath"].StringValue = Target;
                 instance["PkgFlags"].IntegerValue |= 16777216;
-                instance["DriverManufacturer"].StringValue = Vendor;
+                // this is only supported on 1810 and above
+                if (instance.PropertyList.ContainsKey("DriverManufacturer"))
+                    instance["DriverManufacturer"].StringValue = Vendor;
                 instance["Version"].StringValue = FileVersion;
                 try
                 {
@@ -107,14 +110,17 @@ namespace ConfigMgr.QuickTools.DriverManager
                     return false;
                 }
 
-                Utility.AddObjectToFolder(connectionManager, Vendor, instance["PackageID"].StringValue, 23);
+                string folder = registry.ReadString("DriverPackageConsoleFolder");
+                if (folder == "%MANUFACTURER%")
+                    folder = Vendor;
+
+                Utility.AddObjectToFolder(connectionManager, folder, instance["PackageID"].StringValue, 23);
 
                 packageObject = instance;
             }
 
             return true;
         }
-
 
         public bool UpdatePackageVersion()
         {
@@ -123,7 +129,9 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             if (packageObject != null)
             {
-                packageObject["DriverManufacturer"].StringValue = Vendor;
+                // this is only supported on 1810 and above
+                if (packageObject.PropertyList.ContainsKey("DriverManufacturer"))
+                    packageObject["DriverManufacturer"].StringValue = Vendor;
                 packageObject["Version"].StringValue = FileVersion;
 
                 try
@@ -198,6 +206,8 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         public bool AddDriverToDriverPack(Driver driver)
         {
+            log.Debug("AddDriverToDriverPack: " + driver.Model);
+
             List<int> contentIDs = new List<int>();
 
             string query = string.Format("SELECT * FROM SMS_CIToContent WHERE CI_ID='{0}'", driver.Object["CI_ID"].IntegerValue);
@@ -226,6 +236,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 string str = string.Format("{0} ({1})", driver.Object["LocalizedDisplayName"].StringValue, driver.Object["DriverINFFile"].StringValue);
                 ManagementException managementException = ex.InnerException as ManagementException;
                 ImportError.Add(str, "Could not be added to package: " + managementException.ErrorInformation["Description"].ToString());
+                log.Error("AddDriverToDriverPack: " + managementException.ErrorInformation["Description"].ToString());
+
                 return false;
             }
 
@@ -241,7 +253,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 if (driver.Value.Import && driver.Value.Object != null)
                 {
-                    string query = string.Format("SELECT * FROM SMS_CIToContent WHERE CI_ID='{0}'", driver.Value.Object["CI_ID"].IntegerValue);
+                    string query = string.Format("SELECT ContentID FROM SMS_CIToContent WHERE CI_ID='{0}'", driver.Value.Object["CI_ID"].IntegerValue);
 
                     foreach (IResultObject resultObject in connectionManager.QueryProcessor.ExecuteQuery(query))
                         contentIDs.Add(resultObject["ContentID"].IntegerValue);
@@ -263,7 +275,16 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
             catch (SmsException ex)
             {
-                Exception.Add(ex);
+                if (ex is SmsQueryException)
+                {
+                    ManagementException mgmtExcept = ex.InnerException as ManagementException;
+                    Exception.Add(new SystemException(mgmtExcept.ErrorInformation["Description"].ToString()));
+                }
+                else
+                {
+                    Exception.Add(ex);
+                }
+                    
                 return false;
             }
 
@@ -272,6 +293,8 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         public bool RemoveDriverFromDriverPack(IResultObject driverObject)
         {
+            log.Debug("RemoveDriverFromDriverPack: " + driverObject["LocalizedDisplayName"].StringValue);
+
             List<int> contentIDs = new List<int>();
 
             string query = string.Format("SELECT * FROM SMS_CIToContent WHERE CI_ID='{0}'", driverObject["CI_ID"].IntegerValue);
@@ -294,6 +317,9 @@ namespace ConfigMgr.QuickTools.DriverManager
                 string str = string.Format("{0} ({1})", driverObject["LocalizedDisplayName"].StringValue, driverObject["DriverINFFile"].StringValue);
                 ManagementException managementException = ex.InnerException as ManagementException;
                 ImportWarning.Add(str, managementException.ErrorInformation["Description"].ToString());
+                log.Warn("RemoveDriverFromDriverPack: " + managementException.ErrorInformation["Description"].ToString());
+
+                return false;
             }
 
             return true;
@@ -338,7 +364,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
                 catch (SmsQueryException ex)
                 {
-                    Exception.Add(ex);
+                    ManagementException mgmtException = ex.InnerException as ManagementException;
+                    Exception.Add(new SystemException(mgmtException.ErrorInformation["Description"].ToString()));
                     return false;
                 }
 
@@ -350,6 +377,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         public bool AddDriverToCategory(Driver driver)
         {
+            log.Debug("AddDriverToCategory: " + driver.Model);
             // get category unique id
             string categoryUniqueID = Category["CategoryInstance_UniqueID"].StringValue;
             ArrayList categories = new ArrayList();
@@ -380,6 +408,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 string str = string.Format("{0} ({1})", driver.Object["LocalizedDisplayName"].StringValue, driver.Object["DriverINFFile"].StringValue);
                 ManagementException managementException = ex.InnerException as ManagementException;
                 ImportError.Add(str, "Cannot be added to category: " + managementException.ErrorInformation["Description"].ToString());
+                log.Error("AddDriverToCategory: " + managementException.ErrorInformation["Description"].ToString());
+
                 return false;
             }
 
@@ -388,6 +418,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
         public bool RemoveDriverFromCategory(IResultObject driverObject)
         {
+            log.Debug("RemoveDriverFromCategory: " + driverObject["LocalizedDisplayName"].StringValue);
             // get category unique id
             string categoryUniqueID = Category["CategoryInstance_UniqueID"].StringValue;
             ArrayList categories = new ArrayList();
@@ -418,6 +449,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 string str = string.Format("{0} ({1})", driverObject["LocalizedDisplayName"].StringValue, driverObject["DriverINFFile"].StringValue);
                 ManagementException managementException = ex.InnerException as ManagementException;
                 ImportError.Add(str, "Cannot be removed from category: " + managementException.ErrorInformation["Description"].ToString());
+                log.Error("RemoveDriverFromCategory: " + managementException.ErrorInformation["Description"].ToString());
+
                 return false;
             }
 

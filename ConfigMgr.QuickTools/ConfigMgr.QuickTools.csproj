@@ -122,6 +122,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="QuickDeployment.cs" />
+    <Compile Include="QuickDeploymentGeneralPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QuickDeploymentGeneralPage.Designer.cs">
+      <DependentUpon>QuickDeploymentGeneralPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="QuickDeploymentSettingsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="QuickDeploymentSettingsPage.Designer.cs">
+      <DependentUpon>QuickDeploymentSettingsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="RemoveRetiredContentPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -151,6 +164,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuickDeploymentGeneralPage.resx">
+      <DependentUpon>QuickDeploymentGeneralPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

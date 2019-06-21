@@ -57,6 +57,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 else
                 {
                     Warning = new SystemException("Invalid inf file.");
+                    log.Warn(string.Format("InvalidInf: {0}", InfLocation));
+
                     Import = false;
                 }
             }
@@ -70,6 +72,42 @@ namespace ConfigMgr.QuickTools.DriverManager
         internal void AddObject(IResultObject resultObject)
         {
             Object = resultObject;
+        }
+
+        internal bool CheckIfExists(ConnectionManagerBase connectionManager)
+        {
+            // would be good if we could check based on architecture here, but there is no column that supports that in SMS_Driver without digging into the xml
+            // we could maybe hack in the description field and append architecture
+            string query = string.Format("SELECT * FROM SMS_Driver WHERE LocalizedDisplayName='{0}' AND DriverVersion='{1}' AND DriverINFFile='{2}'", Model, Version, Path.GetFileName(InfLocation));
+            IResultObject driverObject = Utility.GetFirstWMIInstance(connectionManager, query);
+
+            if (driverObject != null)
+            {
+                if (!Directory.Exists(driverObject["ContentSourcePath"].StringValue))
+                {
+                    log.Debug("UpdateContentSourcePath: " + driverObject["LocalizedDisplayName"].StringValue);
+                    try
+                    {
+                        driverObject["ContentSourcePath"].StringValue = Path.GetDirectoryName(InfLocation);
+
+                        driverObject.Put();
+                        driverObject.Get();
+                    }
+                    catch (SmsQueryException ex)
+                    {
+                        ManagementException mgmtException = ex.InnerException as ManagementException;
+                        Exception = new SystemException(mgmtException.ErrorInformation["Description"].ToString());
+                        log.Error(string.Format("PutDriverObject: {0}, {1}, {2}", InfLocation, ex.GetType().Name, Exception.Message));
+
+                        return false;
+                    }
+                }
+
+                Object = driverObject;
+                return true;
+            }
+
+            return false;
         }
 
         internal bool CreateObjectFromInfFile(ConnectionManagerBase connectionManager)
@@ -106,13 +144,15 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                             if (!Directory.Exists(driverObject["ContentSourcePath"].StringValue))
                             {
+                                log.Debug("UpdateContentSourcePath: " + driverObject["LocalizedDisplayName"].StringValue);
                                 driverObject["ContentSourcePath"].StringValue = Path.GetDirectoryName(InfLocation);
                             }
                         }
                         catch (SmsQueryException ex1)
                         {
-                            Exception = ex1;
-                            log.Error(string.Format("ContentSourcePath: {0}, {1}, {2}", InfLocation, ex1.GetType().Name, ex1.Message));
+                            ManagementException mgmtException = ex.InnerException as ManagementException;
+                            Exception = new SystemException(mgmtException.ErrorInformation["Description"].ToString());
+                            log.Error(string.Format("ContentSourcePath: {0}, {1}, {2}", InfLocation, ex1.GetType().Name, Exception.Message));
 
                             return false;
                         }
@@ -125,15 +165,24 @@ namespace ConfigMgr.QuickTools.DriverManager
                 else if (ex.ExtendStatusErrorCode == 13L)
                 {
                     Exception = new SystemException("Invalid inf file.");
-                    log.Warn(string.Format("InvalidInf: {0}", InfLocation));
+                    log.Error(string.Format("InvalidInf: {0}", InfLocation));
 
                     return false;
                 }
+                else
+                {
+                    ManagementException mgmtException = ex.InnerException as ManagementException;
+                    Exception = new SystemException(mgmtException.ErrorInformation["Description"].ToString());
+                    log.Error(string.Format("Error: {0}", Exception.Message));
 
+                    return false;
+                }
             }
+
             if (driverObject == null)
             {
                 log.Debug("NoObject: " + InfLocation);
+
                 return false;
             }
 
@@ -145,8 +194,9 @@ namespace ConfigMgr.QuickTools.DriverManager
             }
             catch (SmsQueryException ex)
             {
-                Exception = ex;
-                log.Error(string.Format("PutDriverObject: {0}, {1}, {2}", InfLocation, ex.GetType().Name, ex.Message));
+                ManagementException mgmtException = ex.InnerException as ManagementException;
+                Exception = new SystemException(mgmtException.ErrorInformation["Description"].ToString());
+                log.Error(string.Format("PutDriverObject: {0}, {1}, {2}", InfLocation, ex.GetType().Name, Exception.Message));
 
                 return false;
             }
@@ -182,6 +232,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             catch
             {
                 Exception = new SystemException("Cannot get version information from inf.");
+                log.Error(string.Format("GetVersion: {0}", Exception.Message));
             }
 
             return version;
@@ -243,6 +294,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             catch
             {
                 Exception = new SystemException("Cannot get model information from inf.");
+                log.Error(string.Format("GetModel: {0}", Exception.Message));
             }
 
             return model;

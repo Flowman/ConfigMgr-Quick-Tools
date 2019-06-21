@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ActionDescription Class="ShowDialog" DisplayName="Quick Deployment" MnemonicDisplayName="Quick Deployment" Description="Quick way deploying to multiple collections." InsertBefore="ae64ec01-34d7-4c2d-9267-e06106727c2b">
+  <ShowOn>
+    <string>DefaultHomeTab</string>    
+    <string>ContextMenu</string>
+  </ShowOn>
+  <ImagesDescription>
+    <ResourceAssembly>
+      <Assembly>ConfigMgr.QuickTools.dll</Assembly>
+      <Type>ConfigMgr.QuickTools.Properties.Resources.resources</Type>
+    </ResourceAssembly>
+    <ImageResourceName>tools</ImageResourceName>
+  </ImagesDescription>
+  <MatchPattern>True</MatchPattern>
+  <MatchValueToTest>##SUB:NV:PODU-IsFeatureExposed##</MatchValueToTest>
+  <MatchPatternFailedActionState>Hide</MatchPatternFailedActionState>
+  <DialogId>QuickToolsQuickDeploymentWizard</DialogId>
+  <SecurityConfiguration>
+    <ClassPermissions>
+      <ActionSecurityDescription ClassObject="SMS_SoftwareUpdate" RequiredPermissions="1" />
+      <ActionSecurityDescription ClassObject="SMS_SoftwareUpdatesPackage" RequiredPermissions="1" />
+      <ActionSecurityDescription ClassObject="SMS_Collection" RequiredPermissions="67108865" />
+    </ClassPermissions>
+  </SecurityConfiguration>
+</ActionDescription>

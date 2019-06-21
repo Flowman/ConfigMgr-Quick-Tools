@@ -539,7 +539,7 @@ namespace ConfigMgr.QuickTools
 
         protected object Read(string KeyName)
         {
-            object result = default(object);
+            object result = default;
 
             try
             {
@@ -574,7 +574,7 @@ namespace ConfigMgr.QuickTools
 
         public bool ReadBool(string KeyName)
         {
-            bool result = default(bool);
+            bool result = default;
             string resultStr = (string)Read(KeyName);
             if (!string.IsNullOrEmpty(resultStr))
             {

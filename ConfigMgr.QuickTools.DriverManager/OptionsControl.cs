@@ -15,7 +15,7 @@ namespace ConfigMgr.QuickTools.DriverManager
           : base(pageData)
         {
             InitializeComponent();
-            Title = "Driver Manager";
+            Title = "Driver Package";
         }
 
         public override void InitializePageControl()
@@ -25,11 +25,10 @@ namespace ConfigMgr.QuickTools.DriverManager
             browseFolderControlSource.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("DriverSourceFolder");
             browseFolderControlPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("DriverPackageFolder");
 
-            checkBoxLegacyFolder.Checked = registry.ReadBool("LegacyFolderStructure");
+            checkBoxQuickMerge.Checked = registry.ReadBool("DriverPackageQuickMerge");
+            textBoxConsoleFolder.Text = registry.ReadString("DriverPackageConsoleFolder");
 
-            browseFolderControlLegacyPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("LegacyPackageFolder");
-            checkBoxZipContent.Checked = registry.ReadBool("LegacyPackageZipContent");
-            textBoxConsoleFolder.Text = registry.ReadString("LegacyConsoleFolder");
+            checkBoxLegacyFolder.Checked = registry.ReadBool("LegacyFolderStructure");
 
             ControlsInspector = new ControlsInspector();
             controlsValidator = new ControlsValidator(ControlsInspector);
@@ -53,11 +52,10 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             registry.Write("DriverSourceFolder", browseFolderControlSource.FolderPath);
             registry.Write("DriverPackageFolder", browseFolderControlPackage.FolderPath);
-            registry.Write("LegacyFolderStructure", checkBoxLegacyFolder.Checked);
+            registry.Write("DriverPackageQuickMerge", checkBoxQuickMerge.Checked);
+            registry.Write("DriverPackageConsoleFolder", textBoxConsoleFolder.Text);
 
-            registry.Write("LegacyPackageFolder", browseFolderControlLegacyPackage.FolderPath);
-            registry.Write("LegacyPackageZipContent", checkBoxZipContent.Checked);
-            registry.Write("LegacyConsoleFolder", textBoxConsoleFolder.Text);
+            registry.Write("LegacyFolderStructure", checkBoxLegacyFolder.Checked);
 
             Dirty = false;
 
