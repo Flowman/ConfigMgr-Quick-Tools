@@ -48,6 +48,8 @@ namespace ConfigMgr.QuickTools.DriverManager
                 registry.Write("HPFolderPrefix", "HP");
             }
 
+            checkBoxWipeSource.Checked = registry.ReadString("WipeSource") == "" ? true : registry.ReadBool("WipeSource");
+
             textBoxDellCatalogUri.Text = registry.ReadString("DellCatalogURI");
             textBoxDellPrefix.Text = registry.ReadString("DellFolderPrefix");
 
@@ -73,6 +75,8 @@ namespace ConfigMgr.QuickTools.DriverManager
         protected override bool ApplyChanges(out Control errorControl, out bool showError)
         {
             registry.Write("TempDownloadPath", browseFolderControlDownload.FolderPath);
+
+            registry.Write("WipeSource", checkBoxWipeSource.Checked);
 
             registry.Write("DellCatalogURI", textBoxDellCatalogUri.Text);
             registry.Write("DellFolderPrefix", textBoxDellPrefix.Text);

@@ -419,6 +419,10 @@ namespace ConfigMgr.QuickTools.DriverManager
                     string versionFile = Path.Combine(tempFolderPath, "extract", package.FolderName, package.VersionFile);
                     File.Create(versionFile).Close();
 
+                    // wipe old soruce folder
+                    if (registry.ReadBool("WipeSource"))
+                        Directory.Delete(destinationFolder, true);
+
                     // remove old version file
                     if (Directory.Exists(destinationFolder))
                     {

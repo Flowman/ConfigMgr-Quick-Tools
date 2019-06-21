@@ -38,6 +38,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxHPPrefix = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.checkBoxWipeSource = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBoxDellCatalogUri
@@ -62,7 +64,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 241);
+            this.label1.Location = new System.Drawing.Point(7, 300);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(221, 13);
             this.label1.TabIndex = 18;
@@ -78,7 +80,7 @@
             this.browseFolderControlDownload.FolderTextReadOnly = false;
             this.browseFolderControlDownload.IsLocalFolder = false;
             this.browseFolderControlDownload.LableDescriptionWidth = 0;
-            this.browseFolderControlDownload.Location = new System.Drawing.Point(10, 257);
+            this.browseFolderControlDownload.Location = new System.Drawing.Point(10, 316);
             this.browseFolderControlDownload.MinimumSize = new System.Drawing.Size(150, 25);
             this.browseFolderControlDownload.Name = "browseFolderControlDownload";
             this.browseFolderControlDownload.Size = new System.Drawing.Size(360, 25);
@@ -89,7 +91,7 @@
             // 
             this.textBoxHPCatalogUri.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxHPCatalogUri.Location = new System.Drawing.Point(10, 143);
+            this.textBoxHPCatalogUri.Location = new System.Drawing.Point(10, 136);
             this.textBoxHPCatalogUri.Name = "textBoxHPCatalogUri";
             this.textBoxHPCatalogUri.Size = new System.Drawing.Size(360, 20);
             this.textBoxHPCatalogUri.TabIndex = 21;
@@ -98,7 +100,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 127);
+            this.label3.Location = new System.Drawing.Point(7, 120);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(193, 13);
             this.label3.TabIndex = 20;
@@ -127,7 +129,7 @@
             // 
             this.textBoxHPPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxHPPrefix.Location = new System.Drawing.Point(10, 184);
+            this.textBoxHPPrefix.Location = new System.Drawing.Point(10, 177);
             this.textBoxHPPrefix.Name = "textBoxHPPrefix";
             this.textBoxHPPrefix.Size = new System.Drawing.Size(152, 20);
             this.textBoxHPPrefix.TabIndex = 25;
@@ -136,16 +138,38 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 168);
+            this.label5.Location = new System.Drawing.Point(7, 161);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(82, 13);
             this.label5.TabIndex = 24;
             this.label5.Text = "HP folder prefix:";
             // 
+            // checkBoxWipeSource
+            // 
+            this.checkBoxWipeSource.AutoSize = true;
+            this.checkBoxWipeSource.Location = new System.Drawing.Point(10, 224);
+            this.checkBoxWipeSource.Name = "checkBoxWipeSource";
+            this.checkBoxWipeSource.Size = new System.Drawing.Size(246, 17);
+            this.checkBoxWipeSource.TabIndex = 26;
+            this.checkBoxWipeSource.Text = "Wipe source folder before extracting download";
+            this.checkBoxWipeSource.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.Cursor = System.Windows.Forms.Cursors.Default;
+            this.label6.Location = new System.Drawing.Point(14, 244);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(356, 36);
+            this.label6.TabIndex = 27;
+            this.label6.Text = "Use this option to wipe out the older driver version before extracting the new ve" +
+    "rsion.";
+            // 
             // OptionsCatalogControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.checkBoxWipeSource);
             this.Controls.Add(this.textBoxHPPrefix);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxDellPrefix);
@@ -174,5 +198,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBoxHPPrefix;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox checkBoxWipeSource;
+        private System.Windows.Forms.Label label6;
     }
 }
