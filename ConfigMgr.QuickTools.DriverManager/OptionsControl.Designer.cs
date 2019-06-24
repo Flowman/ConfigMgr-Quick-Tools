@@ -170,6 +170,7 @@
             this.checkBoxQuickMerge.TabIndex = 29;
             this.checkBoxQuickMerge.Text = "Quick Merge duplicates";
             this.checkBoxQuickMerge.UseVisualStyleBackColor = true;
+            this.checkBoxQuickMerge.Visible = false;
             // 
             // label4
             // 
@@ -182,6 +183,7 @@
             this.label4.Text = "Use this option only if all the drivers are either x64 or x86. This will merge dr" +
     "ivers based on Model and Version, so if there is a mix with x64 and x86 it might" +
     " merge wrong architecture.";
+            this.label4.Visible = false;
             // 
             // OptionsControl
             // 

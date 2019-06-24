@@ -25,7 +25,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             browseFolderControlSource.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("DriverSourceFolder");
             browseFolderControlPackage.Controls.OfType<SmsOsdTextBox>().First().Text = registry.ReadString("DriverPackageFolder");
 
-            checkBoxQuickMerge.Checked = registry.ReadBool("DriverPackageQuickMerge");
+            //checkBoxQuickMerge.Checked = registry.ReadBool("DriverPackageQuickMerge");
             textBoxConsoleFolder.Text = registry.ReadString("DriverPackageConsoleFolder");
 
             checkBoxLegacyFolder.Checked = registry.ReadBool("LegacyFolderStructure");
@@ -52,7 +52,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             registry.Write("DriverSourceFolder", browseFolderControlSource.FolderPath);
             registry.Write("DriverPackageFolder", browseFolderControlPackage.FolderPath);
-            registry.Write("DriverPackageQuickMerge", checkBoxQuickMerge.Checked);
+            //registry.Write("DriverPackageQuickMerge", checkBoxQuickMerge.Checked);
             registry.Write("DriverPackageConsoleFolder", textBoxConsoleFolder.Text);
 
             registry.Write("LegacyFolderStructure", checkBoxLegacyFolder.Checked);

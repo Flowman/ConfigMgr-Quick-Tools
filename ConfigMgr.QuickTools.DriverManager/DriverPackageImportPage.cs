@@ -196,7 +196,7 @@ namespace ConfigMgr.QuickTools.DriverManager
         {
             ++progressCount;
 
-            progresPercent = progressStepPercent + ((progressCount / progressTotal * 100) / progressStepCount / totalDriverPackages);
+            progresPercent = progressStepPercent + Convert.ToInt32(((double)progressCount / progressTotal * 100) / progressStepCount / totalDriverPackages);
 
             worker.ReportProgress(
                progressStart + (progresPercent),
