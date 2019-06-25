@@ -55,6 +55,8 @@
       <ComponentRef Id="comp_300ED341_2383_436D_9168_80F22AF79249" />
       <ComponentRef Id="comp_4E8EA0C5_E242_4F07_A191_4C06D9370871" />
       <ComponentRef Id="comp_1B4DC596_3998_4E85_B2A5_4069BCAB827E" />
+      <ComponentRef Id="comp_1FD0514D_DAD3_4765_8DD5_3877F364D8AF" />
+      <ComponentRef Id="comp_E669036E_D7EF_44BF_95D8_F4073B2D5354" />
       <Feature Id="DellTools" Title="Dell Tools" Level="1" Absent="allow" AllowAdvertise="no" Description="A set of tools that help support Dell devices.">
         <ComponentRef Id="comp_FEB5B608_8FD2_41B1_8CD8_6863A6C2453B" />
         <ComponentRef Id="comp_8586C663_1750_4E6C_9504_EA8E76DBDF04" />
@@ -150,6 +152,9 @@
             <Component Id="comp_31991956_BBFF_49C8_B6FE_0CC68F0F21C7" Guid="4CF698AF-747C-491B-B5D7-D92B8D97BBCF" Permanent="no" SharedDllRefCount="no" Transitive="no">
               <File Id="_6D73A9F2_417D_4981_B8FA_024596383FBD" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsDriverLegacyPackageImportWizard.xml" Source="..\Extensions\Forms\QuickToolsDriverLegacyPackageImportWizard.xml" KeyPath="yes" />
             </Component>
+            <Component Id="comp_1FD0514D_DAD3_4765_8DD5_3877F364D8AF" Guid="85369ABD-4CAF-4074-BEB9-B71F2AC95863" Permanent="no" SharedDllRefCount="no" Transitive="no">
+              <File Id="_40926114_0F4B_4FAC_8CAB_8EFB89032BCA" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsQuickDeploymentWizard.xml" Source="..\Extensions\Forms\QuickToolsQuickDeploymentWizard.xml" KeyPath="yes" />
+            </Component>
           </Directory>
           <Directory Id="dir_7ABFEF4F_0A52_47E1_96ED_F76708FD1A5B" Name="Actions">
             <Directory Id="dir_BC4B3130_B4E3_49AC_BF99_340A1BABE891" Name="0ae7814c-1256-4358-b5a6-710f64ba2188">
@@ -194,6 +199,11 @@
             <Directory Id="dir_61FCDBC7_A2DC_4A1E_8C77_55B6AD88F2B3" Name="6d357b6b-96b3-45f4-ba09-b74e8ce5a509">
               <Component Id="comp_16420F47_AB85_4939_9EBB_AD9D2FA2C9CE" Guid="99F98422-6072-46E5-9AC9-66C7EE7B9B16" Permanent="no" SharedDllRefCount="no" Transitive="no">
                 <File Id="_99B6DB0E_A2FA_4CE0_9F86_8D08D8C76288" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsIncrementalCollectionsAction.xml" Source="..\Extensions\Actions\6d357b6b-96b3-45f4-ba09-b74e8ce5a509\QuickToolsIncrementalCollectionsAction.xml" KeyPath="yes" />
+              </Component>
+            </Directory>
+            <Directory Id="dir_30096A5E_EFEC_427F_8CF6_F980316AD594" Name="2853886b-cce5-4ed4-af43-df69efb2e7d8">
+              <Component Id="comp_E669036E_D7EF_44BF_95D8_F4073B2D5354" Guid="E00A7A08-3EFF-4808-AB88-75538CEF6551" Permanent="no" SharedDllRefCount="no" Transitive="no">
+                <File Id="_2C3CF7C2_DF83_4FFA_B7DB_A31B575D1A86" DiskId="1" Hidden="no" ReadOnly="no" TrueType="no" System="no" Vital="yes" Name="QuickToolsQuickDeploymentAction.xml" Source="..\Extensions\Actions\2853886b-cce5-4ed4-af43-df69efb2e7d8\QuickToolsQuickDeploymentAction.xml" KeyPath="yes" />
               </Component>
             </Directory>
             <Directory Id="dir_4E70C982_41D7_47A6_AB09_3DC6062A9121" Name="23e7a3fe-b0f0-4b24-813a-dc425239f9a2">

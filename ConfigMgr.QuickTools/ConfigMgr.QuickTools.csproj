@@ -103,6 +103,7 @@
     <Compile Include="CollevalStatisticsDialog.Designer.cs">
       <DependentUpon>CollevalStatisticsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataGridViewCalendarColumn.cs" />
     <Compile Include="IncrementalCollectionsPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -167,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="QuickDeploymentGeneralPage.resx">
       <DependentUpon>QuickDeploymentGeneralPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuickDeploymentSettingsPage.resx">
+      <DependentUpon>QuickDeploymentSettingsPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

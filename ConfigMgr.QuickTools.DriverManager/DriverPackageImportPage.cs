@@ -210,6 +210,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                );
 
             log.Debug("Importing driver: " + driver.Model);
+            // this is a great idea but throws an file hash error when adding driver to package
             if (driver.CheckIfExists(ConnectionManager) && registry.ReadBool("DriverPackageQuickMerge"))
             {
                 log.Debug("QuickMergeCheckIfExists: " + driver.Model);

@@ -54,14 +54,9 @@ namespace ConfigMgr.QuickTools
         {
             if (navigationType == NavigationType.Forward)
             {
-                ListView.SelectedListViewItemCollection items = listViewCollections.SelectedItems;
-
-                List<IResultObject> collectionList = new List<IResultObject>();
-
-                foreach (ListViewItem item in items)
-                {
-                    collectionList.Add(item.Tag as IResultObject);
-                }
+                List<IResultObject> collectionList = new List<IResultObject>(listViewCollections.Items.Count);
+                for (int index = 0; index < listViewCollections.Items.Count; ++index)
+                    collectionList.Add(listViewCollections.Items[index].Tag as IResultObject);
 
                 UserData["Collections"] = collectionList;
             }
