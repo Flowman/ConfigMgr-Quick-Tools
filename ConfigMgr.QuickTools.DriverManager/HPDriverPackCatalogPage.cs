@@ -263,7 +263,7 @@ namespace ConfigMgr.QuickTools.DriverManager
 
             //    DataGridViewRow row = dataGridViewDriverPackages.Rows
             //        .Cast<DataGridViewRow>()
-            //        .Where(r => r.Cells[1].Value.ToString().Equals(testModel))
+            //        .Where(r => r.Cells[1].Value.ToString().Equals(testModel, StringComparison.CurrentCultureIgnoreCase))
             //        .FirstOrDefault();
 
             //    if (row != null)
@@ -440,7 +440,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                         File.Create(versionFile).Close();
 
                         // wipe old soruce folder
-                        if (registry.ReadBool("WipeSource"))
+                        if (registry.ReadBool("WipeSource") && Directory.Exists(destinationFolder))
                             Directory.Delete(destinationFolder, true);
 
                         // remove old version file

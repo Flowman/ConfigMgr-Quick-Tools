@@ -219,8 +219,10 @@ namespace ConfigMgr.QuickTools.DriverManager
                         UserData["baseLocation"] = catalog.Attribute("baseLocation").Value;
 
                         IEnumerable<XElement> nodeList = catalog.Elements(ns + "DriverPackage").Where(
-                            x => x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osArch").Value == UserData["Architecture"].ToString() &&
-                            x.Element(ns + "SupportedOperatingSystems").Element(ns + "OperatingSystem").Attribute("osCode").Value == UserData["OS"].ToString().Replace(" ", string.Empty)
+                                x => x.Element(ns + "SupportedOperatingSystems").Elements(ns + "OperatingSystem").Any( 
+                                    y => y.Attribute("osCode").Value == UserData["OS"].ToString().Replace(" ", string.Empty) &&
+                                    y.Attribute("osArch").Value == UserData["Architecture"].ToString()
+                                )
                             );
                         foreach (XElement node in nodeList)
                         {
@@ -252,7 +254,7 @@ namespace ConfigMgr.QuickTools.DriverManager
             {
                 DataGridViewRow row = dataGridViewDriverPackages.Rows
                     .Cast<DataGridViewRow>()
-                    .Where(r => r.Cells[1].Value.ToString().Equals(model["Model"].StringValue))
+                    .Where(r => r.Cells[1].Value.ToString().Equals(model["Model"].StringValue, StringComparison.CurrentCultureIgnoreCase))
                     .FirstOrDefault();
 
                 if (row != null)
@@ -420,7 +422,7 @@ namespace ConfigMgr.QuickTools.DriverManager
                     File.Create(versionFile).Close();
 
                     // wipe old soruce folder
-                    if (registry.ReadBool("WipeSource"))
+                    if (registry.ReadBool("WipeSource") && Directory.Exists(destinationFolder))
                         Directory.Delete(destinationFolder, true);
 
                     // remove old version file
