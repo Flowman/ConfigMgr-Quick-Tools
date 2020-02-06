@@ -454,11 +454,18 @@ namespace ConfigMgr.QuickTools.DriverManager
 
                 return;
             }
+            // fix if all download fails, dont get stuck in this loop
+            else if (_extractFiles.Count == 0)
+            {
+                extractQueueFinished = true;
+
+                return;
+            }
         }
 
         private void CheckExtractQueueCompleted()
         {
-            // if queue is still active download next file
+            // if queue is still active extract next file
             if (_extractFiles.Count > 0)
             {
                 ExtractFiles();

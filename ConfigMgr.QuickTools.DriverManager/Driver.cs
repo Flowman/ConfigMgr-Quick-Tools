@@ -227,10 +227,9 @@ namespace ConfigMgr.QuickTools.DriverManager
                 }
                 // remove date from version 
                 version = version.Split(',')[1].Trim();
-                // fix version with 2.12.06 format as sccm thinks its 2.12.6.0
-                version = Regex.Replace(version, @"\.[0]*[0]([0-9])$", ".$1.0").Trim();
+                // version must always be w.x.y.z
                 // fix version with 8.23.0203.2015 format as sccm thinks its 8.23.203.2015
-                version = Regex.Replace(version, @"\.[0]*[0]([0-9])", ".$1").Trim();
+                version = System.Version.Parse(version).ToString();
             }
             catch
             {
